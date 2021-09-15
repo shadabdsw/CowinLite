@@ -1,5 +1,8 @@
 package com.shadabdsw.thymeleafdemo;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "CowinUsers")
 public class User {
     private String phoneNumber;
     private String password;
