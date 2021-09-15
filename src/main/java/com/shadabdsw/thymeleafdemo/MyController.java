@@ -12,10 +12,14 @@ public class MyController {
     @Autowired
     UserRepository repository;
 
+    @Autowired
+    MemberRepository memberRepository;
+
     @GetMapping("/register")
     public String showForm(Model model) {
         User user = new User();
         model.addAttribute("user", user);
+        System.out.println(repository.findAll());
         return "register_form";
     }
 
@@ -26,4 +30,17 @@ public class MyController {
         return "register_success";
     }
 
+    @GetMapping("/addmember")
+    public String addMemberForm(Model model) {
+        Member member = new Member();
+        model.addAttribute("member", member);
+        return "addmember_form";
+    }
+
+    @PostMapping("/addmember")
+    public String submitMemberForm(@ModelAttribute("member") Member member) {
+        System.out.println(member);
+        memberRepository.insert(member);
+        return "addmember_success";
+    }
 }
