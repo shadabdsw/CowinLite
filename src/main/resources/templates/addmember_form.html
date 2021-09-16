@@ -16,33 +16,37 @@
   </head>
   <body>
     <div>
-      <div class="card text-center" style="width: 32rem">
+      <div class="card" style="width: 34rem">
         <div class="card-body">
-          <h3 class="card-header">Member Information Form</h3>
+          <h3 class="card-header text-center">Member Information Form</h3>
           <form
             action="#"
             th:action="@{/addmember}"
             method="post"
             th:object="${member}"
           >
-            <label>Adhaar Number:</label>
-            <input type="text" th:field="*{adhaar}" /><br />
-
-            <label>Full name:</label>
-            <input type="text" th:field="*{name}" /><br />
-
-            <label>Gender:</label>
-            <input type="radio" th:field="*{gender}" value="Male" />Male
-            <input
-              type="radio"
-              th:field="*{gender}"
-              value="Female"
-            />Female<br />
-
-            <label>Birthday (yyyy-mm-dd):</label>
-            <input type="text" th:field="*{dob}" /><br />
-
-            <button type="submit">Submit</button>
+            <div style="margin-top: 10px">
+              <label>Adhaar Number:</label>
+              <input type="text" th:field="*{adhaar}" /><br />
+            </div>
+            <div style="margin-top: 10px">
+              <label>Full name:</label>
+              <input type="text" th:field="*{name}" /><br />
+            </div>
+            <div style="margin-top: 10px">
+              <label>Gender:</label>
+              <input type="radio" th:field="*{gender}" value="Male" />Male
+              <input
+                type="radio"
+                th:field="*{gender}"
+                value="Female"
+              />Female<br />
+            </div>
+            <div style="margin-top: 10px">
+              <label>Birthday (dd-mm-yyyy):</label>
+              <input type="text" th:field="*{dob}" /><br />
+            </div>
+            <button style="margin-top: 10px" type="submit">Submit</button>
           </form>
         </div>
       </div>

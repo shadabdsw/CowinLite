@@ -27,7 +27,7 @@ public class MyController {
     public String submitForm(@ModelAttribute("user") User user) {
         System.out.println(user);
         repository.insert(user);
-        return "register_success";
+        return "home";
     }
 
     @GetMapping("/addmember")
@@ -43,4 +43,5 @@ public class MyController {
         memberRepository.insert(member);
         return "addmember_success";
     }
+
 }
