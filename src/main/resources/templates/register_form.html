@@ -15,8 +15,8 @@
     <title>Register</title>
   </head>
   <body>
-    <div>
-      <div class="card text-center" style="width: 32rem">
+    <div class="container mt-5 text-center">
+      <div class="card text-center shadow p-3 mb-5 bg-body rounded">
         <div class="card-body">
           <h3 class="card-header">Register/Login to Cowin Lite</h3>
           <form
@@ -25,7 +25,7 @@
             th:object="${user}"
             method="post"
           >
-            <div class="form-floating">
+            <div class="form-floating mt-2">
               <input
                 type="number"
                 th:field="*{phoneNumber}"
@@ -35,7 +35,7 @@
               />
               <label for="floatingInput">Enter your phone number</label>
             </div>
-            <div class="form-floating">
+            <div class="form-floating mt-2">
               <input
                 type="password"
                 th:field="*{password}"
@@ -43,8 +43,8 @@
                 id="floatingPassword"
                 placeholder="Password"
               />
-              <label for="floatingPassword">Password</label>
-              <button type="submit" style="margin-top: 10px">
+              <label for="floatingPassword">Enter your password</label>
+              <button class="btn btn-primary mt-3" type="submit">
                 Register/Login
               </button>
             </div>

@@ -15,11 +15,17 @@
     <title>Register</title>
   </head>
   <body>
-    <div>
-      <form action="#" th:action="@{/addmember}">
-        <button class="btn btn-primary" type="button" style="margin-top: 10px">
-          Add Member
-        </button>
+    <div class="container mt-5">
+      <form action="/addmember">
+        <div class="container text-center">
+          <button
+            class="btn btn-primary"
+            type="submit"
+            style="margin-top: 10px"
+          >
+            Add Member
+          </button>
+        </div>
       </form>
     </div>
     <script

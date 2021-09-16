@@ -15,8 +15,8 @@
     <title>Add Member</title>
   </head>
   <body>
-    <div>
-      <div class="card" style="width: 34rem">
+    <div class="container mt-5">
+      <div class="card shadow p-3 mb-5 bg-body rounded">
         <div class="card-body">
           <h3 class="card-header text-center">Member Information Form</h3>
           <form
@@ -25,28 +25,53 @@
             method="post"
             th:object="${member}"
           >
-            <div style="margin-top: 10px">
-              <label>Adhaar Number:</label>
-              <input type="text" th:field="*{adhaar}" /><br />
-            </div>
-            <div style="margin-top: 10px">
-              <label>Full name:</label>
-              <input type="text" th:field="*{name}" /><br />
-            </div>
-            <div style="margin-top: 10px">
-              <label>Gender:</label>
-              <input type="radio" th:field="*{gender}" value="Male" />Male
+            <div class="form-floating mt-3 mb-3">
               <input
+                type="number"
+                th:field="*{adhaar}"
+                class="form-control"
+                id="floatingInput"
+                placeholder="adhaar"
+              /><label for="floatingInput">Enter your adhaar number</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                class="form-control"
+                type="text"
+                th:field="*{name}"
+                id="floatingName"
+                placeholder="name"
+              /><label for="floatingName">Enter your full name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                class="form-control"
+                type="text"
+                th:field="*{dob}"
+                id="floatingDOB"
+                placeholder="01/01/2020"
+              /><label for="floatingDOB">Enter your birthday</label>
+            </div>
+            <label class="mb-3">Gender:</label>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                th:field="*{gender}"
+                value="Male"
+              />Male
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
                 type="radio"
                 th:field="*{gender}"
                 value="Female"
               />Female<br />
             </div>
-            <div style="margin-top: 10px">
-              <label>Birthday (dd-mm-yyyy):</label>
-              <input type="text" th:field="*{dob}" /><br />
+            <div class="container text-center">
+              <button class="btn btn-success" type="submit">Submit</button>
             </div>
-            <button style="margin-top: 10px" type="submit">Submit</button>
           </form>
         </div>
       </div>
