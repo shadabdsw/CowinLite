@@ -1,4 +1,4 @@
-package com.shadabdsw.thymeleafdemo;
+package com.shadabdsw.thymeleafdemo.Model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

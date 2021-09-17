@@ -1,4 +1,4 @@
-package com.shadabdsw.thymeleafdemo;
+package com.shadabdsw.thymeleafdemo.Model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     private String phoneNumber;
     private String password;
+
+    public User() {
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;

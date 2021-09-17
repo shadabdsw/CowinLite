@@ -1,5 +1,10 @@
 package com.shadabdsw.thymeleafdemo;
 
+import com.shadabdsw.thymeleafdemo.Model.Member;
+import com.shadabdsw.thymeleafdemo.Model.User;
+import com.shadabdsw.thymeleafdemo.Repositories.MemberRepository;
+import com.shadabdsw.thymeleafdemo.Repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class MyController {
     @Autowired
-    UserRepository repository;
+    UserRepository userRepository;
 
     @Autowired
     MemberRepository memberRepository;
@@ -19,14 +24,14 @@ public class MyController {
     public String showForm(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        System.out.println(repository.findAll());
+        System.out.println(userRepository.findAll());
         return "register_form";
     }
 
     @PostMapping("/register")
     public String submitForm(@ModelAttribute("user") User user) {
         System.out.println(user);
-        repository.insert(user);
+        userRepository.insert(user);
         return "home";
     }
 
@@ -34,6 +39,8 @@ public class MyController {
     public String addMemberForm(Model model) {
         Member member = new Member();
         model.addAttribute("member", member);
+
+        System.out.println(memberRepository.findAll());
         return "addmember_form";
     }
 
