@@ -1,13 +1,20 @@
 package com.shadabdsw.thymeleafdemo.Model;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection = "Members")
 public class Member {
     private String adhaar;
     private String name;
     private String gender;
     private String dob;
+
+    public Member(String adhaar, String name, String gender, String dob) {
+        this.adhaar = adhaar;
+        this.name = name;
+        this.gender = gender;
+        this.dob = dob;
+    }
+
+    public Member() {
+    }
 
     public String getAdhaar() {
         return adhaar;
