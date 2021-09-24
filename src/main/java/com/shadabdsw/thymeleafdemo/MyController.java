@@ -4,21 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.shadabdsw.thymeleafdemo.Model.Member;
 import com.shadabdsw.thymeleafdemo.Model.User;
 import com.shadabdsw.thymeleafdemo.Repositories.MemberRepository;
 import com.shadabdsw.thymeleafdemo.Repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -28,6 +27,9 @@ public class MyController {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    MongoTemplate mongoTemplate;
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -66,14 +68,18 @@ public class MyController {
     @PostMapping("/addmember")
     public String submitMemberForm(@ModelAttribute("member") Member member,
             @RequestParam("phoneNumber") String phoneNumber) {
-        Optional<User> findUserQuery = userRepository.findByphoneNumber(phoneNumber);
+        // Optional<User> findUserQuery = userRepository.findByphoneNumber(phoneNumber);
         System.out.println("Phone Number - " + phoneNumber);
-        User userValues = findUserQuery.get();
+        // User userValues = findUserQuery.get();
+        User user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(phoneNumber)), User.class);
         List<Member> memberDetails = new ArrayList<Member>();
         Member m = new Member(member.getAdhaar(), member.getName(), member.getDob(), member.getGender());
         memberDetails.add(m);
-        userValues.setMember(memberDetails);
-        userRepository.save(userValues);
+        user.setMember(memberDetails);
+        // if (user.getMember().size() == 1) {
+
+        // }
+        userRepository.save(user);
         return "addmember_success";
     }
 
