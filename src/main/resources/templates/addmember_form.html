@@ -27,6 +27,16 @@
           >
             <div class="form-floating mt-3 mb-3">
               <input
+                type="hidden"
+                name="phoneNumber"
+                th:value="${user.phoneNumber}"
+              />
+              <input
+                type="hidden"
+                name="password"
+                th:value="${user.password}"
+              />
+              <input
                 type="number"
                 th:field="*{adhaar}"
                 class="form-control"

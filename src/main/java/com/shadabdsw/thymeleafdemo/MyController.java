@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.shadabdsw.thymeleafdemo.Model.Member;
 import com.shadabdsw.thymeleafdemo.Model.User;
 import com.shadabdsw.thymeleafdemo.Repositories.MemberRepository;
@@ -49,29 +51,21 @@ public class MyController {
     public String submitForm(@ModelAttribute("user") User user) {
         System.out.println(user);
         userRepository.insert(user);
-        System.out.println(findPhoneNumber(user.getPhoneNumber()));
         return "home";
     }
 
-    @RequestMapping(path = "/addmember", method = RequestMethod.GET)
-    public String addMemberForm(Model model) {
+    @GetMapping("/addmember")
+    public String addMemberForm(Model model, User user, @RequestParam("phoneNumber") String phoneNumber) {
+        System.out.println("phone Number -> " + phoneNumber);
         Member member = new Member();
         model.addAttribute("member", member);
-        // model.addAttribute("name", phone);
-        System.out.println(member);
+        System.out.println(user.getPhoneNumber());
         return "addmember_form";
     }
 
-    // public User updateUser(String phoneNumber, User user) {
-    // Optional<User> findUserQuery = userRepository.findByphoneNumber(phoneNumber);
-    // User userValues = findUserQuery.get();
-    // userValues.setMember();
-    // return userRepository.save(userValues);
-    // }
-
-    @RequestMapping(path = "/addmember", method = RequestMethod.POST)
+    @PostMapping("/addmember")
     public String submitMemberForm(@ModelAttribute("member") Member member,
-            @RequestParam(name = "phone", required = false) String phoneNumber) {
+            @RequestParam("phoneNumber") String phoneNumber) {
         Optional<User> findUserQuery = userRepository.findByphoneNumber(phoneNumber);
         System.out.println("Phone Number - " + phoneNumber);
         User userValues = findUserQuery.get();
