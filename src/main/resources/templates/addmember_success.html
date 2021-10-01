@@ -15,14 +15,48 @@
     <title>Member</title>
   </head>
   <body>
-    <div>
-      <div align="center">
-        <h2>Member Added!</h2>
-        <span>Adhaar Number: </span><span th:text="${member.adhaar}"></span
-        ><br />
-        <span>Full Name: </span><span th:text="${member.name}"></span><br />
-        <span>Date of Birth: </span><span th:text="${member.dob}"></span><br />
-        <span>Gender: </span><span th:text="${member.gender}"></span><br />
+    <div class="container mt-5">
+      <div class="card shadow p-1 mb-5 bg-body rounded">
+        <div class="card-body">
+          <h2 style="color: blue">Account Details</h2>
+          <br />
+          <h5>
+            Registered Mobile Number:
+            <span th:text="${phoneNumber}"></span>
+          </h5>
+          <br />
+          <div class="card mb-5 bg-body rounded">
+            <div class="card-body">
+              <div>
+                <h2 style="color: blue" th:text="${member.name}"></h2>
+                &emsp;
+                <span>Not Vaccinated</span>
+              </div>
+              <br />
+              <div class="container">
+                <div class="row">
+                  <div class="column">
+                    <h5 style="color: grey">
+                      Date of Birth: <span th:text="${member.dob}"></span>
+                    </h5>
+                  </div>
+                  <div class="column">
+                    <h5 style="color: grey">
+                      Adhaar Number: <span th:text="${member.adhaar}"></span>
+                    </h5>
+                  </div>
+                  <div class="column">
+                    <h5 style="color: grey">
+                      Gender: <span th:text="${member.gender}"></span>
+                    </h5>
+                  </div>
+                  <br />
+                  <hr />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <script

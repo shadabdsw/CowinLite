@@ -52,8 +52,16 @@ public class MyController {
     @PostMapping("/register")
     public String submitForm(@ModelAttribute("user") User user) {
         System.out.println(user);
-        userRepository.insert(user);
-        return "home";
+        if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
+                && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
+            System.out.println("Exists");
+            //send data from here
+            return "home";
+        } else {
+            System.out.println("Doesn't Exists");
+            userRepository.insert(user);
+            return "home";
+        }
     }
 
     @GetMapping("/addmember")
@@ -73,7 +81,7 @@ public class MyController {
         // User userValues = findUserQuery.get();
         User user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(phoneNumber)), User.class);
         List<Member> memberDetails = new ArrayList<Member>();
-        Member m = new Member(member.getAdhaar(), member.getName(), member.getDob(), member.getGender());
+        Member m = new Member(member.getAdhaar(), member.getName(), member.getGender(), member.getDob());
         memberDetails.add(m);
         user.setMember(memberDetails);
         // if (user.getMember().size() == 1) {
