@@ -7,8 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "CowinUsers")
 public class User {
-    @Id
-    private String userId;
+
     private String phoneNumber;
     private String password;
     private List<Member> member;
@@ -27,10 +26,6 @@ public class User {
         this.member = member;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -41,10 +36,6 @@ public class User {
 
     public List<Member> getMember() {
         return member;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public void setPassword(String password) {
@@ -61,6 +52,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [UserId=" + userId + ",phoneNumber=" + phoneNumber + ",password=" + password + "]";
+        return "User [phoneNumber=" + phoneNumber + ",password=" + password + "]";
     }
 }
