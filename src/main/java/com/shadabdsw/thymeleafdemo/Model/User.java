@@ -2,7 +2,6 @@ package com.shadabdsw.thymeleafdemo.Model;
 
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "CowinUsers")
@@ -52,6 +51,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [phoneNumber=" + phoneNumber + ",password=" + password + "]";
+        return "User [phoneNumber=" + phoneNumber + ",password=" + password + ",member=" + member + "]";
     }
 }

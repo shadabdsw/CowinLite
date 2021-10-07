@@ -12,11 +12,60 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <title>Register</title>
+    
+    <title>Home</title>
   </head>
   <body>
+
+    <!-- Card View of Data -->
+    <div id="form_card" class="container mt-5">
+      <div class="card shadow p-1 mb-5 bg-body rounded">
+        <div class="card-body">
+          <h2 style="color: blue">Account Details</h2>
+          <br />
+          <h5>
+            Registered Mobile Number:
+            <span th:text="${user.phoneNumber}"></span>
+          </h5>
+          <br />
+          <div class="card mb-5 bg-body rounded">
+            <div class="card-body">
+              <div>
+                <h2 style="color: blue" th:text="${member.name}" id="member_name"></h2>
+                &emsp;
+                <span>Not Vaccinated</span>
+              </div>
+              <br />
+              <div class="container">
+                <div class="row">
+                  <div class="column">
+                    <h5 style="color: grey">
+                      Date of Birth: <span th:text="${member.dob}" id="member_dob"></span>
+                    </h5>
+                  </div>
+                  <div class="column">
+                    <h5 style="color: grey">
+                      Adhaar Number: <span th:text="${member.adhaar}" id="member_adhaar"></span>
+                    </h5>
+                  </div>
+                  <div class="column">
+                    <h5 style="color: grey">
+                      Gender: <span th:text="${member.gender}" id="member_gender"></span>
+                    </h5>
+                  </div>
+                  <br />
+                  <hr />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Member Button -->
     <div class="container mt-5">
-      <form action="/addmember">
+      <form  method="POST">
         <div class="container text-center">
           <input
             type="hidden"
@@ -25,8 +74,9 @@
           />
           <input type="hidden" name="password" th:value="${user.password}" />
           <button
+            id="add_member_btn"
             class="btn btn-primary"
-            type="submit"
+            type="button"
             style="margin-top: 10px"
           >
             Add Member
@@ -34,10 +84,131 @@
         </div>
       </form>
     </div>
-    <script
+
+    <!-- Add Member Form -->
+    <div id="form_content" class="container mt-5">
+      <div class="card shadow p-3 mb-5 bg-body rounded">
+        <div class="card-body">
+          <h3 class="card-header text-center">Member Information Form</h3>
+          <form id="add_member_form">
+            <div class="form-floating mt-3 mb-3">
+              <input
+                type="number"
+                class="form-control"
+                id="adhaar"
+                placeholder="Adhaar Number"
+                name="adhaar"
+              /><label for="floatingInput">Enter your adhaar number</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                class="form-control"
+                type="text"
+                id="name"
+                placeholder="Full Name"
+                name="name"
+              /><label for="floatingName">Enter your full name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                class="form-control"
+                type="text"
+                name="dob"
+                id="dob"
+                placeholder="01/01/2020"
+              /><label for="floatingDOB">Enter your birthday</label>
+            </div>
+            <label class="mb-3">Gender:</label>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="gender"
+                id="gender"
+                value="Male"
+              />Male
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="gender"
+                id="gender"
+                value="Female"
+              />Female<br />
+            </div>
+            <div class="container text-center">
+              <button
+                id="add_member_submit"
+                class="btn btn-success"
+                type="button"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
-  </body>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      $(document).ready(function () {
+        $("#form_card").hide();
+        $("#form_content").hide();
+
+        $("#add_member_btn").on("click",function() {
+          $("#form_content").show();
+        });
+
+        //SUBMIT FORM
+        $("#add_member_submit").submit(function(event) {
+          event.preventDefault();
+          ajaxPost();
+        });
+        function ajaxPost() {
+
+          //Prepare Form Data
+          var formData = {
+            adhaar:$("#adhaar").val(),
+            name:$("#name").val(),
+            dob:$("#dob").val(),
+            gender:$("#gender").val(),
+          }
+
+          //POST
+          $.ajax({
+            type: "POST",
+            contentType:"application/json",
+            url:"/addmember",
+            data:JSON.stringify(formData),
+            dataType:'json',
+            success:function(result) {
+              if(result.status == 200) {
+                
+              } else {
+
+              }
+            },
+            error:function(e){
+              alert("Error!")
+              console.log("Error: ", e);
+            }
+          });
+          
+        }
+
+      });
+    </script>
+
 </html>
