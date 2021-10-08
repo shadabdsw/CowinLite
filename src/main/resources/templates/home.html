@@ -65,7 +65,7 @@
 
     <!-- Add Member Button -->
     <div class="container mt-5">
-      <form  method="POST">
+      <form method="POST">
         <div class="container text-center">
           <input
             type="hidden"
@@ -170,13 +170,15 @@
         $("#add_member_btn").on("click",function() {
           $("#form_content").show();
         });
-
+        
         //SUBMIT FORM
-        $("#add_member_submit").submit(function(event) {
+        $("#add_member_submit").click(function(event) {
+          console.log("Button Clicked");
           event.preventDefault();
           ajaxPost();
         });
         function ajaxPost() {
+          console.log("Ajax Post");
 
           //Prepare Form Data
           var formData = {
@@ -190,14 +192,18 @@
           $.ajax({
             type: "POST",
             contentType:"application/json",
-            url:"/addmember",
+            url:"addmember",
             data:JSON.stringify(formData),
             dataType:'json',
             success:function(result) {
-              if(result.status == 200) {
-                
+              console.log(result);
+              if(result.status == "success") {
+                console.log("Trueeeeee");
+                $("#form_card").show();
+                $("#form_content").hide();
               } else {
-
+                console.log("False");
+                $("#form_card").show();
               }
             },
             error:function(e){
