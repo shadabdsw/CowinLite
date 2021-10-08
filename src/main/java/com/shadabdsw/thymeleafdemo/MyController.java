@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.shadabdsw.thymeleafdemo.Model.Member;
+import com.shadabdsw.thymeleafdemo.Model.ServiceResponse;
 import com.shadabdsw.thymeleafdemo.Model.User;
 import com.shadabdsw.thymeleafdemo.Repositories.MemberRepository;
 import com.shadabdsw.thymeleafdemo.Repositories.UserRepository;
@@ -13,12 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class MyController {
@@ -49,20 +53,7 @@ public class MyController {
         return "register_form";
     }
 
-    @PostMapping("/register")
-    public String submitForm(@ModelAttribute("user") User user) {
-        System.out.println(user);
-        if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
-                && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
-            System.out.println("Exists");
-            
-            return "home";
-        } else {
-            System.out.println("Doesn't Exists");
-            userRepository.insert(user);
-            return "home";
-        }
-    }
+
 
     @PostMapping("/home")
     public void submitForm(@ModelAttribute("user") User user, Model model) {
@@ -71,7 +62,7 @@ public class MyController {
         if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
                 && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
 
-            System.out.println("Exists");
+            System.out.println("Welcome Back");
             model.addAttribute("member", member);
 
             // user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())),
@@ -85,7 +76,7 @@ public class MyController {
             userRepository.save(user);
 
         } else {
-            System.out.println("Doesn't Exists");
+            System.out.println("Hello, New User!");
             model.addAttribute("member", member);
 
             List<Member> memberDetails = new ArrayList<Member>();
@@ -100,7 +91,35 @@ public class MyController {
     }
 
     @PostMapping("/addmember")
-    public ResponseEntity
+    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody Member member) {
+        List<Member> memberDetails = new ArrayList<Member>();
+        memberDetails.add(member);
+        System.out.println(member);
+        user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())),
+                    User.class);
+        System.out.println(user.getPhoneNumber() + " " + user.getPassword());
+        user.setPhoneNumber(user.getPhoneNumber());
+        user.setPassword(user.getPassword());
+        user.setMember(memberDetails);
+        userRepository.save(user);
+        ServiceResponse<Member> response = new ServiceResponse<Member>("success", member);
+        System.out.println(response);
+        return new ResponseEntity<Object>(response, HttpStatus.OK);
+    }
+
+    // @PostMapping("/register")
+    // public String submitForm(@ModelAttribute("user") User user) {
+    //     System.out.println(user);
+    //     if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
+    //             && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
+    //         System.out.println("Welcome back");
+    //         return "home";
+    //     } else {
+    //         System.out.println("Created new User");
+    //         userRepository.insert(user);
+    //         return "home";
+    //     }
+    // }
 
     // @GetMapping("/addmember")
     // public String addMemberForm(Model model, User user, @RequestParam("phoneNumber") String phoneNumber) {
@@ -123,7 +142,6 @@ public class MyController {
     //     memberDetails.add(m);
     //     user.setMember(memberDetails);
     //     // if (user.getMember().size() == 1) {
-
     //     // }
     //     userRepository.save(user);
     //     return "addmember_success";
