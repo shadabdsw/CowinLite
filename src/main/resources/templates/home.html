@@ -33,6 +33,7 @@
             <div class="card-body">
               <div>
                 <h2 style="color: blue" th:text="${member.name}" id="member_name"></h2>
+                <!-- <h2 style="color: blue" th:text="${name}" id="member_name"></h2> -->
                 &emsp;
                 <span>Not Vaccinated</span>
               </div>
@@ -41,17 +42,17 @@
                 <div class="row">
                   <div class="column">
                     <h5 style="color: grey">
-                      Date of Birth: <span th:text="${myDob}" id="member_dob"></span>
+                      Date of Birth: <span th:text="${member.dob}" id="member_dob"></span>
                     </h5>
                   </div>
                   <div class="column">
                     <h5 style="color: grey">
-                      Adhaar Number: <span th:text="${myAdhaar}" id="member_adhaar"></span>
+                      Adhaar Number: <span th:text="${member.adhaar}" id="member_adhaar"></span>
                     </h5>
                   </div>
                   <div class="column">
                     <h5 style="color: grey">
-                      Gender: <span th:text="${myGender}" id="member_gender"></span>
+                      Gender: <span th:text="${member.gender}" id="member_gender"></span>
                     </h5>
                   </div>
                   <br />
@@ -71,6 +72,7 @@
           <input
             type="hidden"
             name="phoneNumber"
+            id="phoneNumber"
             th:value="${user.phoneNumber}"
           />
           <input type="hidden" name="password" th:value="${user.password}" />
@@ -191,13 +193,16 @@
           console.log("Ajax Post");
 
           //Prepare Form Data
-          var formData = {
+          var phoneNumber = $("#phoneNumber").val();
+          var member = {
             adhaar:$("#adhaar").val(),
             name:$("#name").val(),
             dob:$("#dob").val(),
             gender:$("#gender").val(),
           }
 
+          var formData = {phoneNumber: phoneNumber, member: member};
+           
           //POST
           $.ajax({
             type: "POST",
