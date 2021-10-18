@@ -7,6 +7,8 @@ import java.util.Optional;
 import com.shadabdsw.thymeleafdemo.Model.Member;
 import com.shadabdsw.thymeleafdemo.Model.ServiceResponse;
 import com.shadabdsw.thymeleafdemo.Model.User;
+import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
+
 import com.shadabdsw.thymeleafdemo.Repositories.MemberRepository;
 import com.shadabdsw.thymeleafdemo.Repositories.UserRepository;
 
@@ -56,6 +58,7 @@ public class MyController {
 
     @PostMapping("/home")
     public String submitForm(@ModelAttribute("user") User user, Model model) {
+        model.addAttribute("name", "shadab");
         System.out.println(user);
         Member member = new Member();
         if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
@@ -66,6 +69,7 @@ public class MyController {
 
             // user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())),
             //         User.class);
+            // model.addAttribute("user", user);
 
         
         } else {
@@ -80,23 +84,24 @@ public class MyController {
     }
 
     @PostMapping("/addmember")
-    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody Member member, Model model) {
+    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq, Model model) {
         List<Member> memberDetails = new ArrayList<Member>();
-        memberDetails.add(member);
-        System.out.println(member);
-        System.out.println(user);
-        // user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())),
-        //             User.class);
+        memberDetails.add(addMemberReq.getMember());
+        System.out.println(addMemberReq.getMember());
+        System.out.println(addMemberReq.getPhoneNumber());
+        user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(addMemberReq.getPhoneNumber())),
+                    User.class);
         System.out.println(user);
         System.out.println(user.getPhoneNumber() + " " + user.getPassword());
         user.setPhoneNumber(user.getPhoneNumber());
         user.setPassword(user.getPassword());
         user.setMember(memberDetails);
         userRepository.save(user);
-        ServiceResponse<Member> response = new ServiceResponse<Member>("success", member);
+        ServiceResponse<Member> response = new ServiceResponse<Member>("success", addMemberReq.getMember());
         System.out.println(response);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
+
 
     // @PostMapping("/register")
     // public String submitForm(@ModelAttribute("user") User user) {
