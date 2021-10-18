@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class MyController {
@@ -49,14 +48,14 @@ public class MyController {
     public String showForm(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        System.out.println(getAllUsers());
+        // System.out.println(getAllUsers());
         return "register_form";
     }
 
 
 
     @PostMapping("/home")
-    public void submitForm(@ModelAttribute("user") User user, Model model) {
+    public String submitForm(@ModelAttribute("user") User user, Model model) {
         System.out.println(user);
         Member member = new Member();
         if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
@@ -68,35 +67,27 @@ public class MyController {
             // user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())),
             //         User.class);
 
-            List<Member> memberDetails = new ArrayList<Member>();
-            Member m = new Member(member.getAdhaar(), member.getName(), member.getGender(), member.getDob());
-            memberDetails.add(m);
-            System.out.println(member);
-            user.setMember(memberDetails);
-            userRepository.save(user);
-
+        
         } else {
             System.out.println("Hello, New User!");
             model.addAttribute("member", member);
-
-            List<Member> memberDetails = new ArrayList<Member>();
-            Member m = new Member(member.getAdhaar(), member.getName(), member.getGender(), member.getDob());
-            memberDetails.add(m);
-            System.out.println(member);
-            user.setMember(memberDetails);
-            userRepository.insert(user);
+            userRepository.save(user);
 
         }
+        model.addAttribute("user", user);
         System.out.println(member);
+        return "home";
     }
 
     @PostMapping("/addmember")
-    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody Member member) {
+    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody Member member, Model model) {
         List<Member> memberDetails = new ArrayList<Member>();
         memberDetails.add(member);
         System.out.println(member);
-        user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())),
-                    User.class);
+        System.out.println(user);
+        // user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())),
+        //             User.class);
+        System.out.println(user);
         System.out.println(user.getPhoneNumber() + " " + user.getPassword());
         user.setPhoneNumber(user.getPhoneNumber());
         user.setPassword(user.getPassword());
