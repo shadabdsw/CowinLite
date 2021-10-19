@@ -1,5 +1,6 @@
 package com.shadabdsw.thymeleafdemo.Model;
 
+
 public class Member {
     private String adhaar;
     private String name;
