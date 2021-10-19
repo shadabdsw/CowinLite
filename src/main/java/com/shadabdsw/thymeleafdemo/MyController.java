@@ -79,24 +79,38 @@ public class MyController {
 
         }
         model.addAttribute("user", user);
-        System.out.println(member);
         return "home";
     }
 
     @PostMapping("/addmember")
-    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq, Model model) {
+    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq) {
         List<Member> memberDetails = new ArrayList<Member>();
         memberDetails.add(addMemberReq.getMember());
+        System.out.println(memberDetails);
         System.out.println(addMemberReq.getMember());
         System.out.println(addMemberReq.getPhoneNumber());
         user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(addMemberReq.getPhoneNumber())),
                     User.class);
         System.out.println(user);
         System.out.println(user.getPhoneNumber() + " " + user.getPassword());
-        user.setPhoneNumber(user.getPhoneNumber());
-        user.setPassword(user.getPassword());
-        user.setMember(memberDetails);
+        // user.setMember(memberDetails);
+        // memberDetails = user.getMember();
+
+        if (memberDetails != null && memberDetails.size() > 0) {
+            // Member m = addMemberReq.getMember();  
+            // System.out.println("m1"+ memberDetails);
+            // memberDetails.add(m); 
+            // System.out.println("m2"+ memberDetails);
+            user.setMember(memberDetails);
+        } else {
+            user.setMember(memberDetails);
+        }
+
+        System.out.println("Memberssss: " + memberDetails);
+        System.out.println(user);
+        // user.setMember(memberDetails);
         userRepository.save(user);
+        // System.out.println(userRepository.findByphoneNumber(addMemberReq.getPhoneNumber()));
         ServiceResponse<Member> response = new ServiceResponse<Member>("success", addMemberReq.getMember());
         System.out.println(response);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
