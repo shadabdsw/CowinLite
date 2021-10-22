@@ -28,12 +28,11 @@
             <span th:text="${user.phoneNumber}"></span>
           </h5>
           <br />
-          <!-- <p id="display_card"></p> -->
-          <div class="card mb-5 bg-body rounded">
+          <p id="display_card"></p>
+          <!-- <div class="card mb-5 bg-body rounded">
             <div class="card-body">
               <div>
                 <h2 style="color: blue" th:text="${member.name}" id="member_name"></h2>
-                <!-- <h2 style="color: blue" th:text="${name}" id="member_name"></h2> -->
                 &emsp;
                 <span>Not Vaccinated</span>
               </div>
@@ -60,34 +59,41 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
 
     <!-- Add Member Button -->
     <div class="container mt-5">
-      <form method="POST">
-        <div class="container text-center">
-          <input
-            type="hidden"
-            name="phoneNumber"
-            id="phoneNumber"
-            th:value="${user.phoneNumber}"
-          />
-          <input type="hidden" name="password" th:value="${user.password}" />
-          <button
-            id="add_member_btn"
-            class="btn btn-primary"
-            type="button"
-            style="margin-top: 10px"
-            data-target="#form_content"
-            data-toggle="modal"
-          >
-            Add Member
-          </button>
-        </div>
-      </form>
+      <!-- <div th:if="${user.getMember().size() == 4}"> -->
+        <form method="POST">
+          <div class="container text-center">
+            <input
+              type="hidden"
+              name="phoneNumber"
+              id="phoneNumber"
+              th:value="${user.phoneNumber}"
+            />
+            <input type="hidden" name="password" th:value="${user.password}" />
+            <input
+                type="hidden"
+                name="member"
+                th:value="${user.getMember()}"
+              />
+            <button
+              id="add_member_btn"
+              class="btn btn-primary"
+              type="button"
+              style="margin-top: 10px"
+              data-target="#form_content"
+              data-toggle="modal"
+            >
+              Add Member
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- Add Member Form -->
@@ -104,6 +110,11 @@
                 th:value="${user.phoneNumber}"
               />
               <input type="hidden" name="password" th:value="${user.password}" />
+              <input
+                type="hidden"
+                name="member"
+                th:value="${user.member}"
+              />
               <input
                 type="number"
                 class="form-control"
@@ -176,8 +187,14 @@
 
     <script th:inline="javascript">
       $(document).ready(function () {
+      
         $("#form_card").hide();
         $("#form_content").hide();
+
+        // if(user.getMember().size() == 4) {
+        //   $("#add_member_btn").hide();
+        //   console.log("wolololololo");
+        // }
 
         $("#add_member_btn").on("click",function() {
           $("#form_content").show();
@@ -217,7 +234,7 @@
                 console.log("True");
                 $("#form_card").show();
                 $("#form_content").hide();
-                // $("#display_card").replaceWith("<div class='card mb-5 bg-body rounded'><div class='card-body'><div><h2 style='color: blue' th:value='${member.name}' id='member_name'></h2>&emsp;<span>Not Vaccinated</span></div><br/><div class='container'><div class='row'><div class='column'><h5 style='color:grey'>Date of Birth: <span text='formData.dob' id='member_dob'></span></h5></div><div class='column'><h5 style='color:grey'>Adhaar Number: <span text='formData.adhaar' id='member_adhaar'></span></h5></div><div class='column'><h5 style='color:grey'>Gender: <span text='formData.gender' id='member_gender'></span></h5></div><br/><hr/></div></div></div></div>");
+                $("#display_card").replaceWith("<div class='card mb-5 bg-body rounded'><div class='card-body'><div><h2 style='color: blue' th:value='${member.name}' id='member_name'></h2>&emsp;<span>Not Vaccinated</span></div><br/><div class='container'><div class='row'><div class='column'><h5 style='color:grey'>Date of Birth: <span text='formData.dob' id='member_dob'></span></h5></div><div class='column'><h5 style='color:grey'>Adhaar Number: <span text='formData.adhaar' id='member_adhaar'></span></h5></div><div class='column'><h5 style='color:grey'>Gender: <span text='formData.gender' id='member_gender'></span></h5></div><br/><hr/></div></div></div></div>");
               } else {
                 console.log("False");
                 $("#form_card").show();
