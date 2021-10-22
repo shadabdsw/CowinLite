@@ -61,15 +61,16 @@ public class MyController {
         model.addAttribute("name", "shadab");
         System.out.println(user);
         Member member = new Member();
+
+        
+            
         if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
                 && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
 
             System.out.println("Welcome Back");
             model.addAttribute("member", member);
 
-            // user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())),
-            //         User.class);
-            // model.addAttribute("user", user);
+            
 
         
         } else {
@@ -79,6 +80,13 @@ public class MyController {
 
         }
         model.addAttribute("user", user);
+
+        // user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class);
+
+        // if(user.getMember().size() == 4) {
+        //     System.out.println("4 4 4 4 4 4");
+        // }
+
         return "home";
     }
 
