@@ -49,7 +49,16 @@
                   <button class="btn btn-primary mt-3" type="submit">
                     Register/Login
                   </button>
-                </div>
+              </div>
+              <div type="hidden" class="form-floating mt-2">
+                <input
+                  type="hidden"
+                  th:field="*{member}"
+                  class="form-control"
+                  id="floatingMember"
+                  placeholder="Member"
+                  value=""
+                />
               </div>
             </form>
           </div>
