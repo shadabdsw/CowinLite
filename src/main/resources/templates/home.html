@@ -197,7 +197,7 @@
           var member = {
             adhaar:$("#adhaar").val(),
             name:$("#name").val(),
-            gender:$("#gender").val(),
+            gender:$("input[name=gender]:checked").val(),
             dob:$("#dob").val(),
           }
 
@@ -230,7 +230,7 @@
           });
           
         }
-        
+
       });
     </script>
 
