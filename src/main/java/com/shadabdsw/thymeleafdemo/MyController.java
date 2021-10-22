@@ -51,40 +51,41 @@ public class MyController {
         User user = new User();
         model.addAttribute("user", user);
         // System.out.println(getAllUsers());
+        System.out.println(user);
         return "register_form";
     }
-
-
 
     @PostMapping("/home")
     public String submitForm(@ModelAttribute("user") User user, Model model) {
         model.addAttribute("name", "shadab");
+        // User user1;
+        // user1 = userRepository.findByphoneNumber(user.getPhoneNumber()).get();
         System.out.println(user);
+        // System.out.println(user1);
         Member member = new Member();
 
-        
-            
         if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
                 && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
 
             System.out.println("Welcome Back");
             model.addAttribute("member", member);
+            System.out.println(member);
 
             
-
-        
         } else {
             System.out.println("Hello, New User!");
             model.addAttribute("member", member);
+            System.out.println(member);
             userRepository.save(user);
 
         }
-        model.addAttribute("user", user);
-
         // user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class);
 
-        // if(user.getMember().size() == 4) {
-        //     System.out.println("4 4 4 4 4 4");
+        model.addAttribute("user", user);
+
+
+        // if(user.getMember().size() > 0) {
+            
         // }
 
         return "home";
@@ -102,7 +103,7 @@ public class MyController {
         System.out.println(addMemberReq.getMember());
         System.out.println(addMemberReq.getPhoneNumber());
         
-        if(user.getMember() == null) {
+        if(user.getMember().size() < 1) {
             memberDetails.add(addMemberReq.getMember());
             user.setMember(memberDetails);
             flag++;
@@ -126,7 +127,7 @@ public class MyController {
                 user.setMember(memberDetails);
             } else {
                 // memberDetails.add(addMemberReq.getMember());
-                System.out.println("whoops");
+                System.out.println("4 members already registered.");
             }
         }
   
