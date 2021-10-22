@@ -126,7 +126,6 @@ public class MyController {
         System.out.println(user);
         // user.setMember(memberDetails);
         userRepository.save(user);
-        // System.out.println(userRepository.findByphoneNumber(addMemberReq.getPhoneNumber()));
         ServiceResponse<Member> response = new ServiceResponse<Member>("success", addMemberReq.getMember());
         System.out.println(response);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
