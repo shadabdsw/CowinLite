@@ -84,28 +84,44 @@ public class MyController {
 
     @PostMapping("/addmember")
     public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq) {
+        int flag = 0;
         List<Member> memberDetails = new ArrayList<Member>();
-        memberDetails.add(addMemberReq.getMember());
-        System.out.println(memberDetails);
-        System.out.println(addMemberReq.getMember());
-        System.out.println(addMemberReq.getPhoneNumber());
         user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(addMemberReq.getPhoneNumber())),
                     User.class);
-        System.out.println(user);
-        System.out.println(user.getPhoneNumber() + " " + user.getPassword());
-        // user.setMember(memberDetails);
-        // memberDetails = user.getMember();
-
-        if (memberDetails != null && memberDetails.size() > 0) {
-            // Member m = addMemberReq.getMember();  
-            // System.out.println("m1"+ memberDetails);
-            // memberDetails.add(m); 
-            // System.out.println("m2"+ memberDetails);
+        System.out.println(user.getMember());
+        // memberDetails.add(addMemberReq.getMember());
+        // System.out.println(memberDetails);
+        System.out.println(addMemberReq.getMember());
+        System.out.println(addMemberReq.getPhoneNumber());
+        
+        if(user.getMember() == null) {
+            memberDetails.add(addMemberReq.getMember());
             user.setMember(memberDetails);
+            flag++;
+            System.out.println("this is running");
         } else {
-            user.setMember(memberDetails);
+            memberDetails.addAll(user.getMember());
         }
 
+        // System.out.println("this" + memberDetails);
+        System.out.println(user);
+        System.out.println(user.getPhoneNumber() + " " + user.getPassword());
+
+        if(flag == 0) {
+            if (memberDetails != null && memberDetails.size() > 0 && memberDetails.size() < 4) {
+                // memberDetails.addAll(user.getMember());
+
+                Member m = addMemberReq.getMember();
+                System.out.println("m1"+ memberDetails);
+                memberDetails.add(m);
+                System.out.println("m2"+ memberDetails);
+                user.setMember(memberDetails);
+            } else {
+                // memberDetails.add(addMemberReq.getMember());
+                System.out.println("whoops");
+            }
+        }
+  
         System.out.println("Memberssss: " + memberDetails);
         System.out.println(user);
         // user.setMember(memberDetails);
