@@ -51,7 +51,8 @@ public class MyController {
         User user = new User();
         model.addAttribute("user", user);
         // System.out.println(getAllUsers());
-        System.out.println(user);
+        // System.out.println(user);
+        
         return "register_form";
     }
 
@@ -137,6 +138,10 @@ public class MyController {
         userRepository.save(user);
         ServiceResponse<Member> response = new ServiceResponse<Member>("success", addMemberReq.getMember());
         System.out.println(response);
+        int sz = userRepository.findByphoneNumber(user.getPhoneNumber()).get().getMember().size();
+        if(sz==4) {
+            
+        }
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
