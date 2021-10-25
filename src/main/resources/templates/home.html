@@ -20,43 +20,11 @@
             <h5>
               Number of Members:
               <span th:if="${user.member.size() > 0}"><span th:text="${user.member.size()}"></span></span>
-              <span th:unless="${user.member.size() > 0}">Member Number</span>
+              <span th:unless="${user.member.size() > 0}">No Members Added</span>
             </h5>
           </div>
           <br />
           <div th:replace="common :: card"></div>
-          <!-- <p id="display_card"></p> -->
-          <!-- <div class="card mb-5 bg-body rounded">
-            <div class="card-body">
-              <div>
-                <h2 style="color: blue" th:text="${member.name}" id="member_name"></h2>
-                &emsp;
-                <span>Not Vaccinated</span>
-              </div>
-              <br />
-              <div class="container">
-                <div class="row">
-                  <div class="column">
-                    <h5 style="color: grey">
-                      Date of Birth: <span th:text="${member.dob}" id="member_dob"></span>
-                    </h5>
-                  </div>
-                  <div class="column">
-                    <h5 style="color: grey">
-                      Adhaar Number: <span th:text="${member.adhaar}" id="member_adhaar"></span>
-                    </h5>
-                  </div>
-                  <div class="column">
-                    <h5 style="color: grey">
-                      Gender: <span th:text="${member.gender}" id="member_gender"></span>
-                    </h5>
-                  </div>
-                  <br />
-                  <hr />
-                </div>
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
@@ -183,15 +151,6 @@
     <script th:inline="javascript">
       $(document).ready(function () {
       
-        // if(user.getMember().size() > 0) {
-        //   $("#form_card").show();
-        //   $("#form_content").hide();
-        // } else {
-        //   $("#form_card").hide();
-        //   $("#form_content").hide();
-        // }
-
-        // $("#form_card").hide();
         $("#form_content").hide();
 
         $("#add_member_btn").on("click",function() {
@@ -203,7 +162,6 @@
           console.log("Button Clicked");
           event.preventDefault();
           ajaxPost();
-          // location.reload();
         });
 
         function ajaxPost() {
@@ -236,7 +194,6 @@
                 $("#form_content").hide();
                 location.reload();
 
-                // $("#display_card").replaceWith("<div class='card mb-5 bg-body rounded'><div class='card-body'><div><h2 style='color: blue' th:value='${member.name}' id='member_name'></h2>&emsp;<span>Not Vaccinated</span></div><br/><div class='container'><div class='row'><div class='column'><h5 style='color:grey'>Date of Birth: <span text='formData.dob' id='member_dob'></span></h5></div><div class='column'><h5 style='color:grey'>Adhaar Number: <span text='formData.adhaar' id='member_adhaar'></span></h5></div><div class='column'><h5 style='color:grey'>Gender: <span text='formData.gender' id='member_gender'></span></h5></div><br/><hr/></div></div></div></div>");
               } else {
                 console.log("False");
                 $("#form_card").show();
@@ -247,7 +204,6 @@
               console.log("Error: ", e);
             }
           });
-          // location.reload();
         }
 
       });
