@@ -50,19 +50,13 @@ public class MyController {
     public String showForm(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        // System.out.println(getAllUsers());
-        // System.out.println(user);
-        
+
         return "register_form";
     }
 
     @PostMapping("/home")
     public String submitForm(@ModelAttribute("user") User user, Model model) {
         model.addAttribute("name", "shadab");
-        // User user1;
-        // user1 = userRepository.findByphoneNumber(user.getPhoneNumber()).get();
-        System.out.println(user);
-        // System.out.println(user1);
         Member member = new Member();
 
         if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
@@ -72,28 +66,25 @@ public class MyController {
             model.addAttribute("member", member);
             System.out.println(member);
 
-            
         } else {
+
             System.out.println("Hello, New User!");
             model.addAttribute("member", member);
             System.out.println(member);
             userRepository.save(user);
 
         }
-        // user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class);
 
+        user = userRepository.findByphoneNumber(user.getPhoneNumber()).get();
         model.addAttribute("user", user);
-
-
-        // if(user.getMember().size() > 0) {
-            
-        // }
 
         return "home";
     }
 
     @PostMapping("/addmember")
-    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq) {
+    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq, Model model) {
+    // public String addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq, Model model) {
+        
         int flag = 0;
         List<Member> memberDetails = new ArrayList<Member>();
         user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(addMemberReq.getPhoneNumber())),
@@ -119,14 +110,15 @@ public class MyController {
 
         if(flag == 0) {
             if (memberDetails != null && memberDetails.size() > 0 && memberDetails.size() < 4) {
-                // memberDetails.addAll(user.getMember());
 
                 Member m = addMemberReq.getMember();
                 System.out.println("m1"+ memberDetails);
                 memberDetails.add(m);
                 System.out.println("m2"+ memberDetails);
                 user.setMember(memberDetails);
+
             } else {
+
                 // memberDetails.add(addMemberReq.getMember());
                 System.out.println("4 members already registered.");
             }
@@ -138,62 +130,9 @@ public class MyController {
         userRepository.save(user);
         ServiceResponse<Member> response = new ServiceResponse<Member>("success", addMemberReq.getMember());
         System.out.println(response);
-        int sz = userRepository.findByphoneNumber(user.getPhoneNumber()).get().getMember().size();
-        if(sz==4) {
-            
-        }
+        model.addAttribute("user", user);
+
         return new ResponseEntity<Object>(response, HttpStatus.OK);
+        // return "common :: card";
     }
-
-
-    // @PostMapping("/register")
-    // public String submitForm(@ModelAttribute("user") User user) {
-    //     System.out.println(user);
-    //     if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
-    //             && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
-    //         System.out.println("Welcome back");
-    //         return "home";
-    //     } else {
-    //         System.out.println("Created new User");
-    //         userRepository.insert(user);
-    //         return "home";
-    //     }
-    // }
-
-    // @GetMapping("/addmember")
-    // public String addMemberForm(Model model, User user, @RequestParam("phoneNumber") String phoneNumber) {
-    //     System.out.println("phone Number -> " + phoneNumber);
-    //     Member member = new Member();
-    //     model.addAttribute("member", member);
-    //     System.out.println(user.getPhoneNumber());
-    //     return "addmember_form";
-    // }
-
-    // @PostMapping("/addmember")
-    // public String submitMemberForm(@ModelAttribute("member") Member member,
-    //         @RequestParam("phoneNumber") String phoneNumber) {
-    //     // Optional<User> findUserQuery = userRepository.findByphoneNumber(phoneNumber);
-    //     System.out.println("Phone Number - " + phoneNumber);
-    //     // User userValues = findUserQuery.get();
-    //     User user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(phoneNumber)), User.class);
-    //     List<Member> memberDetails = new ArrayList<Member>();
-    //     Member m = new Member(member.getAdhaar(), member.getName(), member.getGender(), member.getDob());
-    //     memberDetails.add(m);
-    //     user.setMember(memberDetails);
-    //     // if (user.getMember().size() == 1) {
-    //     // }
-    //     userRepository.save(user);
-    //     return "addmember_success";
-    // }
-
-    
-
-
-
-
-
-
-
-
-
 }
