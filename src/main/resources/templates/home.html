@@ -142,75 +142,90 @@
 
   <div th:replace="common :: footer"></div>
 
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"
+  ></script>
 
-    <script th:inline="javascript">
-      $(document).ready(function () {
+  <script th:inline="javascript">
+    $(document).ready(function () {
+    
+      $("#form_content").hide();
+
+      $("#add_member_btn").on("click",function() {
+        $("#form_content").show();
+      });
       
-        $("#form_content").hide();
+      //SUBMIT FORM
+      $("#add_member_submit").click(function(event) {
+        console.log("Button Clicked");
+        event.preventDefault();
+        ajaxPost();
+      });
 
-        $("#add_member_btn").on("click",function() {
-          $("#form_content").show();
-        });
-        
-        //SUBMIT FORM
-        $("#add_member_submit").click(function(event) {
-          console.log("Button Clicked");
-          event.preventDefault();
-          ajaxPost();
-        });
+      function ajaxPost() {
+        console.log("Ajax Post");
 
-        function ajaxPost() {
-          console.log("Ajax Post");
-
-          //Prepare Form Data
-          var phoneNumber = $("#phoneNumber").val();
-          var member = {
-            adhaar:$("#adhaar").val(),
-            name:$("#name").val(),
-            gender:$("input[name=gender]:checked").val(),
-            dob:$("#dob").val(),
-          }
-
-          var formData = {phoneNumber: phoneNumber, member: member};
-           
-          //POST
-          $.ajax({
-            type: "POST",
-            contentType:"application/json",
-            url:"addmember",
-            data:JSON.stringify(formData),
-            dataType:'json',
-            success:function(fragment) {
-              console.log(formData);
-              console.log(fragment);
-              if(fragment.status == "success") {
-                console.log("True");
-                $("#form_card").show();
-                $("#form_content").hide();
-                location.reload();
-                // let div=document.createElement("div");
-                // div.appendChild(fragment);
-                // div.innerHTML;
-
-              } else {
-                console.log("False");
-                $("#form_card").show();
-              }
-            },
-            error:function(e) {
-              console.log(fragment);
-              alert("Error!");
-              console.log("Error: ", e);
-            }
-          });
+        //Prepare Form Data
+        var phoneNumber = $("#phoneNumber").val();
+        var member = {
+          adhaar:$("#adhaar").val(),
+          name:$("#name").val(),
+          gender:$("input[name=gender]:checked").val(),
+          dob:$("#dob").val(),
         }
 
-      });
-    </script>
+        var formData = {phoneNumber: phoneNumber, member: member};
+          
+        //POST
+        $.ajax({
+          type: "POST",
+          contentType:"application/json",
+          url:"addmember",
+          data:JSON.stringify(formData),
+          dataType:'json',
+          success:function(fragment) {
+            console.log(formData);
+            console.log(fragment);
+            if(fragment.status == "success") {
+              console.log("True");
+              $("#form_card").show();
+              $("#form_content").hide();
+              location.reload();
+              // let div=document.createElement("div");
+              // div.appendChild(fragment);
+              // div.innerHTML;
+
+            } else {
+              console.log("False");
+              $("#form_card").show();
+            }
+          },
+          error:function(e) {
+            console.log(fragment);
+            alert("Error!");
+            console.log("Error: ", e);
+          }
+        });
+      }
+
+    });
+  </script>
+
+  <script>
+    var forms = document.querySelectorAll(".needs-validation");
+
+    Array.prototype.slice.call(forms).forEach(function(form){
+      form.addEventListener("submit", function(event){
+        if(!form.checkValidity()){
+          event.preventDefault();
+          event.stopPropagating();
+        }
+        form.classList.add("was-validated");
+      }, false);
+    }); 
+    
+  </script>
 
 </html>
