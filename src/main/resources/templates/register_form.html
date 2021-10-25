@@ -16,20 +16,26 @@
               th:action="@{/home}"
               th:object="${user}"
               method="post"
+              class="needs-validation novalidate"
             >
               <div class="form-floating mt-2">
                 <input
-                  type="number"
+                  maxlength="10"
+                  minlength="10"
+                  required
+                  type="tel"
                   th:field="*{phoneNumber}"
                   class="form-control"
-                  id="floatingInput"
+                  id="floatingPhone"
                   placeholder="phoneNumber"
                   name="phone"
                 />
-                <label for="floatingInput">Enter your phone number</label>
+                <label for="floatingPhone">Enter your phone number</label>
+                <!-- <div id="error_phone" class="invalid-feedback">Please enter the correct Phone Number</div> -->
               </div>
               <div class="form-floating mt-2">
                 <input
+                  required
                   type="password"
                   th:field="*{password}"
                   class="form-control"
@@ -37,7 +43,8 @@
                   placeholder="Password"
                 />
                 <label for="floatingPassword">Enter your password</label>
-                  <button class="btn btn-primary mt-3" type="submit">
+                <!-- <div id="error_password" class="invalid-feedback">Please enter Password</div> -->
+                  <button id="register_btn" class="btn btn-primary mt-3" type="submit">
                     Register/Login
                   </button>
               </div>
@@ -60,4 +67,40 @@
     <div th:replace="common :: footer"></div>
     
   </body>
+
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"
+  ></script>
+
+<!-- 
+  <script th:inline="javascript">
+    $(document).ready(function () {
+
+      $("#register_btn").submit(function (event) {
+        event.preventDefault();
+        if($("#floatingPhone").empty()) {
+          $("#error_phone").show();
+        }
+
+      });
+    });
+  </script> -->
+
+  <script>
+    var forms = document.querySelectorAll(".needs-validation");
+
+    Array.prototype.slice.call(forms).forEach(function(form){
+      form.addEventListener("submit", function(event){
+        if(!form.checkValidity()){
+          event.preventDefault();
+          event.stopPropagating();
+        }
+        form.classList.add("was-validated");
+      }, false);
+    }); 
+    
+  </script>
+
 </html>
