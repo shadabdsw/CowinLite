@@ -16,6 +16,10 @@
             Registered Mobile Number:
             <span th:text="${user.phoneNumber}"></span>
           </h5>
+          <h5>
+            Number of Members:
+            <span th:text="${user.member}"></span>
+          </h5>
           <br />
           <div th:replace="common :: card"></div>
           <!-- <p id="display_card"></p> -->
@@ -178,7 +182,7 @@
       
         $("#form_card").hide();
         $("#form_content").hide();
-
+        
         // if(user.getMember().size() == 4) {
         //   $("#add_member_btn").hide();
         //   console.log("wolololololo");
@@ -193,7 +197,9 @@
           console.log("Button Clicked");
           event.preventDefault();
           ajaxPost();
+          // location.reload();
         });
+
         function ajaxPost() {
           console.log("Ajax Post");
 
@@ -234,7 +240,7 @@
               console.log("Error: ", e);
             }
           });
-          
+          // location.reload();
         }
 
       });
