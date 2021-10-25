@@ -62,7 +62,7 @@ public class MyController {
         if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
                 && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
 
-            System.out.println("Welcome Back");
+            System.out.println("Welcome Back " + user.getPhoneNumber());
             // model.addAttribute("member", member);
             // System.out.println(member);
 
