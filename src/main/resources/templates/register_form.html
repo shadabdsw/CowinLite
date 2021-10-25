@@ -20,8 +20,8 @@
             >
               <div class="form-floating mt-2">
                 <input
-                  maxlength="10"
-                  minlength="10"
+                  maxlength="1"
+                  minlength="1"
                   required
                   type="tel"
                   th:field="*{phoneNumber}"
@@ -73,20 +73,6 @@
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
     crossorigin="anonymous"
   ></script>
-
-<!-- 
-  <script th:inline="javascript">
-    $(document).ready(function () {
-
-      $("#register_btn").submit(function (event) {
-        event.preventDefault();
-        if($("#floatingPhone").empty()) {
-          $("#error_phone").show();
-        }
-
-      });
-    });
-  </script> -->
 
   <script>
     var forms = document.querySelectorAll(".needs-validation");
