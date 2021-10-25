@@ -1,0 +1,33 @@
+<html>
+    <body>
+        <div th:fragment="cardView">
+            <div class='card mb-5 bg-body rounded'>
+                <div class='card-body'>
+                    <div>
+                        <h2 style='color: blue' th:value='${member.name}' id='member_name'></h2>
+                        &emsp;<span>Not Vaccinated</span>
+                    </div>
+                    <br/>
+                    <div class='container'>
+                        <div class='row'>
+                            <div class='column'>
+                                <h5 style='color:grey'>Date of Birth: <span text='formData.dob' id='member_dob'></span>
+                                </h5>
+                            </div>
+                            <div class='column'>
+                                <h5 style='color:grey'>Adhaar Number: <span text='formData.adhaar' id='member_adhaar'></span>
+                                </h5>
+                            </div>
+                            <div class='column'>
+                                <h5 style='color:grey'>Gender: <span text='formData.gender' id='member_gender'></span>
+                                </h5>
+                            </div>
+                            <br/>
+                            <hr/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>>
