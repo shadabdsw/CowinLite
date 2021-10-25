@@ -15,6 +15,7 @@
             th:action="@{/addmember}"
             method="post"
             th:object="${member}"
+            class="needs-validation novalidate"
           >
             <div class="form-floating mt-3 mb-3">
               <input
@@ -28,6 +29,7 @@
                 th:value="${user.password}"
               />
               <input
+                required
                 type="number"
                 th:field="*{adhaar}"
                 class="form-control"
@@ -37,6 +39,7 @@
             </div>
             <div class="form-floating mb-3">
               <input
+                required
                 class="form-control"
                 type="text"
                 th:field="*{name}"
@@ -47,6 +50,7 @@
             </div>
             <div class="form-floating mb-3">
               <input
+                required
                 class="form-control"
                 type="text"
                 th:field="*{dob}"
@@ -57,6 +61,7 @@
             <label class="mb-3">Gender:</label>
             <div class="form-check form-check-inline">
               <input
+                required
                 class="form-check-input"
                 type="radio"
                 th:field="*{gender}"
@@ -65,6 +70,7 @@
             </div>
             <div class="form-check form-check-inline">
               <input
+                required
                 class="form-check-input"
                 type="radio"
                 th:field="*{gender}"
@@ -82,4 +88,11 @@
     <div th:replace="common :: footer"></div>
     
   </body>
+
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"
+  ></script>
+
 </html>
