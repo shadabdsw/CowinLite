@@ -185,14 +185,17 @@
             url:"addmember",
             data:JSON.stringify(formData),
             dataType:'json',
-            success:function(result) {
+            success:function(fragment) {
               console.log(formData);
-              console.log(result);
-              if(result.status == "success") {
+              console.log(fragment);
+              if(fragment.status == "success") {
                 console.log("True");
                 $("#form_card").show();
                 $("#form_content").hide();
                 location.reload();
+                // let div=document.createElement("div");
+                // div.appendChild(fragment);
+                // div.innerHTML;
 
               } else {
                 console.log("False");
@@ -200,6 +203,7 @@
               }
             },
             error:function(e) {
+              console.log(fragment);
               alert("Error!");
               console.log("Error: ", e);
             }
