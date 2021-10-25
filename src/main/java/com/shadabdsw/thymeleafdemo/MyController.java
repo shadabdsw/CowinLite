@@ -57,20 +57,20 @@ public class MyController {
     @PostMapping("/home")
     public String submitForm(@ModelAttribute("user") User user, Model model) {
         model.addAttribute("name", "shadab");
-        Member member = new Member();
+        // Member member = new Member();
 
         if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
                 && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
 
             System.out.println("Welcome Back");
-            model.addAttribute("member", member);
-            System.out.println(member);
+            // model.addAttribute("member", member);
+            // System.out.println(member);
 
         } else {
 
             System.out.println("Hello, New User!");
-            model.addAttribute("member", member);
-            System.out.println(member);
+            // model.addAttribute("member", member);
+            // System.out.println(member);
             userRepository.save(user);
 
         }
