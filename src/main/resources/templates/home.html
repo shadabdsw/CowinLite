@@ -6,6 +6,7 @@
   </head>
 
   <body>
+    
     <!-- Card View of Data -->
     <div id="form_card" class="container mt-5">
       <div class="card shadow p-1 mb-5 bg-body rounded">
@@ -68,7 +69,7 @@
           <h3 class="card-header text-center">Member Information Form</h3>
           <form id="add_member_form" th:object=${member}>
             <div class="form-floating mt-3 mb-3">
-              
+              <!--               
               <input
                 type="hidden"
                 name="phoneNumber"
@@ -79,7 +80,7 @@
                 type="hidden"
                 name="member"
                 th:value="${user.member}"
-              />
+              /> -->
               <input
                 type="number"
                 class="form-control"
@@ -106,24 +107,26 @@
                 placeholder="01/01/2020"
               /><label for="floatingDOB">Enter your birthday</label>
             </div>
-            <label class="mb-3">Gender:</label>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="gender"
-                id="gender"
-                value="Male"
-              />Male
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="gender"
-                id="gender"
-                value="Female"
-              />Female<br />
+            <div class="gender">
+              <label class="mb-3">Gender:</label>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="gender"
+                  id="gender"
+                  value="Male"
+                />Male
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="gender"
+                  id="gender"
+                  value="Female"
+                />Female<br />
+              </div>
             </div>
             <div class="container text-center">
               <button
@@ -159,67 +162,73 @@
       });
 
       function ajaxPost() {
-        console.log("Ajax Post");
+        
+        let isBool = validate();
+        if(isBool) {
+          console.log("Ajax Post");
 
-        //Prepare Form Data
-        var phoneNumber = $("#phoneNumber").val();
-        var member = {
-          adhaar:$("#adhaar").val(),
-          name:$("#name").val(),
-          gender:$("input[name=gender]:checked").val(),
-          dob:$("#dob").val(),
-        }
-
-        var formData = {phoneNumber: phoneNumber, member: member};
-          
-        //POST
-        $.ajax({
-          type: "POST",
-          contentType:"application/json",
-          url:"addmember",
-          data:JSON.stringify(formData),
-          dataType:'json',
-          success:function(fragment) {
-            console.log(formData);
-            console.log(fragment);
-            if(fragment.status == "success") {
-              console.log("True");
-              $("#form_card").show();
-              $("#form_content").hide();
-              location.reload();
-              // let div=document.createElement("div");
-              // div.appendChild(fragment);
-              // div.innerHTML;
-
-            } else {
-              console.log("False");
-              $("#form_card").show();
-            }
-          },
-          error:function(e) {
-            console.log(fragment);
-            alert("Error!");
-            console.log("Error: ", e);
+          //Prepare Form Data
+          var phoneNumber = $("#phoneNumber").val();
+          var member = {
+            adhaar:$("#adhaar").val(),
+            name:$("#name").val(),
+            gender:$("input[name=gender]:checked").val(),
+            dob:$("#dob").val(),
           }
-        });
+
+          var formData = {phoneNumber: phoneNumber, member: member};
+            
+          //POST
+          $.ajax({
+            type: "POST",
+            contentType:"application/json",
+            url:"addmember",
+            data:JSON.stringify(formData),
+            dataType:'json',
+            success:function(fragment) {
+              console.log(formData);
+              console.log(fragment);
+              if(fragment.status == "success") {
+                console.log("True");
+                $("#form_card").show();
+                $("#form_content").hide();
+                location.reload();
+                // let div=document.createElement("div");
+                // div.appendChild(fragment);
+                // div.innerHTML;
+
+              } else {
+                console.log("False");
+                $("#form_card").show();
+              }
+            },
+            error:function(e) {
+              console.log(fragment);
+              alert("Error!");
+              console.log("Error: ", e);
+            }
+          });
+        } else {
+          
+        }
+      }
+
+      function validate() {
+        var name = document.getElementById("name");
+        var adhaar = document.getElementById("adhaar");
+        var dob = document.getElementById("dob");
+        var gender = document.querySelector('input[name="gender"]:checked');
+
+        if(name.value == "" || adhaar.value == "" || dob.value == "" || gender.checked == false) {
+          alert("NO BLANKS!!");
+          console.log("Is this even running?");
+          return false;
+        } else {
+          return true;
+        }
       }
 
     });
-  </script>
-
-  <script>
-    var forms = document.querySelectorAll(".needs-validation");
-
-    Array.prototype.slice.call(forms).forEach(function(form){
-      form.addEventListener("submit", function(event){
-        if(!form.checkValidity()){
-          event.preventDefault();
-          event.stopPropagating();
-        }
-        form.classList.add("was-validated");
-      }, false);
-    }); 
-    
   </script>
 
 </html>
