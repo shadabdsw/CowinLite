@@ -67,20 +67,8 @@
       <div class="card shadow p-3 mb-5 bg-body rounded">
         <div class="card-body">
           <h3 class="card-header text-center">Member Information Form</h3>
-          <form id="add_member_form" th:object=${member}>
+          <form id="add_member_form" th:object=${member} class="needs-validation novalidate">
             <div class="form-floating mt-3 mb-3">
-              <!--               
-              <input
-                type="hidden"
-                name="phoneNumber"
-                th:value="${user.phoneNumber}"
-              />
-              <input type="hidden" name="password" th:value="${user.password}" />
-              <input
-                type="hidden"
-                name="member"
-                th:value="${user.member}"
-              /> -->
               <input
                 type="number"
                 class="form-control"
@@ -217,11 +205,11 @@
         var name = document.getElementById("name");
         var adhaar = document.getElementById("adhaar");
         var dob = document.getElementById("dob");
-        var gender = document.querySelector('input[name="gender"]:checked');
+        var gender = document.getElementById("gender").checked;
+        console.log(gender);
 
-        if(name.value == "" || adhaar.value == "" || dob.value == "" || gender.checked == false) {
-          alert("NO BLANKS!!");
-          console.log("Is this even running?");
+        if(name.value == "" || adhaar.value == "" || dob.value == "") {
+          alert("Please fill the fields!");
           return false;
         } else {
           return true;
