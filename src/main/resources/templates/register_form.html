@@ -1,8 +1,49 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>    
-    <div th:replace="common :: header"></div>
-    <title>Register</title>
+
+    <style>
+      .passwordInput{
+          margin-top: 5%; 
+          text-align :center;
+      }
+
+      .displayBadge{
+          margin-top: 5%; 
+          display: none; 
+          text-align :center;
+      }
+
+      .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+      }
+
+      .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -60px;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+      }
+  </style>
+
+  <div th:replace="common :: header"></div>
+  <title>Register</title>
   </head>
 
   <body>
@@ -31,22 +72,25 @@
                   name="phone"
                 />
                 <label for="floatingPhone">Enter your phone number</label>
-                <!-- <div id="error_phone" class="invalid-feedback">Please enter the correct Phone Number</div> -->
               </div>
-              <div class="form-floating mt-2">
-                <input
-                  required
-                  type="password"
-                  th:field="*{password}"
-                  class="form-control"
-                  id="floatingPassword"
-                  placeholder="Password"
-                />
-                <label for="floatingPassword">Enter your password</label>
-                <!-- <div id="error_password" class="invalid-feedback">Please enter Password</div> -->
-                  <button id="register_btn" class="btn btn-primary mt-3" type="submit">
-                    Register/Login
-                  </button>
+              <div>
+                <div class="form-floating mt-2">
+                    <input
+                      required
+                      type="password"
+                      th:field="*{password}"
+                      class="form-control"
+                      id="floatingPassword"
+                      placeholder="Password"
+                    />
+                  <label for="floatingPassword">Enter your password</label>
+                <div class="text" id="passwordStrength" style="display:none">Weak</div>
+                </div>
+              </div>
+              <div>
+                <button id="register_btn" class="btn btn-primary mt-3" type="submit">
+                  Register/Login
+                </button>
               </div>
               <div type="hidden" class="form-floating mt-2">
                 <input
@@ -80,7 +124,45 @@
         form.classList.add("was-validated");
       }, false);
     }); 
-    
+  </script>
+
+  <script>
+    let timeout;
+    let password = document.getElementById('floatingPassword');
+    let strengthBadge = document.getElementById('passwordStrength');
+    let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})');
+    let mediumPassword = new RegExp('((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))');
+
+    function StrengthChecker(PasswordParameter) {
+      if(strongPassword.test(PasswordParameter)) {
+          strengthBadge.style.backgroundColor = "green";
+          strengthBadge.textContent = 'Strong';
+      } else if(mediumPassword.test(PasswordParameter)) {
+          strengthBadge.style.backgroundColor = 'blue';
+          strengthBadge.textContent = 'Medium';
+      } else {
+          strengthBadge.style.backgroundColor = 'red';
+          strengthBadge.textContent = 'Weak';
+      }
+    }
+
+    password.addEventListener("input", () => {
+      strengthBadge.style.display='block';
+      strengthBadge.style.marginLeft="400px";
+      strengthBadge.style.marginRight="400px";
+      strengthBadge.style.marginTop="20px";
+      strengthBadge.style.fontSize="28px";
+      strengthBadge.style.border="4px";
+      strengthBadge.style.borderRadius="20px";
+      clearTimeout(timeout);
+      timeout = setTimeout(() => StrengthChecker(password.value), 500);
+      if(password.value.length !== 0) {
+          strengthBadge.style.display != 'block';
+      } else {
+          strengthBadge.style.display = 'none';
+      }
+    });
+
   </script>
 
 </html>
