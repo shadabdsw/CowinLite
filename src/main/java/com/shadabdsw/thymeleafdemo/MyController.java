@@ -57,20 +57,14 @@ public class MyController {
     @PostMapping("/home")
     public String submitForm(@ModelAttribute("user") User user, Model model) {
         model.addAttribute("name", "shadab");
-        boolean flag = true;
         // Member member = new Member();
-
-        if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)) {
-
-            if(mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
+        
+        if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
+                && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
 
             System.out.println("Welcome Back " + user.getPhoneNumber());
             // model.addAttribute("member", member);
             // System.out.println(member);
-            }  else {
-                System.out.println("User already exists!");
-                flag = false;
-            }
 
         } else {
 
@@ -81,14 +75,10 @@ public class MyController {
 
         }
 
-        if(flag) {
-            user = userRepository.findByphoneNumber(user.getPhoneNumber()).get();
-            model.addAttribute("user", user);
+        user = userRepository.findByphoneNumber(user.getPhoneNumber()).get();
+        model.addAttribute("user", user);
 
-            return "home";
-        } else {
-            return "register_form";
-        }
+        return "home";
     }
 
     @PostMapping("/addmember")
