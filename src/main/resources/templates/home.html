@@ -171,6 +171,7 @@
       $("#add_member_submit").click(function(event) {
         console.log("Button Clicked");
         event.preventDefault();
+        event.stopPropagation;
         ajaxPost();
       });
 
