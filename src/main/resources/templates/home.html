@@ -3,20 +3,25 @@
   <head>
     <div th:replace="common :: header"></div>
     <title>Home</title>
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-dark fixed-top" style=" background: #1e3770;">
       <div class="container-fluid">
-        <a class="navbar navbar-brand" href="#">
+        <a class="navbar navbar-brand" style="font-size: 28px; margin-left: 128px;" href="#">
           Cowin Lite
         </a>
-        <a class="navbar navbar-brand" href="/register">Logout</a>
+        <a class="navbar navbar-brand" href="/register" style="font-size: 28px; margin-right: 128px;">Logout</a>
+      </div>
+    </nav>
+    <nav class="navbar navbar-dark fixed-bottom" style=" background: #1e3770">
+      <div class="container-fluid">
+        <span class="navbar-brand mx-auto">Copyright © 2021 COWIN. All Rights Reserved</span>
       </div>
     </nav>
   </head>
 
-  <body>
+  <body style="margin-top: 100px; margin-bottom: 80px;">
     
     <!-- Card View of Data -->
-    <div id="form_card" class="container mt-5">
+    <div id="form_card" class="container mt-5" style="width: 64rem">
       <div class="card shadow p-1 mb-5 bg-body rounded">
         <div class="card-body">
           <h2 style="color: blue">Account Details</h2>
@@ -55,29 +60,34 @@
                 name="member"
                 th:value="${user.getMember()}"
               />
-            <button
-              id="add_member_btn"
-              class="btn btn-primary"
-              type="button"
-              style="margin-top: 10px"
-              data-target="#form_content"
-              data-toggle="modal"
-            >
-              Add Member
-            </button>
+            <div>
+              <div class="d-grid gap-2 col-4 mx-auto">
+                <button
+                  id="add_member_btn"
+                  class="btn btn-primary"
+                  type="button"
+                  style="font-size: 28px"
+                >
+                  Add Member
+                </button>
+              </div>
+            </div>
           </div>
         </form>
       </div>
     </div>
 
     <!-- Add Member Form -->
-    <div id="form_content" class="container mt-5">
+    <div id="form_content" class="container mt-5" style="width: 64rem">
       <div class="card shadow p-3 mb-5 bg-body rounded">
         <div class="card-body">
-          <h3 class="card-header text-center">Member Information Form</h3>
-          <form id="add_member_form" th:object=${member} class="needs-validation novalidate">
+          <h2 class="card-header text-center">Member Information Form</h2>
+          <form th:object=${member}>
             <div class="form-floating mt-3 mb-3">
               <input
+                required
+                min="-999999999999"
+                max="999999999999"
                 type="number"
                 class="form-control"
                 id="adhaar"
@@ -87,6 +97,7 @@
             </div>
             <div class="form-floating mb-3">
               <input
+                required
                 class="form-control"
                 type="text"
                 id="name"
@@ -95,18 +106,20 @@
               /><label for="floatingName">Enter your full name</label>
             </div>
             <div class="form-floating mb-3">
-              <input
+              <input 
+                required
                 class="form-control"
                 type="text"
                 name="dob"
                 id="dob"
                 placeholder="01/01/2020"
-              /><label for="floatingDOB">Enter your birthday</label>
+              /><label for="floatingDOB">Enter your birthday (DD/MM/YYYY)</label>
             </div>
             <div class="gender">
               <label class="mb-3">Gender:</label>
               <div class="form-check form-check-inline">
                 <input
+                  required
                   class="form-check-input"
                   type="radio"
                   name="gender"
@@ -116,6 +129,7 @@
               </div>
               <div class="form-check form-check-inline">
                 <input
+                  required
                   class="form-check-input"
                   type="radio"
                   name="gender"
@@ -125,13 +139,16 @@
               </div>
             </div>
             <div class="container text-center">
-              <button
-                id="add_member_submit"
-                class="btn btn-success"
-                type="button"
-              >
-                Submit
-              </button>
+              <div class="d-grid gap-2 col-2 mx-auto">
+                <button
+                  id="add_member_submit"
+                  class="btn btn-success"
+                  type="submit"
+                  style="font-size: 28px"
+                >
+                  Submit
+                </button>
+              </div>
             </div>
           </form>
         </div>
@@ -159,7 +176,9 @@
 
       function ajaxPost() {
         
-        let isBool = validate();
+        // let isBool = validate();
+        let isBool = true;
+
         if(isBool) {
           console.log("Ajax Post");
 
@@ -217,12 +236,21 @@
         console.log(gender);
 
         if(name.value == "" || adhaar.value == "" || dob.value == "") {
-          alert("Please fill the fields!");
+          // alert("Please fill the fields!");
           return false;
         } else {
           return true;
         }
       }
+
+      // function validateLite(key, value) {
+      //   result = false;
+      //   if(key == "name" && value == "") {
+          
+      //   }
+      //   return result;
+      // }
+
 
     });
   </script>
