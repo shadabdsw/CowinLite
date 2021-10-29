@@ -3,17 +3,6 @@
   <head>    
 
     <style>
-      .passwordInput{
-          margin-top: 5%; 
-          text-align :center;
-      }
-
-      .displayBadge{
-          margin-top: 5%; 
-          display: none; 
-          text-align :center;
-      }
-
       .centered {
         position: fixed;
         top: 50%;
@@ -25,28 +14,32 @@
     <div th:replace="common :: header"></div>
     <title>Register</title>
 
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-dark fixed-top" style=" background: #1e3770;">
       <div class="container-fluid">
-        <a class="navbar navbar-brand" href="#">
+        <a class="navbar navbar-brand" style="font-size: 28px; margin-left: 128px;" href="#">
           Cowin Lite
         </a>
       </div>
     </nav>
+    <nav class="navbar navbar-dark fixed-bottom" style=" background: #1e3770">
+      <div class="container-fluid">
+        <span class="navbar-brand mx-auto">Copyright © 2021 COWIN. All Rights Reserved</span>
+      </div>
+    </nav>
   </head>
 
-  <body>
+  <body style="margin-top: 100px">
 
-    <div class="container text-center centered">
+    <div class="container text-center centered" style="width: 34rem">
       <div class="card text-center shadow p-3 mb-5 bg-body rounded">
         <div class="card-body">
-          <h3 class="card-header">Register/Login to Cowin Lite</h3>
+          <h2 class="card-header">Register/Login to Cowin Lite</h2>
           <div>
             <form
               action="#"
               th:action="@{/home}"
               th:object="${user}"
               method="post"
-              class="needs-validation novalidate"
             >
               <div class="form-floating mt-2">
                 <input
@@ -104,20 +97,7 @@
   </body>
 
   <script>
-    var forms = document.querySelectorAll(".needs-validation");
 
-    Array.prototype.slice.call(forms).forEach(function(form){
-      form.addEventListener("submit", function(event){
-        if(!form.checkValidity()){
-          event.preventDefault();
-          event.stopPropagating();
-        }
-        form.classList.add("was-validated");
-      }, false);
-    }); 
-  </script>
-
-  <script>
     let password = document.getElementById('floatingPassword');
     let progressBar = document.getElementById('passwordStrength');
     password.addEventListener("input", () => {
