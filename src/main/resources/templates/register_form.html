@@ -14,40 +14,29 @@
           text-align :center;
       }
 
-      .tooltip {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black;
-      }
-
-      .tooltip .tooltiptext {
-        visibility: hidden;
-        width: 120px;
-        background-color: black;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 5px 0;
-        
-        /* Position the tooltip */
-        position: absolute;
-        z-index: 1;
-        bottom: 100%;
+      .centered {
+        position: fixed;
+        top: 50%;
         left: 50%;
-        margin-left: -60px;
+        transform: translate(-50%, -50%);
       }
+    </style>
 
-      .tooltip:hover .tooltiptext {
-        visibility: visible;
-      }
-  </style>
+    <div th:replace="common :: header"></div>
+    <title>Register</title>
 
-  <div th:replace="common :: header"></div>
-  <title>Register</title>
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar navbar-brand" href="#">
+          Cowin Lite
+        </a>
+      </div>
+    </nav>
   </head>
 
   <body>
-    <div class="container mt-5 text-center">
+
+    <div class="container text-center centered">
       <div class="card text-center shadow p-3 mb-5 bg-body rounded">
         <div class="card-body">
           <h3 class="card-header">Register/Login to Cowin Lite</h3>
@@ -84,7 +73,9 @@
                       placeholder="Password"
                     />
                   <label for="floatingPassword">Enter your password</label>
-                <div class="text" id="passwordStrength" style="display:none">Weak</div>
+                  <div class="progress" style="margin-top: 10px; height: 20px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="passwordStrength" role="progressbar" aria-valuenow="100" aria-valuemin="20" aria-valuemax="100"></div>
+                  </div>
                 </div>
               </div>
               <div>
@@ -127,41 +118,55 @@
   </script>
 
   <script>
-    let timeout;
     let password = document.getElementById('floatingPassword');
-    let strengthBadge = document.getElementById('passwordStrength');
-    let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})');
-    let mediumPassword = new RegExp('((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))');
-
-    function StrengthChecker(PasswordParameter) {
-      if(strongPassword.test(PasswordParameter)) {
-          strengthBadge.style.backgroundColor = "green";
-          strengthBadge.textContent = 'Strong';
-      } else if(mediumPassword.test(PasswordParameter)) {
-          strengthBadge.style.backgroundColor = 'blue';
-          strengthBadge.textContent = 'Medium';
-      } else {
-          strengthBadge.style.backgroundColor = 'red';
-          strengthBadge.textContent = 'Weak';
-      }
-    }
-
+    let progressBar = document.getElementById('passwordStrength');
     password.addEventListener("input", () => {
-      strengthBadge.style.display='block';
-      strengthBadge.style.marginLeft="400px";
-      strengthBadge.style.marginRight="400px";
-      strengthBadge.style.marginTop="20px";
-      strengthBadge.style.fontSize="28px";
-      strengthBadge.style.border="4px";
-      strengthBadge.style.borderRadius="20px";
-      clearTimeout(timeout);
-      timeout = setTimeout(() => StrengthChecker(password.value), 500);
-      if(password.value.length !== 0) {
-          strengthBadge.style.display != 'block';
+      pwd = password.value;
+      strength = scorePassword(pwd);
+      console.log(password.value.length);
+      progressBar.style.width = strength+"%";
+
+      progressBar.classList.remove("bg-success", "bg-warning", "bg-danger");
+      if(strength < 30) {
+        progressBar.classList.add("bg-danger");
+        progressBar.innerHTML = "Weak Password";
+      } else if (strength < 70) {
+        progressBar.classList.add("bg-warning");
+        progressBar.innerHTML = "Moderate Password";
       } else {
-          strengthBadge.style.display = 'none';
+        progressBar.classList.add("bg-success");
+        progressBar.innerHTML = "Strong Password";
       }
     });
+
+    function scorePassword(pass) {
+      var score = 0;
+      if (!pass)
+          return score;
+
+      // award every unique letter until 5 repetitions
+      var letters = new Object();
+      for (var i=0; i<pass.length; i++) {
+          letters[pass[i]] = (letters[pass[i]] || 0) + 1;
+          score += 5.0 / letters[pass[i]];
+      }
+
+      // bonus points for mixing it up
+      var variations = {
+          digits: /\d/.test(pass),
+          lower: /[a-z]/.test(pass),
+          upper: /[A-Z]/.test(pass),
+          nonWords: /\W/.test(pass),
+      }
+
+      var variationCount = 0;
+      for (var check in variations) {
+          variationCount += (variations[check] == true) ? 1 : 0;
+      }
+      score += (variationCount - 1) * 10;
+
+      return parseInt(score);
+    }
 
   </script>
 
