@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
 import com.shadabdsw.thymeleafdemo.Model.Member;
 import com.shadabdsw.thymeleafdemo.Model.ServiceResponse;
 import com.shadabdsw.thymeleafdemo.Model.User;
-import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
-
 import com.shadabdsw.thymeleafdemo.Repositories.MemberRepository;
 import com.shadabdsw.thymeleafdemo.Repositories.UserRepository;
 
