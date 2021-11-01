@@ -1,17 +1,27 @@
 package com.shadabdsw.thymeleafdemo.Model;
 
+import java.util.List;
 
 public class Member {
     private String adhaar;
     private String name;
     private String gender;
     private String dob;
+    private List<Vaccination> vaccine;
 
     public Member(String adhaar, String name, String gender, String dob) {
         this.adhaar = adhaar;
         this.name = name;
         this.gender = gender;
         this.dob = dob;
+    }
+
+    public Member(String adhaar, String name, String gender, String dob, List<Vaccination> vaccine) {
+        this.adhaar = adhaar;
+        this.name = name;
+        this.gender = gender;
+        this.dob = dob;
+        this.vaccine = vaccine;
     }
 
     public Member() {
@@ -49,8 +59,18 @@ public class Member {
         this.adhaar = adhaar;
     }
 
+    public List<Vaccination> getVaccine() {
+        return vaccine;
+    }
+
+    public void setVaccine(List<Vaccination> vaccine) {
+        this.vaccine = vaccine;
+    }
+
     @Override
     public String toString() {
-        return "Member [adhaar=" + adhaar + ",name=" + name + ",gender=" + gender + ",dob=" + dob + "]";
+        return "Member [adhaar=" + adhaar + ", dob=" + dob + ", gender=" + gender + ", name=" + name + ", vaccine="
+                + vaccine + "]";
     }
+
 }
