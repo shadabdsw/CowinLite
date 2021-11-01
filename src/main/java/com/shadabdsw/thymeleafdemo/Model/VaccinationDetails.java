@@ -2,22 +2,22 @@ package com.shadabdsw.thymeleafdemo.Model;
 
 public class VaccinationDetails {
 
-    private String vaccine;
+    private String vaccinationType;
     private String vaccinationCentre;
-    private String vaccinatedBy;
+    private String vaccinationBy;
     private String vaccinationDate;
 
-    public VaccinationDetails(String vaccine, String vaccinationCentre, String vaccinatedBy, String vaccinationDate) {
-        this.vaccine = vaccine;
+    public VaccinationDetails(String vaccinationType, String vaccinationCentre, String vaccinationBy, String vaccinationDate) {
+        this.vaccinationType = vaccinationType;
         this.vaccinationCentre = vaccinationCentre;
-        this.vaccinatedBy = vaccinatedBy;
+        this.vaccinationBy = vaccinationBy;
         this.vaccinationDate = vaccinationDate;
     }
-    public String getVaccine() {
-        return vaccine;
+    public String getvaccinationType() {
+        return vaccinationType;
     }
-    public void setVaccine(String vaccine) {
-        this.vaccine = vaccine;
+    public void setvaccinationType(String vaccinationType) {
+        this.vaccinationType = vaccinationType;
     }
     public String getVaccinationCentre() {
         return vaccinationCentre;
@@ -25,11 +25,11 @@ public class VaccinationDetails {
     public void setVaccinationCentre(String vaccinationCentre) {
         this.vaccinationCentre = vaccinationCentre;
     }
-    public String getVaccinatedBy() {
-        return vaccinatedBy;
+    public String getvaccinationBy() {
+        return vaccinationBy;
     }
-    public void setVaccinatedBy(String vaccinatedBy) {
-        this.vaccinatedBy = vaccinatedBy;
+    public void setvaccinationBy(String vaccinationBy) {
+        this.vaccinationBy = vaccinationBy;
     }
     public String getVaccinationDate() {
         return vaccinationDate;
@@ -39,8 +39,8 @@ public class VaccinationDetails {
     }
     @Override
     public String toString() {
-        return "VaccinationDetails [vaccinatedBy=" + vaccinatedBy + ", vaccinationCentre=" + vaccinationCentre
-                + ", vaccinationDate=" + vaccinationDate + ", vaccine=" + vaccine + "]";
+        return "VaccinationDetails [vaccinationBy=" + vaccinationBy + ", vaccinationCentre=" + vaccinationCentre
+                + ", vaccinationDate=" + vaccinationDate + ", vaccinationType=" + vaccinationType + "]";
     }
     
 }
