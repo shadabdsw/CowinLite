@@ -158,6 +158,8 @@
 
   <div th:replace="common :: footer"></div>
 
+  <script src="bootstrap-validate.js"></script>
+
   <script th:inline="javascript">
     $(document).ready(function () {
     
@@ -166,6 +168,11 @@
       $("#add_member_btn").on("click",function() {
         $("#form_content").show();
       });
+
+      // bootstrapValidate('#adhaar', 'required:Please fill out this field!');
+      // bootstrapValidate('#name', 'required:Please fill out this field!');
+      // bootstrapValidate('#dob', 'required:Please fill out this field!');
+      // bootstrapValidate('#gender', 'required:Please fill out this field!');
       
       //SUBMIT FORM
       $("#add_member_submit").click(function(event) {
@@ -228,29 +235,6 @@
           
         }
       }
-
-      function validate() {
-        var name = document.getElementById("name");
-        var adhaar = document.getElementById("adhaar");
-        var dob = document.getElementById("dob");
-        var gender = document.getElementById("gender").checked;
-        console.log(gender);
-
-        if(name.value == "" || adhaar.value == "" || dob.value == "") {
-          // alert("Please fill the fields!");
-          return false;
-        } else {
-          return true;
-        }
-      }
-
-      // function validateLite(key, value) {
-      //   result = false;
-      //   if(key == "name" && value == "") {
-          
-      //   }
-      //   return result;
-      // }
 
 
     });
