@@ -7,7 +7,18 @@ public class Member {
     private String name;
     private String gender;
     private String dob;
+    private String vaccinationStatus;
     private List<Vaccination> vaccine;
+
+    public Member(String adhaar, String name, String gender, String dob, String vaccinationStatus,
+            List<Vaccination> vaccine) {
+        this.adhaar = adhaar;
+        this.name = name;
+        this.gender = gender;
+        this.dob = dob;
+        this.vaccinationStatus = vaccinationStatus;
+        this.vaccine = vaccine;
+    }
 
     public Member(String adhaar, String name, String gender, String dob) {
         this.adhaar = adhaar;
@@ -67,10 +78,20 @@ public class Member {
         this.vaccine = vaccine;
     }
 
+    public String getVaccinationStatus() {
+        return vaccinationStatus;
+    }
+
+    public void setVaccinationStatus(String vaccinationStatus) {
+        this.vaccinationStatus = vaccinationStatus;
+    }
+
     @Override
     public String toString() {
-        return "Member [adhaar=" + adhaar + ", dob=" + dob + ", gender=" + gender + ", name=" + name + ", vaccine="
-                + vaccine + "]";
+        return "Member [adhaar=" + adhaar + ", dob=" + dob + ", gender=" + gender + ", name=" + name
+                + ", vaccinationStatus=" + vaccinationStatus + ", vaccine=" + vaccine + "]";
     }
+
+    
 
 }
