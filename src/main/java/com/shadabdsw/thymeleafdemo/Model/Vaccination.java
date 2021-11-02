@@ -2,26 +2,18 @@ package com.shadabdsw.thymeleafdemo.Model;
 
 public class Vaccination {
 
-    private String vaccinationStatus;
     private String vaccinationType;
     private String vaccinationCentre;
     private String vaccinationBy;
     private String vaccinationDate;
 
-    public Vaccination(String vaccinationStatus, String vaccinationType, String vaccinationCentre, String vaccinationBy, String vaccinationDate) {
-        this.vaccinationStatus = vaccinationStatus;
+    public Vaccination(String vaccinationType, String vaccinationCentre, String vaccinationBy, String vaccinationDate) {
         this.vaccinationType = vaccinationType;
         this.vaccinationCentre = vaccinationCentre;
         this.vaccinationBy = vaccinationBy;
         this.vaccinationDate = vaccinationDate;
     }
     
-    public String getVaccinationStatus() {
-        return vaccinationStatus;
-    }
-    public void setVaccinationStatus(String vaccinationStatus) {
-        this.vaccinationStatus = vaccinationStatus;
-    }
     public String getvaccinationType() {
         return vaccinationType;
     }
@@ -50,9 +42,7 @@ public class Vaccination {
     @Override
     public String toString() {
         return "Vaccination [vaccinationBy=" + vaccinationBy + ", vaccinationCentre=" + vaccinationCentre
-                + ", vaccinationDate=" + vaccinationDate + ", vaccinationStatus=" + vaccinationStatus
-                + ", vaccinationType=" + vaccinationType + "]";
+                + ", vaccinationDate=" + vaccinationDate + ", vaccinationType=" + vaccinationType + "]";
     }
-    
-    
+
 }
