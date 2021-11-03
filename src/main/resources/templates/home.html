@@ -95,6 +95,9 @@
                 name="adhaar"
               /><label for="floatingInput">Enter your adhaar number</label>
             </div>
+            <div id="adhaarError">
+
+            </div>
             <div class="form-floating mb-3">
               <input
                 required
@@ -158,8 +161,6 @@
 
   <div th:replace="common :: footer"></div>
 
-  <script src="bootstrap-validate.js"></script>
-
   <script th:inline="javascript">
     $(document).ready(function () {
     
@@ -168,11 +169,6 @@
       $("#add_member_btn").on("click",function() {
         $("#form_content").show();
       });
-
-      // bootstrapValidate('#adhaar', 'required:Please fill out this field!');
-      // bootstrapValidate('#name', 'required:Please fill out this field!');
-      // bootstrapValidate('#dob', 'required:Please fill out this field!');
-      // bootstrapValidate('#gender', 'required:Please fill out this field!');
       
       //SUBMIT FORM
       $("#add_member_submit").click(function(event) {
@@ -197,6 +193,8 @@
             name:$("#name").val(),
             gender:$("input[name=gender]:checked").val(),
             dob:$("#dob").val(),
+            vaccinationStatus:"None",
+            vaccine:[]
           }
 
           var formData = {phoneNumber: phoneNumber, member: member};
