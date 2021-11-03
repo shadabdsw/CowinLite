@@ -26,17 +26,14 @@
                     </div>
                     <div class='container'>
                         <div class='row'>
-                            <div class='column'>
-                                <h5 style='color:grey'>Date of Birth: <span th:text="${member.dob}" id='member_dob'></span>
-                                </h5>
+                            <div class='col'>
+                                <h5 style='color:black; text-align: left;'>Date of Birth: <span th:text="${member.dob}" id='member_dob'></span></h5>
                             </div>
-                            <div class='column'>
-                                <h5 style='color:grey'>Adhaar Number: <span th:text="${member.adhaar}" id='member_adhaar'></span>
-                                </h5>
+                            <div class='col'>
+                                <h5 style='color:black; text-align: center;'>Adhaar Number: XXXX-<span th:text="${#strings.substring(member.adhaar,10,14)}" id='member_adhaar'></span></h5>
                             </div>
-                            <div class='column'>
-                                <h5 style='color:grey'>Gender: <span th:text="${member.gender}" id='member_gender'></span>
-                                </h5>
+                            <div class='col'>
+                                <h5 style='color:black; text-align: right;'>Gender: <span th:text="${member.gender}" id='member_gender'></span></h5>
                             </div>
                             <br/>
                             <br/>
