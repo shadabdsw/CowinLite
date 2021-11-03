@@ -14,30 +14,55 @@ public class Vaccination {
         this.vaccinationDate = vaccinationDate;
     }
     
-    public String getvaccinationType() {
+    
+
+    public String getVaccinationType() {
         return vaccinationType;
     }
-    public void setvaccinationType(String vaccinationType) {
+
+
+
+    public void setVaccinationType(String vaccinationType) {
         this.vaccinationType = vaccinationType;
     }
+
+
+
     public String getVaccinationCentre() {
         return vaccinationCentre;
     }
+
+
+
     public void setVaccinationCentre(String vaccinationCentre) {
         this.vaccinationCentre = vaccinationCentre;
     }
-    public String getvaccinationBy() {
+
+
+
+    public String getVaccinationBy() {
         return vaccinationBy;
     }
-    public void setvaccinationBy(String vaccinationBy) {
+
+
+
+    public void setVaccinationBy(String vaccinationBy) {
         this.vaccinationBy = vaccinationBy;
     }
+
+
+
     public String getVaccinationDate() {
         return vaccinationDate;
     }
+
+
+
     public void setVaccinationDate(String vaccinationDate) {
         this.vaccinationDate = vaccinationDate;
     }
+
+
 
     @Override
     public String toString() {
