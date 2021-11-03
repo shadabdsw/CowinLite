@@ -94,9 +94,7 @@
                 placeholder="Adhaar Number"
                 name="adhaar"
               /><label for="floatingInput">Enter your adhaar number</label>
-            </div>
-            <div id="adhaarError">
-
+            <div id="adhaarError" style="color: red; margin-left: 8px;" ></div>
             </div>
             <div class="form-floating mb-3">
               <input
@@ -107,6 +105,7 @@
                 placeholder="Full Name"
                 name="name"
               /><label for="floatingName">Enter your full name</label>
+            <div id="nameError" style="color: red; margin-left: 8px;" ></div>
             </div>
             <div class="form-floating mb-3">
               <input 
@@ -117,6 +116,7 @@
                 id="dob"
                 placeholder="01/01/2020"
               /><label for="floatingDOB">Enter your birthday (DD/MM/YYYY)</label>
+            <div id="dobError" style="color: red; margin-left: 8px;" ></div>
             </div>
             <div class="gender">
               <label class="mb-3">Gender:</label>
@@ -140,6 +140,7 @@
                   value="Female"
                 />Female<br />
               </div>
+            <div id="genderError" style="color: red; margin-left: 8px;" ></div>
             </div>
             <div class="container text-center">
               <div class="d-grid gap-2 col-2 mx-auto">
@@ -175,7 +176,20 @@
         console.log("Button Clicked");
         event.preventDefault();
         event.stopPropagation;
-        ajaxPost();
+
+        if($("#adhaar").val() == "") {
+          $("#adhaarError").text("Please fill this field.");
+        } else if($("#name").val() == "") {
+          $("#nameError").text("Please fill this field.");
+        } else if($("#dob").val() == "") {
+          $("#dobError").text("Please fill this field.");
+        } else if($("input[name=gender]:checked").val() == "") {
+          $("#genderError").text("Please select one of the fields.");
+        } else if($("#adhaar").val().length() < 14) {
+            $("#adhaarError").text("Please enter 14 digit Adhaar Number.");
+        } else {
+          ajaxPost();
+        }
       });
 
       function ajaxPost() {
