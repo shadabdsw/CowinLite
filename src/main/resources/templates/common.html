@@ -16,29 +16,56 @@
         </div>
 
         <div th:fragment="card">
-            <div class='card mb-5 bg-body rounded' th:each="result:${user.member}">
+            <div class='card mb-5 bg-body rounded' th:each="member:${user.member}">
                 <div class='card-body'>
                     <div>
-                        <h2 style='color: blue' th:text="${result.name}" id='member_name'></h2>
-                        &emsp;<span>Not Vaccinated</span>
+                        <h2 style='color: blue' th:text="${member.name}" id='member_name'></h2>
+                        <h6 style='color: blue' th:if="${member.vaccinationStatus} eq 'None'">Not Vaccinated</h6>
+                        <h6 style='color: blue' th:if="${member.vaccinationStatus} eq 'Partial'">Partially Vaccinated</h6>
+                        <h6 style='color: blue' th:if="${member.vaccinationStatus} eq 'Full'">Fully Vaccinated</h6>
                     </div>
-                    <br/>
                     <div class='container'>
                         <div class='row'>
                             <div class='column'>
-                                <h5 style='color:grey'>Date of Birth: <span th:text="${result.dob}" id='member_dob'></span>
+                                <h5 style='color:grey'>Date of Birth: <span th:text="${member.dob}" id='member_dob'></span>
                                 </h5>
                             </div>
                             <div class='column'>
-                                <h5 style='color:grey'>Adhaar Number: <span th:text="${result.adhaar}" id='member_adhaar'></span>
+                                <h5 style='color:grey'>Adhaar Number: <span th:text="${member.adhaar}" id='member_adhaar'></span>
                                 </h5>
                             </div>
                             <div class='column'>
-                                <h5 style='color:grey'>Gender: <span th:text="${result.gender}" id='member_gender'></span>
+                                <h5 style='color:grey'>Gender: <span th:text="${member.gender}" id='member_gender'></span>
                                 </h5>
                             </div>
                             <br/>
+                            <br/>
                             <hr/>
+                            <br/>
+                            <div th:if="${member.vaccinationStatus} == 'None'">
+                                <span style="color: red; font-weight: bold;">Dose 1 | No details available</span> <br/> 
+                                <hr/>
+                                <span style="color: red; font-weight: bold;">Dose 2 | No details available</span>
+                            </div>
+                            <div th:if="${member.vaccinationStatus} == 'Partial'">
+                                <div th:each="vax:${member.vaccine}">
+                                    <span style="color: greenyellow; font-weight: bold;">Dose 1</span> | <span th:text="${vax.vaccinationType}"></span> <br/> 
+                                    <span>Vaccinated By - </span><span th:text="${vax.vaccinationBy}"></span> <br/>
+                                    <span>Vaccinated On - </span><span th:text="${vax.vaccinationDate}"></span> <br/>
+                                    <span>Vaccination Centre - </span><span th:text="${vax.vaccinationCentre}"></span>
+                                    <hr/>
+                                    <span style="color: red; font-weight: bold;">Dose 2 <br/> Due date after 3 months</span>
+                                </div>
+                            </div>
+                            <div th:if="${member.vaccinationStatus} == 'Full'">
+                                <div th:each="vax, iterStat:${member.vaccine}">
+                                    <span style="color: greenyellow; font-weight: bold;">Dose <span th:text="${iterStat.index}+1"></span> </span> | <span th:text="${vax.vaccinationType}"></span> <br/> 
+                                    <span>Vaccinated By - </span><span th:text="${vax.vaccinationBy}"></span> <br/>
+                                    <span>Vaccinated On - </span><span th:text="${vax.vaccinationDate}"></span> <br/>
+                                    <span>Vaccination Centre - </span><span th:text="${vax.vaccinationCentre}"></span>
+                                    <hr/> 
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
