@@ -111,7 +111,6 @@
               <input 
                 required
                 class="form-control"
-                type="text"
                 name="dob"
                 id="dob"
                 placeholder="01/01/2020"
@@ -162,8 +161,37 @@
 
   <div th:replace="common :: footer"></div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" 
+    integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer">
+  </script>
+
   <script th:inline="javascript">
     $(document).ready(function () {
+
+      $("#dob").datepicker({
+        dateFormat: "dd-mm-yy",
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-100:+0",
+        beforeShow: function (input, inst) {
+          var rect = input.getBoundingClientRect();
+          setTimeout(function () {
+            inst.dpDiv.css({
+              top: rect.top,
+              left: rect.left - 200,
+            });
+          }, 0);
+        },
+        onSelect: function (dateText, inst) {
+          var date = $(this).datepicker('getDate');
+          var dateFormat = $(this).datepicker('option', 'dd-mm-yy');
+          var dateFormatted = $.datepicker.formatDate(dateFormat, date);
+          $("#dob").val(dateFormatted);
+        },
+      });
+
     
       $("#form_content").hide();
 
@@ -177,19 +205,23 @@
         event.preventDefault();
         event.stopPropagation;
 
-        if($("#adhaar").val() == "") {
-          $("#adhaarError").text("Please fill this field.");
-        } else if($("#name").val() == "") {
-          $("#nameError").text("Please fill this field.");
-        } else if($("#dob").val() == "") {
-          $("#dobError").text("Please fill this field.");
-        } else if($("input[name=gender]:checked").val() == "") {
-          $("#genderError").text("Please select one of the fields.");
-        } else if($("#adhaar").val().length() < 14) {
-            $("#adhaarError").text("Please enter 14 digit Adhaar Number.");
-        } else {
-          ajaxPost();
-        }
+
+        // if($("#adhaar").val() == "") {
+        //   $("#adhaarError").text("Please fill this field.");
+        // } else if($("#name").val() == "") {
+        //   $("#nameError").text("Please fill this field.");
+        // } else if($("#dob").val() == "") {
+        //   $("#dobError").text("Please fill this field.");
+        // } else if($("input[name=gender]:checked").val() == "") {
+        //   $("#genderError").text("Please select one of the fields.");
+        // } else if($("#adhaar").val().length != 14) {
+        //     $("#adhaarError").text("Please enter 14 digit Adhaar Number.");
+        // } else {
+        //   ajaxPost();
+        // }
+        
+        ajaxPost();
+
       });
 
       function ajaxPost() {
