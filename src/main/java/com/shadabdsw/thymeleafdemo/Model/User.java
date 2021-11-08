@@ -10,32 +10,38 @@ public class User {
     private String _id;
     private String phoneNumber;
     private String password;
+    private String userType;
     private List<Member> member;
+
+    public User(String _id, String phoneNumber, String password, String userType, List<Member> member) {
+        this._id = _id;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.userType = userType;
+        this.member = member;
+    }
+
 
     public User() {
     }
 
-    public User(String _id, String phoneNumber, String password) {
+    public User(String _id, String phoneNumber, String password, String userType) {
         this._id = _id;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.userType = userType;
     }
 
-    public User(String _id, String phoneNumber, String password, List<Member> member) {
-        this._id = _id;
+    public User(String phoneNumber, String password, String userType) {
         this.phoneNumber = phoneNumber;
         this.password = password;
-        this.member = member;
+        this.userType = userType;
     }
 
-    public User(String phoneNumber, String password) {
+    public User(String phoneNumber, String password, String userType, List<Member> member) {
         this.phoneNumber = phoneNumber;
         this.password = password;
-    }
-
-    public User(String phoneNumber, String password, List<Member> member) {
-        this.phoneNumber = phoneNumber;
-        this.password = password;
+        this.userType = userType;
         this.member = member;
     }
 
@@ -71,8 +77,19 @@ public class User {
         this.member = member;
     }
 
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
     @Override
     public String toString() {
-        return "User [_id=" + _id + ",phoneNumber=" + phoneNumber + ",password=" + password + ",member=" + member + "]";
+        return "User [_id=" + _id + ", member=" + member + ", password=" + password + ", phoneNumber=" + phoneNumber
+                + ", userType=" + userType + "]";
     }
+
+    
 }
