@@ -11,6 +11,9 @@ public class Member {
     private String vaccinationStatus;
     private List<Vaccination> vaccine;
 
+    public Member() {
+    }
+
     public Member(String adhaar, String name, String gender, Date dob, String vaccinationStatus,
             List<Vaccination> vaccine) {
         this.adhaar = adhaar;
@@ -19,24 +22,6 @@ public class Member {
         this.dob = dob;
         this.vaccinationStatus = vaccinationStatus;
         this.vaccine = vaccine;
-    }
-
-    public Member(String adhaar, String name, String gender, Date dob) {
-        this.adhaar = adhaar;
-        this.name = name;
-        this.gender = gender;
-        this.dob = dob;
-    }
-
-    public Member(String adhaar, String name, String gender, Date dob, List<Vaccination> vaccine) {
-        this.adhaar = adhaar;
-        this.name = name;
-        this.gender = gender;
-        this.dob = dob;
-        this.vaccine = vaccine;
-    }
-
-    public Member() {
     }
 
     public String getAdhaar() {

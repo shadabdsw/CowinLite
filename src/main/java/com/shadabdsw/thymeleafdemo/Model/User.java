@@ -13,32 +13,11 @@ public class User {
     private String userType;
     private List<Member> member;
 
-    public User(String _id, String phoneNumber, String password, String userType, List<Member> member) {
-        this._id = _id;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.userType = userType;
-        this.member = member;
-    }
-
-
     public User() {
     }
 
-    public User(String _id, String phoneNumber, String password, String userType) {
+    public User(String _id, String phoneNumber, String password, String userType, List<Member> member) {
         this._id = _id;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.userType = userType;
-    }
-
-    public User(String phoneNumber, String password, String userType) {
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.userType = userType;
-    }
-
-    public User(String phoneNumber, String password, String userType, List<Member> member) {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.userType = userType;
