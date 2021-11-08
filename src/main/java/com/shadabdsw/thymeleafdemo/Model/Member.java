@@ -1,16 +1,17 @@
 package com.shadabdsw.thymeleafdemo.Model;
 
+import java.util.Date;
 import java.util.List;
 
 public class Member {
     private String adhaar;
     private String name;
     private String gender;
-    private String dob;
+    private Date dob;
     private String vaccinationStatus;
     private List<Vaccination> vaccine;
 
-    public Member(String adhaar, String name, String gender, String dob, String vaccinationStatus,
+    public Member(String adhaar, String name, String gender, Date dob, String vaccinationStatus,
             List<Vaccination> vaccine) {
         this.adhaar = adhaar;
         this.name = name;
@@ -20,14 +21,14 @@ public class Member {
         this.vaccine = vaccine;
     }
 
-    public Member(String adhaar, String name, String gender, String dob) {
+    public Member(String adhaar, String name, String gender, Date dob) {
         this.adhaar = adhaar;
         this.name = name;
         this.gender = gender;
         this.dob = dob;
     }
 
-    public Member(String adhaar, String name, String gender, String dob, List<Vaccination> vaccine) {
+    public Member(String adhaar, String name, String gender, Date dob, List<Vaccination> vaccine) {
         this.adhaar = adhaar;
         this.name = name;
         this.gender = gender;
@@ -42,11 +43,11 @@ public class Member {
         return adhaar;
     }
 
-    public String getDob() {
+    public Date getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
