@@ -18,8 +18,15 @@
         <div th:fragment="card">
             <div class='card mb-5 bg-body rounded' th:each="member:${user.member}">
                 <div class='card-body'>
+                    <div class='row'>
+                        <div class='col'>
+                            <h2 class='card-title' style='color: blue' th:text="${member.name}" id='member_name'></h2>
+                        </div>
+                        <div class='col'>
+                            <button class='btn btn-primary' style="margin-left: 400px;" th:onclick="${editMember}" id='edit_member'>Edit</button>
+                        </div>
+                    </div>
                     <div>
-                        <h2 style='color: blue' th:text="${member.name}" id='member_name'></h2>
                         <h6 style='color: blue' th:if="${member.vaccinationStatus} eq 'None'">Not Vaccinated</h6>
                         <h6 style='color: blue' th:if="${member.vaccinationStatus} eq 'Partial'">Partially Vaccinated</h6>
                         <h6 style='color: blue' th:if="${member.vaccinationStatus} eq 'Full'">Fully Vaccinated</h6>
