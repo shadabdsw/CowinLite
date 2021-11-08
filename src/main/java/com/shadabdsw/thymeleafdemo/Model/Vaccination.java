@@ -1,13 +1,15 @@
 package com.shadabdsw.thymeleafdemo.Model;
 
+import java.util.Date;
+
 public class Vaccination {
 
     private String vaccinationType;
     private String vaccinationCentre;
     private String vaccinationBy;
-    private String vaccinationDate;
+    private Date vaccinationDate;
 
-    public Vaccination(String vaccinationType, String vaccinationCentre, String vaccinationBy, String vaccinationDate) {
+    public Vaccination(String vaccinationType, String vaccinationCentre, String vaccinationBy, Date vaccinationDate) {
         this.vaccinationType = vaccinationType;
         this.vaccinationCentre = vaccinationCentre;
         this.vaccinationBy = vaccinationBy;
@@ -52,13 +54,13 @@ public class Vaccination {
 
 
 
-    public String getVaccinationDate() {
+    public Date getVaccinationDate() {
         return vaccinationDate;
     }
 
 
 
-    public void setVaccinationDate(String vaccinationDate) {
+    public void setVaccinationDate(Date vaccinationDate) {
         this.vaccinationDate = vaccinationDate;
     }
 
