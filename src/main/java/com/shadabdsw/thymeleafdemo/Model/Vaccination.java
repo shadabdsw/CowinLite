@@ -8,14 +8,15 @@ public class Vaccination {
     private String vaccinationCentre;
     private String vaccinationBy;
     private Date vaccinationDate;
+    private Date nextVaccinationDate;
 
-    public Vaccination(String vaccinationType, String vaccinationCentre, String vaccinationBy, Date vaccinationDate) {
+    public Vaccination(String vaccinationType, String vaccinationCentre, String vaccinationBy, Date vaccinationDate, Date nextVaccinationDate) {
         this.vaccinationType = vaccinationType;
         this.vaccinationCentre = vaccinationCentre;
         this.vaccinationBy = vaccinationBy;
         this.vaccinationDate = vaccinationDate;
+        this.nextVaccinationDate = nextVaccinationDate;
     }
-    
     
 
     public String getVaccinationType() {
@@ -23,11 +24,9 @@ public class Vaccination {
     }
 
 
-
     public void setVaccinationType(String vaccinationType) {
         this.vaccinationType = vaccinationType;
     }
-
 
 
     public String getVaccinationCentre() {
@@ -35,11 +34,9 @@ public class Vaccination {
     }
 
 
-
     public void setVaccinationCentre(String vaccinationCentre) {
         this.vaccinationCentre = vaccinationCentre;
     }
-
 
 
     public String getVaccinationBy() {
@@ -47,11 +44,9 @@ public class Vaccination {
     }
 
 
-
     public void setVaccinationBy(String vaccinationBy) {
         this.vaccinationBy = vaccinationBy;
     }
-
 
 
     public Date getVaccinationDate() {
@@ -59,17 +54,24 @@ public class Vaccination {
     }
 
 
-
     public void setVaccinationDate(Date vaccinationDate) {
         this.vaccinationDate = vaccinationDate;
     }
 
+    public Date getNextVaccinationDate() {
+        return nextVaccinationDate;
+    }
+
+    public void setNextVaccinationDate(Date nextVaccinationDate) {
+        this.nextVaccinationDate = nextVaccinationDate;
+    }
 
 
     @Override
     public String toString() {
-        return "Vaccination [vaccinationBy=" + vaccinationBy + ", vaccinationCentre=" + vaccinationCentre
-                + ", vaccinationDate=" + vaccinationDate + ", vaccinationType=" + vaccinationType + "]";
+        return "Vaccination [nextVaccinationDate=" + nextVaccinationDate + ", vaccinationBy=" + vaccinationBy
+                + ", vaccinationCentre=" + vaccinationCentre + ", vaccinationDate=" + vaccinationDate
+                + ", vaccinationType=" + vaccinationType + "]";
     }
 
 }
