@@ -79,6 +79,16 @@
               <div type="hidden" class="form-floating mt-2">
                 <input
                   type="hidden"
+                  th:field="*{userType}"
+                  class="form-control"
+                  id="floatingUserType"
+                  placeholder="UserType"
+                  value=""
+                />
+              </div>
+              <div type="hidden" class="form-floating mt-2">
+                <input
+                  type="hidden"
                   th:field="*{member}"
                   class="form-control"
                   id="floatingMember"
