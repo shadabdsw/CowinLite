@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>    
+
+    <style>
+      .centered {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+
+    <div th:replace="common :: header"></div>
+    <title>Staff</title>
+
+    <nav class="navbar navbar-dark fixed-top" style=" background: #1e3770;">
+      <div class="container-fluid">
+        <a class="navbar navbar-brand" style="font-size: 28px; margin-left: 128px;" href="#">
+          Cowin Lite
+        </a>
+      </div>
+    </nav>
+    <nav class="navbar navbar-dark fixed-bottom" style=" background: #1e3770">
+      <div class="container-fluid">
+        <span class="navbar-brand mx-auto">Copyright © 2021 COWIN. All Rights Reserved</span>
+      </div>
+    </nav>
+  </head>
+
+  <body style="margin-top: 100px; margin-bottom: 80px;">
+
+    <h3>Registered Users</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr style="font-size: 20px;">
+                <th>Name</th>
+                <th>Adhaar</th>
+                <th>Vaccination Status</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="font-size: 18px;" th:each="member:${members}">
+                <td th:text="${member.name}"></td>
+                <td th:text="${member.adhaar}"></td>
+                <td th:text="${member.vaccinationStatus}"></td>
+                <td><button id='edit' class="btn btn-info">Edit</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+  </body>
+
+</html>
