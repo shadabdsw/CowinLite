@@ -22,9 +22,6 @@
                         <div class='col'>
                             <h2 class='card-title' style='color: blue' th:text="${member.name}" id='member_name'></h2>
                         </div>
-                        <div class='col'>
-                            <button class='btn btn-primary' style="margin-left: 400px;" th:onclick="${editMember}" id='edit_member'>Edit</button>
-                        </div>
                     </div>
                     <div>
                         <h6 style='color: blue' th:if="${member.vaccinationStatus} eq 'None'">Not Vaccinated</h6>
@@ -98,6 +95,12 @@
             crossorigin="anonymous" 
             referrerpolicy="no-referrer"
             ></script>
+            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" 
+            integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" 
+            crossorigin="anonymous" 
+            referrerpolicy="no-referrer">
+            </script>
         </div>
 
     </body>
