@@ -50,6 +50,12 @@
           <div class="container text-center">
             <input
               type="hidden"
+              name="name"
+              id="name"
+              th:value="${user.name}"
+            />
+            <input
+              type="hidden"
               name="phoneNumber"
               id="phoneNumber"
               th:value="${user.phoneNumber}"
