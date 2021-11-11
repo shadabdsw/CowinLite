@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class MyController {
@@ -45,15 +46,14 @@ public class MyController {
         return userRepository.findByphoneNumber(phoneNumber);
     }
 
-    @GetMapping("/register")
+    @GetMapping("/")
     public String showForm(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-
-        return "register_form";
+        return "register";
     }
 
-    @PostMapping("/home")
+    @PostMapping("/register")
     public String submitForm(@ModelAttribute("user") User user, Model model) {
         // Member member = new Member();
         
@@ -69,7 +69,7 @@ public class MyController {
             System.out.println("Hello, New User!");
             // model.addAttribute("member", member);
             // System.out.println(member);
-            user.setUserType("public");
+            // user.setUserType("public");
             userRepository.save(user);
 
         }
@@ -77,7 +77,11 @@ public class MyController {
         user = userRepository.findByphoneNumber(user.getPhoneNumber()).get();
         model.addAttribute("user", user);
 
-        return "home";
+        if(user.getUserType().equals("staff")){
+            return "redirect:/staff";
+        }
+
+        return "public";
     }
 
     @PostMapping("/addmember")
@@ -134,4 +138,23 @@ public class MyController {
         return new ResponseEntity<Object>(response, HttpStatus.OK);
         // return "common :: card";
     }
+
+    @GetMapping("/staff")
+    public String staff(@ModelAttribute("user") User user, Model model) {
+        System.out.println("user - " + user);
+        List<Member> members = new ArrayList<Member>();
+
+        for(User u : getAllUsers()) {
+            if(u.getUserType().equals("staff")) {
+                members.addAll(u.getMember());
+            }
+        }
+
+        // System.out.println(members);
+        model.addAttribute("members", members);
+
+        return "staff";
+    }
+
+
 }
