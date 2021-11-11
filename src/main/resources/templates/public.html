@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <div th:replace="common :: header"></div>
+    <title>Home</title>
+    <nav class="navbar navbar-dark fixed-top" style=" background: #1e3770;">
+      <div class="container-fluid">
+        <a class="navbar navbar-brand" style="font-size: 28px; margin-left: 128px;" href="#">
+          Cowin Lite
+        </a>
+        <a class="navbar navbar-brand" href="/register" style="font-size: 28px; margin-right: 128px;">Logout</a>
+      </div>
+    </nav>
+    <nav class="navbar navbar-dark fixed-bottom" style=" background: #1e3770">
+      <div class="container-fluid">
+        <span class="navbar-brand mx-auto">Copyright © 2021 COWIN. All Rights Reserved</span>
+      </div>
+    </nav>
+  </head>
+
+  <body style="margin-top: 100px; margin-bottom: 80px;">
+    
+    <!-- Card View of Data -->
+    <div id="form_card" class="container mt-5" style="width: 64rem">
+      <div class="card shadow p-1 mb-5 bg-body rounded">
+        <div class="card-body">
+          <h2 style="color: blue">Account Details</h2>
+          <br />
+          <h5>
+            Registered Mobile Number:
+            <span th:text="${user.phoneNumber}"></span>
+          </h5>
+          <div>
+            <h5>
+              Number of Members:
+              <span th:if="${user.member.size() > 0}"><span th:text="${user.member.size()}"></span></span>
+              <span th:unless="${user.member.size() > 0}">No Members Added</span>
+            </h5>
+          </div>
+          <br />
+          <div th:replace="common :: card"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Member Button -->
+    <div class="container mt-5">
+      <div th:if="${user.getMember().size() != 4}">
+        <form method="post">
+          <div class="container text-center">
+            <input
+              type="hidden"
+              name="phoneNumber"
+              id="phoneNumber"
+              th:value="${user.phoneNumber}"
+            />
+            <input type="hidden" name="password" th:value="${user.password}" />
+            <input
+                type="hidden"
+                name="member"
+                th:value="${user.getMember()}"
+              />
+            <div>
+              <div class="d-grid gap-2 col-4 mx-auto">
+                <button
+                  id="add_member_btn"
+                  class="btn btn-primary"
+                  type="button"
+                  style="font-size: 28px"
+                >
+                  Add Member
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Add Member Form -->
+    <div id="form_content" class="container mt-5" style="width: 64rem">
+      <div class="card shadow p-3 mb-5 bg-body rounded">
+        <div class="card-body">
+          <h2 class="card-header text-center">Member Information Form</h2>
+          <form th:object=${member}>
+            <div class="form-floating mt-3 mb-3">
+              <input
+                required
+                min="-999999999999"
+                max="999999999999"
+                type="number"
+                class="form-control"
+                id="adhaar"
+                placeholder="Adhaar Number"
+                name="adhaar"
+              /><label for="floatingInput">Enter your adhaar number</label>
+            <div id="adhaarError" style="color: red; margin-left: 8px;" ></div>
+            </div>
+            <div class="form-floating mb-3">
+              <input
+                required
+                class="form-control"
+                type="text"
+                id="name"
+                placeholder="Full Name"
+                name="name"
+              /><label for="floatingName">Enter your full name</label>
+            <div id="nameError" style="color: red; margin-left: 8px;" ></div>
+            </div>
+            <div class="form-floating mb-3">
+              <input 
+                required
+                class="form-control"
+                name="dob"
+                id="dob"
+                placeholder="01/01/2020"
+              /><label for="floatingDOB">Enter your birthday (DD/MM/YYYY)</label>
+            <div id="dobError" style="color: red; margin-left: 8px;" ></div>
+            </div>
+            <div class="gender">
+              <label class="mb-3">Gender:</label>
+              <div class="form-check form-check-inline">
+                <input
+                  required
+                  class="form-check-input"
+                  type="radio"
+                  name="gender"
+                  id="gender"
+                  value="Male"
+                />Male
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  required
+                  class="form-check-input"
+                  type="radio"
+                  name="gender"
+                  id="gender"
+                  value="Female"
+                />Female<br />
+              </div>
+            <div id="genderError" style="color: red; margin-left: 8px;" ></div>
+            </div>
+            <div class="container text-center">
+              <div class="d-grid gap-2 col-2 mx-auto">
+                <button
+                  id="add_member_submit"
+                  class="btn btn-success"
+                  type="submit"
+                  style="font-size: 28px"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>    
+    </div>
+  </body>
+
+  <div th:replace="common :: footer"></div>
+
+  <script th:inline="javascript">
+    $(document).ready(function () {
+
+      $("#dob").datepicker({
+        dateFormat: "yy-mm-dd", //cannot change to dd-mm-yy as it is not a standard date format
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-100:+0",
+        beforeShow: function (input, inst) {
+          var rect = input.getBoundingClientRect();
+          setTimeout(function () {
+            inst.dpDiv.css({
+              top: rect.top,
+              left: rect.left - 200,
+            });
+          }, 0);
+        },
+        onSelect: function (dateText, inst) {
+          var date = $(this).datepicker('getDate');
+          var dateFormat = $(this).datepicker('option', 'dd-mm-yy');
+          var dateFormatted = $.datepicker.formatDate(dateFormat, date);
+          $("#dob").val(dateFormatted);
+        },
+      });
+
+    
+      $("#form_content").hide();
+
+      $("#add_member_btn").on("click",function() {
+        $("#form_content").show();
+      });
+      
+      //SUBMIT FORM
+      $("#add_member_submit").click(function(event) {
+        console.log("Button Clicked");
+        event.preventDefault();
+        event.stopPropagation;
+
+
+        // if($("#adhaar").val() == "") {
+        //   $("#adhaarError").text("Please fill this field.");
+        // } else if($("#name").val() == "") {
+        //   $("#nameError").text("Please fill this field.");
+        // } else if($("#dob").val() == "") {
+        //   $("#dobError").text("Please fill this field.");
+        // } else if($("input[name=gender]:checked").val() == "") {
+        //   $("#genderError").text("Please select one of the fields.");
+        // } else if($("#adhaar").val().length != 14) {
+        //     $("#adhaarError").text("Please enter 14 digit Adhaar Number.");
+        // } else {
+        //   ajaxPost();
+        // }
+        
+        ajaxPost();
+
+      });
+
+      function ajaxPost() {
+        
+        // let isBool = validate();
+        let isBool = true;
+
+        if(isBool) {
+          console.log("Ajax Post");
+
+          //Prepare Form Data
+          var phoneNumber = $("#phoneNumber").val();
+          var member = {
+            adhaar:$("#adhaar").val(),
+            name:$("#name").val(),
+            gender:$("input[name=gender]:checked").val(),
+            dob:$("#dob").val(),
+            vaccinationStatus:"None",
+            vaccine:[]
+          }
+
+          var formData = {phoneNumber: phoneNumber, member: member};
+            
+          //POST
+          $.ajax({
+            type: "POST",
+            contentType:"application/json",
+            url:"addmember",
+            data:JSON.stringify(formData),
+            dataType:'json',
+            success:function(fragment) {
+              console.log(formData);
+              console.log(fragment);
+              if(fragment.status == "success") {
+                console.log("True");
+                $("#form_card").show();
+                $("#form_content").hide();
+                location.reload();
+                // let div=document.createElement("div");
+                // div.appendChild(fragment);
+                // div.innerHTML;
+
+              } else {
+                console.log("False");
+                $("#form_card").show();
+              }
+            },
+            error:function(e) {
+              console.log(fragment);
+              alert("Error!");
+              console.log("Error: ", e);
+            }
+          });
+        } else {
+          
+        }
+      }
+
+      
+
+    });
+  </script>
+
+</html>
