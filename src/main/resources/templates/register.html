@@ -41,6 +41,18 @@
               th:object="${user}"
               method="post"
             >
+            <div class="form-floating mt-2">
+              <input
+                required
+                type="text"
+                th:field="*{name}"
+                class="form-control"
+                id="floatingName"
+                placeholder="name"
+                name="name"
+              />
+              <label for="floatingName">Enter your name</label>
+            </div>
               <div class="form-floating mt-2">
                 <input
                   maxlength="10"
