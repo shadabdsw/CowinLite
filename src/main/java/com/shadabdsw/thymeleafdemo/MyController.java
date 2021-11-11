@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class MyController {
@@ -60,13 +59,13 @@ public class MyController {
         if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
                 && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
 
-            System.out.println("Welcome Back " + user.getPhoneNumber());
+            System.out.println("Welcome Back " + user.getName());
             // model.addAttribute("member", member);
             // System.out.println(member);
 
         } else {
 
-            System.out.println("Hello, New User!");
+            System.out.println("Hello, New User! " + user.getName());
             // model.addAttribute("member", member);
             // System.out.println(member);
             // user.setUserType("public");
@@ -140,12 +139,11 @@ public class MyController {
     }
 
     @GetMapping("/staff")
-    public String staff(@ModelAttribute("user") User user, Model model) {
-        System.out.println("user - " + user);
+    public String staff(Model model) {
         List<Member> members = new ArrayList<Member>();
 
         for(User u : getAllUsers()) {
-            if(u.getUserType().equals("staff")) {
+            if(u.getUserType().equals("public")) {
                 members.addAll(u.getMember());
             }
         }
