@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>    
+
+    <style>
+      .centered {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+
+    <div th:replace="common :: header"></div>
+    <title>Register</title>
+
+    <nav class="navbar navbar-dark fixed-top" style=" background: #1e3770;">
+      <div class="container-fluid">
+        <a class="navbar navbar-brand" style="font-size: 28px; margin-left: 128px;" href="#">
+          Cowin Lite
+        </a>
+      </div>
+    </nav>
+    <nav class="navbar navbar-dark fixed-bottom" style=" background: #1e3770">
+      <div class="container-fluid">
+        <span class="navbar-brand mx-auto">Copyright © 2021 COWIN. All Rights Reserved</span>
+      </div>
+    </nav>
+  </head>
+
+  <body style="margin-top: 100px">
+
+    <div class="container text-center centered" style="width: 34rem">
+      <div class="card text-center shadow p-3 mb-5 bg-body rounded">
+        <div class="card-body">
+          <h2 class="card-header">Register/Login to Cowin Lite</h2>
+          <div>
+            <form
+              action="#"
+              th:action="@{/register}"
+              th:object="${user}"
+              method="post"
+            >
+              <div class="form-floating mt-2">
+                <input
+                  maxlength="10"
+                  minlength="1"
+                  required
+                  type="tel"
+                  th:field="*{phoneNumber}"
+                  class="form-control"
+                  id="floatingPhone"
+                  placeholder="phoneNumber"
+                  name="phone"
+                />
+                <label for="floatingPhone">Enter your phone number</label>
+              </div>
+              <div>
+                <div class="form-floating mt-2">
+                    <input
+                      required
+                      type="password"
+                      th:field="*{password}"
+                      class="form-control"
+                      id="floatingPassword"
+                      placeholder="Password"
+                    />
+                  <label for="floatingPassword">Enter your password</label>
+                  <div class="progress" style="margin-top: 10px; height: 20px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="passwordStrength" role="progressbar" aria-valuenow="100" aria-valuemin="20" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button id="register_btn" class="btn btn-primary mt-3" type="submit">
+                  Register/Login
+                </button>
+              </div>
+              <div type="hidden" class="form-floating mt-2">
+                <input
+                  type="hidden"
+                  th:field="*{userType}"
+                  class="form-control"
+                  id="floatingUserType"
+                  placeholder="UserType"
+                  value=""
+                />
+              </div>
+              <div type="hidden" class="form-floating mt-2">
+                <input
+                  type="hidden"
+                  th:field="*{member}"
+                  class="form-control"
+                  id="floatingMember"
+                  placeholder="Member"
+                  value=""
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div th:replace="common :: footer"></div>
+    
+  </body>
+
+  <script>
+
+    floatingUserType.value = "public";
+
+    let password = document.getElementById('floatingPassword');
+    let progressBar = document.getElementById('passwordStrength');
+    password.addEventListener("input", () => {
+      pwd = password.value;
+      strength = scorePassword(pwd);
+      console.log(password.value.length);
+      progressBar.style.width = strength+"%";
+
+      progressBar.classList.remove("bg-success", "bg-warning", "bg-danger");
+      if(strength < 30) {
+        progressBar.classList.add("bg-danger");
+        progressBar.innerHTML = "Weak Password";
+      } else if (strength < 70) {
+        progressBar.classList.add("bg-warning");
+        progressBar.innerHTML = "Moderate Password";
+      } else {
+        progressBar.classList.add("bg-success");
+        progressBar.innerHTML = "Strong Password";
+      }
+    });
+
+    function scorePassword(pass) {
+      var score = 0;
+      if (!pass)
+          return score;
+
+      // award every unique letter until 5 repetitions
+      var letters = new Object();
+      for (var i=0; i<pass.length; i++) {
+          letters[pass[i]] = (letters[pass[i]] || 0) + 1;
+          score += 5.0 / letters[pass[i]];
+      }
+
+      // bonus points for mixing it up
+      var variations = {
+          digits: /\d/.test(pass),
+          lower: /[a-z]/.test(pass),
+          upper: /[A-Z]/.test(pass),
+          nonWords: /\W/.test(pass),
+      }
+
+      var variationCount = 0;
+      for (var check in variations) {
+          variationCount += (variations[check] == true) ? 1 : 0;
+      }
+      score += (variationCount - 1) * 10;
+
+      return parseInt(score);
+    }
+
+  </script>
+
+</html>
