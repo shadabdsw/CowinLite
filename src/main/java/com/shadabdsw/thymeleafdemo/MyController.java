@@ -2,12 +2,12 @@ package com.shadabdsw.thymeleafdemo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
 import com.shadabdsw.thymeleafdemo.Model.Member;
 import com.shadabdsw.thymeleafdemo.Model.ServiceResponse;
 import com.shadabdsw.thymeleafdemo.Model.User;
+import com.shadabdsw.thymeleafdemo.Model.VaccineEditReq;
 import com.shadabdsw.thymeleafdemo.Repositories.MemberRepository;
 import com.shadabdsw.thymeleafdemo.Repositories.UserRepository;
 
@@ -41,9 +41,9 @@ public class MyController {
         return users;
     }
 
-    public Optional<User> findPhoneNumber(String phoneNumber) {
-        return userRepository.findByphoneNumber(phoneNumber);
-    }
+    // public Optional<User> findPhoneNumber(String phoneNumber) {
+    // return userRepository.findByphoneNumber(phoneNumber);
+    // }
 
     @GetMapping("/")
     public String showForm(Model model) {
@@ -55,7 +55,7 @@ public class MyController {
     @PostMapping("/register")
     public String submitForm(@ModelAttribute("user") User user, Model model) {
         // Member member = new Member();
-        
+
         if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
                 && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
 
@@ -76,7 +76,7 @@ public class MyController {
         user = userRepository.findByphoneNumber(user.getPhoneNumber()).get();
         model.addAttribute("user", user);
 
-        if(user.getUserType().equals("staff")){
+        if (user.getUserType().equals("staff")) {
             return "redirect:/staff";
         }
 
@@ -84,20 +84,22 @@ public class MyController {
     }
 
     @PostMapping("/addmember")
-    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq, Model model) {
-    // public String addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq, Model model) {
-        
+    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq,
+            Model model) {
+        // public String addmember(@ModelAttribute("user") User user, @RequestBody
+        // AddMemberReq addMemberReq, Model model) {
+
         int flag = 0;
         List<Member> memberDetails = new ArrayList<Member>();
         user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(addMemberReq.getPhoneNumber())),
-                    User.class);
+                User.class);
         System.out.println(user.getMember());
         // memberDetails.add(addMemberReq.getMember());
         // System.out.println(memberDetails);
         System.out.println(addMemberReq.getMember());
         System.out.println(addMemberReq.getPhoneNumber());
-        
-        if(user.getMember().size() < 1) {
+
+        if (user.getMember().size() < 1) {
             memberDetails.add(addMemberReq.getMember());
             user.setMember(memberDetails);
             flag++;
@@ -110,13 +112,13 @@ public class MyController {
         System.out.println(user);
         System.out.println(user.getPhoneNumber() + " " + user.getPassword());
 
-        if(flag == 0) {
+        if (flag == 0) {
             if (memberDetails != null && memberDetails.size() > 0 && memberDetails.size() < 4) {
 
                 Member m = addMemberReq.getMember();
-                System.out.println("m1"+ memberDetails);
+                System.out.println("m1" + memberDetails);
                 memberDetails.add(m);
-                System.out.println("m2"+ memberDetails);
+                System.out.println("m2" + memberDetails);
                 user.setMember(memberDetails);
 
             } else {
@@ -125,7 +127,7 @@ public class MyController {
                 System.out.println("4 members already registered.");
             }
         }
-  
+
         System.out.println("Memberssss: " + memberDetails);
         System.out.println(user);
         // user.setMember(memberDetails);
@@ -142,8 +144,8 @@ public class MyController {
     public String staff(Model model) {
         List<Member> members = new ArrayList<Member>();
 
-        for(User u : getAllUsers()) {
-            if(u.getUserType().equals("public")) {
+        for (User u : getAllUsers()) {
+            if (u.getUserType().equals("public")) {
                 members.addAll(u.getMember());
             }
         }
@@ -154,5 +156,31 @@ public class MyController {
         return "staff";
     }
 
+    @PostMapping("/staff")
+    public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, Model model) {
+        User user;
+        System.out.println(vaccineEditReq.getAdhaar());
+        user = userRepository.findByphoneNumber(vaccineEditReq.getPhnNumber()).get();
+        
+        // System.out.println(user);
+        for(User u: getAllUsers()) {
+            if(u.getUserType().equals("public")) {
+                for(Member m: u.getMember()) {
+                    if(m.getAdhaar().equals(vaccineEditReq.getAdhaar())) {
+                        if(m.getVaccinationStatus().equals("None")) {
+                            m.setVaccinationStatus("Partial");
+                        } else if(m.getVaccinationStatus().equals("Partial")) {
+                            m.setVaccinationStatus("Full");
+                        } else {
+                            System.out.println("Fully Vaccinated");
+                        }
+                        userRepository.save(u);
+                    }
+                }
+            }
+        }
+
+        return new ResponseEntity<Object>("success", HttpStatus.OK);
+    }
 
 }
