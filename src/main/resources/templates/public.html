@@ -235,6 +235,7 @@
           //Prepare Form Data
           var phoneNumber = $("#phoneNumber").val();
           var member = {
+            phnNumber: $("#phoneNumber").val(),
             adhaar:$("#adhaar").val(),
             name:$("#name").val(),
             gender:$("input[name=gender]:checked").val(),
@@ -275,11 +276,11 @@
               console.log("Error: ", e);
             }
           });
+
         } else {
           
         }
       }
-
       
 
     });
