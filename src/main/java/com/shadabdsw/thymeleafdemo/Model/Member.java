@@ -3,7 +3,11 @@ package com.shadabdsw.thymeleafdemo.Model;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.annotation.Transient;
+
 public class Member {
+    
+    private String phnNumber;
     private String adhaar;
     private String name;
     private String gender;
@@ -14,14 +18,23 @@ public class Member {
     public Member() {
     }
 
-    public Member(String adhaar, String name, String gender, Date dob, String vaccinationStatus,
+    public Member(String phnNumber, String adhaar, String name, String gender, Date dob, String vaccinationStatus,
             List<Vaccination> vaccine) {
+        this.phnNumber = phnNumber;
         this.adhaar = adhaar;
         this.name = name;
         this.gender = gender;
         this.dob = dob;
         this.vaccinationStatus = vaccinationStatus;
         this.vaccine = vaccine;
+    }
+    
+    public String getPhnNumber() {
+        return phnNumber;
+    }
+
+    public void setPhnNumber(String phnNumber) {
+        this.phnNumber = phnNumber;
     }
 
     public String getAdhaar() {
@@ -74,10 +87,8 @@ public class Member {
 
     @Override
     public String toString() {
-        return "Member [adhaar=" + adhaar + ", dob=" + dob + ", gender=" + gender + ", name=" + name
-                + ", vaccinationStatus=" + vaccinationStatus + ", vaccine=" + vaccine + "]";
+        return "Member [adhaar=" + adhaar + ", dob=" + dob + ", gender=" + gender + ", name=" + name + ", phnNumber="
+                + phnNumber + ", vaccinationStatus=" + vaccinationStatus + ", vaccine=" + vaccine + "]";
     }
-
-    
 
 }
