@@ -17,6 +17,9 @@ public class Vaccination {
         this.vaccinationDate = vaccinationDate;
         this.nextVaccinationDate = nextVaccinationDate;
     }
+
+    public Vaccination() {
+    }
     
 
     public String getVaccinationType() {
