@@ -7,6 +7,7 @@ import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
 import com.shadabdsw.thymeleafdemo.Model.Member;
 import com.shadabdsw.thymeleafdemo.Model.ServiceResponse;
 import com.shadabdsw.thymeleafdemo.Model.User;
+import com.shadabdsw.thymeleafdemo.Model.Vaccination;
 import com.shadabdsw.thymeleafdemo.Model.VaccineEditReq;
 import com.shadabdsw.thymeleafdemo.Repositories.MemberRepository;
 import com.shadabdsw.thymeleafdemo.Repositories.UserRepository;
@@ -169,6 +170,11 @@ public class MyController {
                     if(m.getAdhaar().equals(vaccineEditReq.getAdhaar())) {
                         if(m.getVaccinationStatus().equals("None")) {
                             m.setVaccinationStatus("Partial");
+                            Vaccination v = new Vaccination();
+                            v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
+                            v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
+                            v.setVaccinationType(vaccineEditReq.getVaccinationType());
+                            m.getVaccine().add(v);
                         } else if(m.getVaccinationStatus().equals("Partial")) {
                             m.setVaccinationStatus("Full");
                         } else {
