@@ -97,7 +97,7 @@
                         vaccinationStatus: vaccinationStatus,
                         vaccinationType: vaccinationType,
                         vaccinationCentre: vaccinationCentre,
-                        vaccinationBy: '',
+                        vaccinationBy: 'Shady',
                         vaccinationDate: new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear(),
                     };
                     console.log(formData);
@@ -108,7 +108,6 @@
                       contentType: 'application/json',
                       url: '/staff',
                       data: JSON.stringify(formData),
-                      dataType:'json',
                       success: function(result) {
                         console.log(result);
                         if(result == "success"){
@@ -120,7 +119,7 @@
                       },
                       error: function(e) {
                         $.alert('Error in updating vaccination details');
-                        console.log(e.message);
+                        console.log(e);
                       },
                 });
             },
