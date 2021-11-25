@@ -10,9 +10,10 @@ public class VaccineEditReq {
     private String vaccinationCentre;
     private String vaccinationBy;
     private String vaccinationDate;
+    private String nextVaccinationDate;
 
     public VaccineEditReq(String phnNumber, String name, String adhaar, String vaccinationStatus, String vaccinationType,
-            String vaccinationCentre, String vaccinationBy, String vaccinationDate) {
+            String vaccinationCentre, String vaccinationBy, String vaccinationDate, String nextVaccinationDate) {
         this.phnNumber = phnNumber;
         this.name = name;
         this.adhaar = adhaar;
@@ -21,6 +22,7 @@ public class VaccineEditReq {
         this.vaccinationCentre = vaccinationCentre;
         this.vaccinationBy = vaccinationBy;
         this.vaccinationDate = vaccinationDate;
+        this.nextVaccinationDate = nextVaccinationDate;
     }
 
     public String getPhnNumber() {
@@ -71,13 +73,19 @@ public class VaccineEditReq {
     public void setVaccinationDate(String vaccinationDate) {
         this.vaccinationDate = vaccinationDate;
     }
+    public String getNextVaccinationDate() {
+        return nextVaccinationDate;
+    }
+    public void setNextVaccinationDate(String nextVaccinationDate) {
+        this.nextVaccinationDate = nextVaccinationDate;
+    }
 
     @Override
     public String toString() {
-        return "VaccineEditReq [adhaar=" + adhaar + ", name=" + name + ", phnNumber=" + phnNumber
-                + ", vaccinationBy=" + vaccinationBy + ", vaccinationCentre=" + vaccinationCentre + ", vaccinationDate="
-                + vaccinationDate + ", vaccinationStatus=" + vaccinationStatus + ", vaccinationType=" + vaccinationType
-                + "]";
+        return "VaccineEditReq [adhaar=" + adhaar + ", name=" + name + ", nextVaccinationDate=" + nextVaccinationDate
+                + ", phnNumber=" + phnNumber + ", vaccinationBy=" + vaccinationBy + ", vaccinationCentre="
+                + vaccinationCentre + ", vaccinationDate=" + vaccinationDate + ", vaccinationStatus="
+                + vaccinationStatus + ", vaccinationType=" + vaccinationType + "]";
     }
 
 }
