@@ -1,6 +1,10 @@
 package com.shadabdsw.thymeleafdemo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
@@ -158,7 +162,7 @@ public class MyController {
     }
 
     @PostMapping("/staff")
-    public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, Model model) {
+    public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, Model model) throws ParseException {
         User user;
         System.out.println(vaccineEditReq.getAdhaar());
         user = userRepository.findByphoneNumber(vaccineEditReq.getPhnNumber()).get();
@@ -174,9 +178,28 @@ public class MyController {
                             v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
                             v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
                             v.setVaccinationType(vaccineEditReq.getVaccinationType());
+                            String sDate = vaccineEditReq.getVaccinationDate();
+                            SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
+                            Date date = vaccinationDate.parse(sDate);
+                            v.setVaccinationDate(date);
+                            Calendar cal = Calendar.getInstance();
+                            cal.add(Calendar.MONTH, 3);
+                            v.setNextVaccinationDate(cal.getTime());
                             m.getVaccine().add(v);
                         } else if(m.getVaccinationStatus().equals("Partial")) {
                             m.setVaccinationStatus("Full");
+                            Vaccination v = new Vaccination();
+                            v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
+                            v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
+                            v.setVaccinationType(vaccineEditReq.getVaccinationType());
+                            String sDate = vaccineEditReq.getVaccinationDate();
+                            SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
+                            Date date = vaccinationDate.parse(sDate);
+                            v.setVaccinationDate(date);
+                            Calendar cal = Calendar.getInstance();
+                            cal.add(Calendar.MONTH, 3);
+                            v.setNextVaccinationDate(cal.getTime());
+                            m.getVaccine().add(v);
                         } else {
                             System.out.println("Fully Vaccinated");
                         }
