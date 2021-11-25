@@ -51,7 +51,7 @@
                 <td th:text="${member.phnNumber}"></td>
                 <td th:text="${member.adhaar}"></td>
                 <td th:text="${member.vaccinationStatus}"></td>
-                <td><button id='edit_btn' type="button" class="btn btn-info">Edit</button></td>
+                <td th:unless="${member.vaccinationStatus} eq 'Full'"><button id='edit_btn' type="button" class="btn btn-info">Edit</button></td>
             </tr>
         </tbody>
     </table>
@@ -99,6 +99,7 @@
                         vaccinationCentre: vaccinationCentre,
                         vaccinationBy: 'Shady',
                         vaccinationDate: new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear(),
+                        nextVaccinationDate: '',
                     };
                     console.log(formData);
 
