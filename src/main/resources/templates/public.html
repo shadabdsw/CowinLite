@@ -116,12 +116,14 @@
             <div class="form-floating mb-3">
               <input 
                 required
+                maxlength="4"
+                type="number"
                 class="form-control"
-                name="dob"
-                id="dob"
+                name="yob"
+                id="yob"
                 placeholder="01/01/2020"
-              /><label for="floatingDOB">Enter your birthday (DD/MM/YYYY)</label>
-            <div id="dobError" style="color: red; margin-left: 8px;" ></div>
+              /><label for="floatingYOB">Enter year of birth (YYYY)</label>
+            <div id="yobError" style="color: red; margin-left: 8px;" ></div>
             </div>
             <div class="gender">
               <label class="mb-3">Gender:</label>
@@ -170,27 +172,27 @@
   <script th:inline="javascript">
     $(document).ready(function () {
 
-      $("#dob").datepicker({
-        dateFormat: "yy-mm-dd", //cannot change to dd-mm-yy as it is not a standard date format
-        changeMonth: true,
-        changeYear: true,
-        yearRange: "-100:+0",
-        beforeShow: function (input, inst) {
-          var rect = input.getBoundingClientRect();
-          setTimeout(function () {
-            inst.dpDiv.css({
-              top: rect.top,
-              left: rect.left - 200,
-            });
-          }, 0);
-        },
-        onSelect: function (dateText, inst) {
-          var date = $(this).datepicker('getDate');
-          var dateFormat = $(this).datepicker('option', 'dd-mm-yy');
-          var dateFormatted = $.datepicker.formatDate(dateFormat, date);
-          $("#dob").val(dateFormatted);
-        },
-      });
+      // $("#dob").datepicker({
+      //   dateFormat: "yy-mm-dd", //cannot change to dd-mm-yy as it is not a standard date format
+      //   changeMonth: true,
+      //   changeYear: true,
+      //   yearRange: "-100:+0",
+      //   beforeShow: function (input, inst) {
+      //     var rect = input.getBoundingClientRect();
+      //     setTimeout(function () {
+      //       inst.dpDiv.css({
+      //         top: rect.top,
+      //         left: rect.left - 200,
+      //       });
+      //     }, 0);
+      //   },
+      //   onSelect: function (dateText, inst) {
+      //     var date = $(this).datepicker('getDate');
+      //     var dateFormat = $(this).datepicker('option', 'dd-mm-yy');
+      //     var dateFormatted = $.datepicker.formatDate(dateFormat, date);
+      //     $("#dob").val(dateFormatted);
+      //   },
+      // });
 
     
       $("#form_content").hide();
@@ -239,7 +241,7 @@
             adhaar:$("#adhaar").val(),
             name:$("#name").val(),
             gender:$("input[name=gender]:checked").val(),
-            dob:$("#dob").val(),
+            yob:$("#yob").val(),
             vaccinationStatus:"None",
             vaccine:[]
           }
