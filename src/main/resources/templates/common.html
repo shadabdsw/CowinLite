@@ -34,7 +34,7 @@
                     <div class='container'>
                         <div class='row'>
                             <div class='col'>
-                                <h5 style='color:black; text-align: left;'>Year of Birth: <span th:text="${#dates.year(member.dob)}" id='member_dob'></span></h5>
+                                <h5 style='color:black; text-align: left;'>Year of Birth: <span th:text="${member.yob}" id='member_yob'></span></h5>
                             </div>
                             <div class='col'>
                                 <h5 style='color:black; text-align: center;'>Adhaar Number: XXXX-<span th:text="${#strings.substring(member.adhaar,10,14)}" id='member_adhaar'></span></h5>
