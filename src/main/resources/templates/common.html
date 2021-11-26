@@ -15,7 +15,9 @@
             />
 
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-
+            
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+            
         </div>
 
         <div th:fragment="card">
@@ -23,7 +25,7 @@
                 <div class='card-body'>
                     <div class='row'>
                         <div class='col'>
-                            <h2 class='card-title' style='color: blue' th:text="${member.name}" id='member_name'></h2>
+                            <h2 class='card-title' style='color: blue' th:text="${member.memberName}" id='member_name'></h2>
                         </div>
                     </div>
                     <div>
@@ -106,6 +108,9 @@
             </script>
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+            <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
         </div>
 
     </body>
