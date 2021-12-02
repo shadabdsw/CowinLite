@@ -102,6 +102,7 @@
                 action: function () {
                     var vaccinationType = this.$content.find('.vaccinationType').val();
                     var vaccinationCentre = this.$content.find('.vaccinationCentre').val();
+
                     if(!vaccinationType || !vaccinationCentre){
                         $.alert('Please enter the details.');
                         return false;
@@ -113,7 +114,7 @@
                         vaccinationStatus: vaccinationStatus,
                         vaccinationType: vaccinationType,
                         vaccinationCentre: vaccinationCentre,
-                        vaccinationBy: 'Shady',
+                        vaccinationBy: '',
                         vaccinationDate: new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear(),
                         nextVaccinationDate: '',
                     };
