@@ -4,6 +4,7 @@ public class VaccineEditReq {
 
     private String phnNumber;
     private String name;
+    private String memberName;
     private String adhaar;
     private String vaccinationStatus;
     private String vaccinationType;
@@ -12,10 +13,11 @@ public class VaccineEditReq {
     private String vaccinationDate;
     private String nextVaccinationDate;
 
-    public VaccineEditReq(String phnNumber, String name, String adhaar, String vaccinationStatus, String vaccinationType,
+    public VaccineEditReq(String phnNumber, String name, String memberName, String adhaar, String vaccinationStatus, String vaccinationType,
             String vaccinationCentre, String vaccinationBy, String vaccinationDate, String nextVaccinationDate) {
         this.phnNumber = phnNumber;
         this.name = name;
+        this.memberName = memberName;
         this.adhaar = adhaar;
         this.vaccinationStatus = vaccinationStatus;
         this.vaccinationType = vaccinationType;
@@ -37,6 +39,13 @@ public class VaccineEditReq {
     public void setName(String name) {
         this.name = name;
     }
+    public String getMemberName() {
+        return memberName;
+    }
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
+    }
+
     public String getAdhaar() {
         return adhaar;
     }
@@ -82,10 +91,10 @@ public class VaccineEditReq {
 
     @Override
     public String toString() {
-        return "VaccineEditReq [adhaar=" + adhaar + ", name=" + name + ", nextVaccinationDate=" + nextVaccinationDate
-                + ", phnNumber=" + phnNumber + ", vaccinationBy=" + vaccinationBy + ", vaccinationCentre="
-                + vaccinationCentre + ", vaccinationDate=" + vaccinationDate + ", vaccinationStatus="
-                + vaccinationStatus + ", vaccinationType=" + vaccinationType + "]";
+        return "VaccineEditReq [adhaar=" + adhaar + ", memberName=" + memberName + ", name=" + name
+                + ", nextVaccinationDate=" + nextVaccinationDate + ", phnNumber=" + phnNumber + ", vaccinationBy="
+                + vaccinationBy + ", vaccinationCentre=" + vaccinationCentre + ", vaccinationDate=" + vaccinationDate
+                + ", vaccinationStatus=" + vaccinationStatus + ", vaccinationType=" + vaccinationType + "]";
     }
 
 }
