@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
 import com.shadabdsw.thymeleafdemo.Model.Member;
@@ -82,6 +83,7 @@ public class MyController {
         model.addAttribute("user", user);
 
         if (user.getUserType().equals("staff")) {
+            model.addAttribute("user", user);
             return "redirect:/staff";
         }
 
@@ -146,33 +148,36 @@ public class MyController {
     }
 
     @GetMapping("/staff")
-    public String staff(Model model) {
-        List<Member> members = new ArrayList<Member>();
+    public String staff(Model model, @ModelAttribute("user") User user) {
+        List<Member> members = new CopyOnWriteArrayList<Member>();
 
         for (User u : getAllUsers()) {
             if (u.getUserType().equals("public")) {
                 members.addAll(u.getMember());
             }
-            // for(Member m : members){
-            //     if(m.getVaccinationStatus().equals("Full"))
-            //     members.remove(m);
-            // }
-            
+            for(Member m : members) {
+                if(m.getVaccinationStatus().equals("Full"))
+                members.remove(m);
+            }   
         }
 
         // System.out.println(members);
         model.addAttribute("members", members);
 
+        model.addAttribute("user", user);
+        System.out.println(user.getName());
+        System.out.println(user.getPhoneNumber());
+
         return "staff";
     }
 
     @PostMapping("/staff")
-    public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, Model model) throws ParseException {
-        User user;
-        System.out.println(vaccineEditReq.getAdhaar());
-        user = userRepository.findByphoneNumber(vaccineEditReq.getPhnNumber()).get();
+    public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, @ModelAttribute("user") User user, Model model) throws ParseException {
         
-        // System.out.println(user);
+        System.out.println(vaccineEditReq.getAdhaar());
+        
+        System.out.println(user);
+
         for(User u: getAllUsers()) {
             if(u.getUserType().equals("public")) {
                 for(Member m: u.getMember()) {
@@ -183,6 +188,7 @@ public class MyController {
                             v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
                             v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
                             v.setVaccinationType(vaccineEditReq.getVaccinationType());
+                            v.setVaccinationBy(user.getName());
                             String sDate = vaccineEditReq.getVaccinationDate();
                             SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
                             Date date = vaccinationDate.parse(sDate);
@@ -197,6 +203,7 @@ public class MyController {
                             v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
                             v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
                             v.setVaccinationType(vaccineEditReq.getVaccinationType());
+                            v.setVaccinationBy(user.getName());
                             String sDate = vaccineEditReq.getVaccinationDate();
                             SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
                             Date date = vaccinationDate.parse(sDate);
