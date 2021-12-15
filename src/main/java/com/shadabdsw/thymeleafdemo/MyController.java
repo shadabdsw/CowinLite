@@ -69,21 +69,21 @@ public class MyController {
     }
     
     @PostMapping("/register")
-    public ResponseEntity<Object> submitForm(@ModelAttribute("user") User user, Model model, @RequestBody Registration registration) {
+    public String submitForm(@ModelAttribute("user") User user, Model model) {
         // Member member = new Member();
 
-        System.out.println(registration);
+        // System.out.println(registration);
 
-        if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(registration.getPhoneNumber())), User.class)
-                && mongoTemplate.exists(Query.query(Criteria.where("password").is(registration.getPassword())), User.class)) {
+        if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
+                && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
 
-            System.out.println("Welcome Back " + registration.getName());
+            System.out.println("Welcome Back " + user.getName());
             // model.addAttribute("member", member);
             // System.out.println(member);
 
         } else {
 
-            System.out.println("Hello, New User! " + registration.getName());
+            System.out.println("Hello, New User! " + user.getName());
             // model.addAttribute("member", member);
             // System.out.println(member);
             // user.setUserType("public");
@@ -91,22 +91,24 @@ public class MyController {
 
         }
 
-        user = userRepository.findByphoneNumber(registration.getPhoneNumber()).get();
+        user = userRepository.findByphoneNumber(user.getPhoneNumber()).get();
         model.addAttribute("user", user);
 
         System.out.println(user);
 
-        // if (user.getUserType().equals("staff")) {
-        //     model.addAttribute("user", user);
-        //     return "redirect:/staff";
-        // }
+        if (user.getUserType().equals("staff")) {
+            model.addAttribute("user", user);
+            return "redirect:/staff";
+        }
 
-        ResponseEntity<String> response = restTemplate.exchange("http://localhost:8081/registration/",
-                HttpMethod.GET, null, String.class, registration);
+        // ResponseEntity<String> response = restTemplate.exchange("http://localhost:8081/registration/",
+        //         HttpMethod.GET, null, String.class, registration);
 
-        System.out.println("Response: " + response.getStatusCode().toString());
+        // System.out.println("Response: " + response.getStatusCode().toString());
 
-        return new ResponseEntity<Object>("success", HttpStatus.OK);
+        // return new ResponseEntity<Object>("success", HttpStatus.OK);
+
+        return "public";
     }
 
     @GetMapping("/public")
