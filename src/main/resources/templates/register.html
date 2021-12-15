@@ -35,12 +35,7 @@
         <div class="card-body">
           <h2 class="card-header">Register/Login to Cowin Lite</h2>
           <div>
-            <form
-              action="#"
-              th:action="@{/register}"
-              th:object="${user}"
-              method="post"
-            >
+            <form th:object="${user}">
             <div class="form-floating mt-2">
               <input
                 required
@@ -119,6 +114,49 @@
   </body>
 
   <script>
+
+    $("#register_btn").click(function(event) {
+      console.log("Button Clicked");
+      event.preventDefault();
+      // event.stopPropagation();
+
+      var formData = {
+        name: $('#floatingName').val(),
+        phoneNumber: $('#floatingPhone').val(),
+        password: $('#floatingPassword').val(),
+      }
+
+      $.ajax({
+            type: "POST",
+            contentType:"application/json",
+            url:"/register",
+            data:JSON.stringify(formData),
+            success: function(data) {
+              console.log("Status: " + data);
+              console.log("Success Register");
+              if(data == "success"){
+                console.log("Success Register 123");
+              }
+
+              $.ajax({
+                type: "GET",
+                url:"/public",
+                data: formData,
+                success: function(data) {
+                  console.log("Success Public");
+                  window.location.href = "http://localhost:8080/public?name=1&phoneNumber=1&password=1";
+                }
+              });
+
+            },
+            error:function(e) {
+              console.log("Error!" + e);
+              console.log("Error Register");
+            }
+          });
+
+        });
+          
 
     floatingUserType.value = "public";
 
