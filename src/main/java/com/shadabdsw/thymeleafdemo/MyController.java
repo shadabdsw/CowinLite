@@ -3,6 +3,7 @@ package com.shadabdsw.thymeleafdemo;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
 import com.shadabdsw.thymeleafdemo.Model.Member;
+import com.shadabdsw.thymeleafdemo.Model.Registration;
 import com.shadabdsw.thymeleafdemo.Model.ServiceResponse;
 import com.shadabdsw.thymeleafdemo.Model.User;
 import com.shadabdsw.thymeleafdemo.Model.Vaccination;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,6 +32,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class MyController {
@@ -40,6 +47,9 @@ public class MyController {
 
     @Autowired
     MongoTemplate mongoTemplate;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -57,21 +67,23 @@ public class MyController {
         model.addAttribute("user", user);
         return "register";
     }
-
+    
     @PostMapping("/register")
-    public String submitForm(@ModelAttribute("user") User user, Model model) {
+    public ResponseEntity<Object> submitForm(@ModelAttribute("user") User user, Model model, @RequestBody Registration registration) {
         // Member member = new Member();
 
-        if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
-                && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
+        System.out.println(registration);
 
-            System.out.println("Welcome Back " + user.getName());
+        if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(registration.getPhoneNumber())), User.class)
+                && mongoTemplate.exists(Query.query(Criteria.where("password").is(registration.getPassword())), User.class)) {
+
+            System.out.println("Welcome Back " + registration.getName());
             // model.addAttribute("member", member);
             // System.out.println(member);
 
         } else {
 
-            System.out.println("Hello, New User! " + user.getName());
+            System.out.println("Hello, New User! " + registration.getName());
             // model.addAttribute("member", member);
             // System.out.println(member);
             // user.setUserType("public");
@@ -79,15 +91,29 @@ public class MyController {
 
         }
 
-        user = userRepository.findByphoneNumber(user.getPhoneNumber()).get();
+        user = userRepository.findByphoneNumber(registration.getPhoneNumber()).get();
         model.addAttribute("user", user);
 
-        if (user.getUserType().equals("staff")) {
-            model.addAttribute("user", user);
-            return "redirect:/staff";
-        }
+        System.out.println(user);
 
-        return "public";
+        // if (user.getUserType().equals("staff")) {
+        //     model.addAttribute("user", user);
+        //     return "redirect:/staff";
+        // }
+
+        ResponseEntity<String> response = restTemplate.exchange("http://localhost:8081/registration/",
+                HttpMethod.GET, null, String.class, registration);
+
+        System.out.println("Response: " + response.getStatusCode().toString());
+
+        return new ResponseEntity<Object>("success", HttpStatus.OK);
+    }
+
+    @GetMapping("/public")
+    public ResponseEntity<Object> showPublic(Model model, @RequestParam("name") String name, @RequestParam("phoneNumber") String phoneNumber, @RequestParam("password") String password) {
+        System.out.println("Registration: - " + name + phoneNumber + password);
+
+        return new ResponseEntity<Object>("success", HttpStatus.OK);
     }
 
     @PostMapping("/addmember")
@@ -158,7 +184,7 @@ public class MyController {
             for(Member m : members) {
                 if(m.getVaccinationStatus().equals("Full"))
                 members.remove(m);
-            }   
+            }
         }
 
         // System.out.println(members);
