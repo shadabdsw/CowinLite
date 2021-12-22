@@ -5,14 +5,16 @@ public class Registration {
     private String name;
     private String phoneNumber;
     private String password;
+    private String userType;
 
-    public Registration(String name, String phoneNumber, String password) {
+    public Registration() {
+
+    }
+    public Registration(String name, String phoneNumber, String password, String userType) {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.password = password;
-    }
-
-    public Registration() {
+        this.userType = userType;
     }
 
     public String getName() {
@@ -27,9 +29,14 @@ public class Registration {
         return password;
     }
 
+    public String getUserType() {
+        return userType;
+    }
+
     @Override
     public String toString() {
-        return "Registration [name=" + name + ", phoneNumber=" + phoneNumber + ", password=" + password + "]";
-    }
+        return "Registration [name=" + name + ", password=" + password + ", phoneNumber=" + phoneNumber + ", userType="
+                + userType + "]";
+    }    
     
 }
