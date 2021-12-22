@@ -49,7 +49,7 @@ public class MyController {
     MongoTemplate mongoTemplate;
 
     @Autowired
-    private RestTemplate restTemplate;
+    RestTemplate restTemplate;
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -87,26 +87,24 @@ public class MyController {
             // model.addAttribute("member", member);
             // System.out.println(member);
             // user.setUserType("public");
+            
+            // Registration registration = restTemplate.getForObject("http://localhost:8081/registration/save", Registration.class);
+            // System.out.println(registration);
             userRepository.save(user);
 
         }
 
-        user = userRepository.findByphoneNumber(user.getPhoneNumber()).get();
+        user = restTemplate.getForObject("http://localhost:8081/registration/" + user.getPhoneNumber(), User.class);
+        System.out.println(user);
+        // user = userRepository.findByphoneNumber(user.getPhoneNumber()).get();
         model.addAttribute("user", user);
 
-        System.out.println(user);
+        // System.out.println(user);
 
         if (user.getUserType().equals("staff")) {
             model.addAttribute("user", user);
             return "redirect:/staff";
         }
-
-        // ResponseEntity<String> response = restTemplate.exchange("http://localhost:8081/registration/",
-        //         HttpMethod.GET, null, String.class, registration);
-
-        // System.out.println("Response: " + response.getStatusCode().toString());
-
-        // return new ResponseEntity<Object>("success", HttpStatus.OK);
 
         return "public";
     }
