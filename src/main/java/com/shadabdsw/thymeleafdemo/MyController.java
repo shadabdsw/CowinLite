@@ -8,12 +8,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
 import com.shadabdsw.thymeleafdemo.Model.Member;
 import com.shadabdsw.thymeleafdemo.Model.Registration;
 import com.shadabdsw.thymeleafdemo.Model.ServiceResponse;
 import com.shadabdsw.thymeleafdemo.Model.User;
+import com.shadabdsw.thymeleafdemo.Model.UserList;
 import com.shadabdsw.thymeleafdemo.Model.Vaccination;
 import com.shadabdsw.thymeleafdemo.Model.VaccineEditReq;
 import com.shadabdsw.thymeleafdemo.Repositories.MemberRepository;
@@ -51,15 +53,18 @@ public class MyController {
     @Autowired
     RestTemplate restTemplate;
 
-    public List<User> getAllUsers() {
-        List<User> users = new ArrayList<>();
-        userRepository.findAll().forEach(users::add);
+    public User[] getAllUsers() {
+        
+        // userRepository.findAll().forEach(users::add);
+        ResponseEntity<User[]> response = restTemplate.getForEntity("http://localhost:8081/registration/", User[].class);
+        User[] users = response.getBody();
+
+        // for (User user : users) {
+        //     System.out.println(user);
+        // }
+
         return users;
     }
-
-    // public Optional<User> findPhoneNumber(String phoneNumber) {
-    // return userRepository.findByphoneNumber(phoneNumber);
-    // }
 
     @GetMapping("/")
     public String showForm(Model model) {
@@ -126,6 +131,7 @@ public class MyController {
         List<Member> memberDetails = new ArrayList<Member>();
         user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(addMemberReq.getPhoneNumber())),
                 User.class);
+        
         System.out.println(user.getMember());
         // memberDetails.add(addMemberReq.getMember());
         // System.out.println(memberDetails);
@@ -182,8 +188,9 @@ public class MyController {
                 members.addAll(u.getMember());
             }
             for(Member m : members) {
-                if(m.getVaccinationStatus().equals("Full"))
-                members.remove(m);
+                if(m.getVaccinationStatus().equals("Full")) {
+                    members.remove(m);
+                }
             }
         }
 
