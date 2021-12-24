@@ -1,5 +1,7 @@
 package com.shadabdsw.thymeleafdemo;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,7 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,6 +54,7 @@ public class MyController {
     public User[] getAllUsers() {
         
         // userRepository.findAll().forEach(users::add);
+
         ResponseEntity<User[]> response = restTemplate.getForEntity("http://localhost:8081/registration/", User[].class);
         User[] users = response.getBody();
 
@@ -67,8 +73,9 @@ public class MyController {
     }
     
     @PostMapping("/register")
-    public String submitForm(@ModelAttribute("user") User user, Model model) {
+    public String submitForm(@ModelAttribute("user") User user, Model model) throws URISyntaxException {
         // Member member = new Member();
+        
 
         // System.out.println(registration);
 
@@ -86,9 +93,24 @@ public class MyController {
             // System.out.println(member);
             // user.setUserType("public");
             
-            // Registration registration = restTemplate.getForObject("http://localhost:8081/registration/save", Registration.class);
-            // System.out.println(registration);
-            userRepository.save(user);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            URI uri = new URI("http://localhost:8081/registration/save");
+            User user1 = new User();
+            user1.setName(user.getName());
+            user1.setPhoneNumber(user.getPhoneNumber());
+            user1.setPassword(user.getPassword());
+            user1.setUserType("public");
+            user1.setMember(user.getMember());
+
+            HttpEntity<User> request = new HttpEntity<User>(user1, headers);
+
+            restTemplate.postForObject(uri, request, User.class);
+
+            // System.out.println("Printing user: " + u.getName());
+
+            // userRepository.save(user);
 
         }
 
@@ -115,16 +137,16 @@ public class MyController {
     }
 
     @PostMapping("/addmember")
-    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq,
-            Model model) {
+    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq, Model model) throws URISyntaxException {
         // public String addmember(@ModelAttribute("user") User user, @RequestBody
         // AddMemberReq addMemberReq, Model model) {
 
         int flag = 0;
         List<Member> memberDetails = new ArrayList<Member>();
-        user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(addMemberReq.getPhoneNumber())),
-                User.class);
-        
+        // user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(addMemberReq.getPhoneNumber())),
+        //         User.class);
+        user = restTemplate.getForObject("http://localhost:8081/registration/" + addMemberReq.getPhoneNumber(), User.class);
+
         System.out.println(user.getMember());
         // memberDetails.add(addMemberReq.getMember());
         // System.out.println(memberDetails);
@@ -163,7 +185,20 @@ public class MyController {
         System.out.println("Memberssss: " + memberDetails);
         System.out.println(user);
         // user.setMember(memberDetails);
-        userRepository.save(user);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        URI uri = new URI("http://localhost:8081/registration/update");
+        User user1 = new User();
+        user1.set_id(user.get_id());
+        user1.setMember(user.getMember());
+
+        HttpEntity<User> request = new HttpEntity<User>(user1, headers);
+
+        restTemplate.postForObject(uri, request, User.class);
+
+        // userRepository.save(user);
         ServiceResponse<Member> response = new ServiceResponse<Member>("success", addMemberReq.getMember());
         System.out.println(response);
         model.addAttribute("user", user);
@@ -208,39 +243,29 @@ public class MyController {
             if(u.getUserType().equals("public")) {
                 for(Member m: u.getMember()) {
                     if(m.getAdhaar().equals(vaccineEditReq.getAdhaar())) {
-                        if(m.getVaccinationStatus().equals("None")) {
-                            m.setVaccinationStatus("Partial");
-                            Vaccination v = new Vaccination();
-                            v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
-                            v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
-                            v.setVaccinationType(vaccineEditReq.getVaccinationType());
-                            v.setVaccinationBy(user.getName());
-                            String sDate = vaccineEditReq.getVaccinationDate();
-                            SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
-                            Date date = vaccinationDate.parse(sDate);
-                            v.setVaccinationDate(date);
-                            Calendar cal = Calendar.getInstance();
-                            cal.add(Calendar.MONTH, 3);
-                            v.setNextVaccinationDate(cal.getTime());
-                            m.getVaccine().add(v);
-                        } else if(m.getVaccinationStatus().equals("Partial")) {
-                            m.setVaccinationStatus("Full");
-                            Vaccination v = new Vaccination();
-                            v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
-                            v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
-                            v.setVaccinationType(vaccineEditReq.getVaccinationType());
-                            v.setVaccinationBy(user.getName());
-                            String sDate = vaccineEditReq.getVaccinationDate();
-                            SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
-                            Date date = vaccinationDate.parse(sDate);
-                            v.setVaccinationDate(date);
-                            Calendar cal = Calendar.getInstance();
-                            cal.add(Calendar.MONTH, 3);
-                            v.setNextVaccinationDate(cal.getTime());
-                            m.getVaccine().add(v);
-                        } else {
+                        if(m.getVaccinationStatus().equals("Full")) {
                             System.out.println("Fully Vaccinated");
+                        } else {
+                            if(m.getVaccinationStatus().equals("None")) {
+                                m.setVaccinationStatus("Partial");
+                            } else {
+                                m.setVaccinationStatus("Full");
+                            }
+                            Vaccination v = new Vaccination();
+                            v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
+                            v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
+                            v.setVaccinationType(vaccineEditReq.getVaccinationType());
+                            v.setVaccinationBy(user.getName());
+                            String sDate = vaccineEditReq.getVaccinationDate();
+                            SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
+                            Date date = vaccinationDate.parse(sDate);
+                            v.setVaccinationDate(date);
+                            Calendar cal = Calendar.getInstance();
+                            cal.add(Calendar.MONTH, 3);
+                            v.setNextVaccinationDate(cal.getTime());
+                            m.getVaccine().add(v);
                         }
+                            
                         userRepository.save(u);
                     }
                 }
