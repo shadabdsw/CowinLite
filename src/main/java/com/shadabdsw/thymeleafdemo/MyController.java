@@ -233,7 +233,7 @@ public class MyController {
     }
 
     @PostMapping("/staff")
-    public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, @ModelAttribute("user") User user, Model model) throws ParseException {
+    public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, @ModelAttribute("user") User user, Model model) throws ParseException, URISyntaxException {
         
         System.out.println(vaccineEditReq.getAdhaar());
         
@@ -265,8 +265,22 @@ public class MyController {
                             v.setNextVaccinationDate(cal.getTime());
                             m.getVaccine().add(v);
                         }
-                            
-                        userRepository.save(u);
+
+                        System.out.println(u);
+
+
+                        HttpHeaders headers = new HttpHeaders();
+                        headers.setContentType(MediaType.APPLICATION_JSON);
+
+                        URI uri = new URI("http://localhost:8081/registration/update");
+                        User user1 = new User();
+                        user1.set_id(u.get_id());
+                        user1.setMember(u.getMember());
+
+                        HttpEntity<User> request = new HttpEntity<User>(user1, headers);
+
+                        restTemplate.postForObject(uri, request, User.class);
+                        // userRepository.save(u);
                     }
                 }
             }
