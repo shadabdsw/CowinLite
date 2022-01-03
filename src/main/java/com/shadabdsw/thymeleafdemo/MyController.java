@@ -16,13 +16,8 @@ import com.shadabdsw.thymeleafdemo.Model.ServiceResponse;
 import com.shadabdsw.thymeleafdemo.Model.User;
 import com.shadabdsw.thymeleafdemo.Model.Vaccination;
 import com.shadabdsw.thymeleafdemo.Model.VaccineEditReq;
-import com.shadabdsw.thymeleafdemo.Repositories.MemberRepository;
-import com.shadabdsw.thymeleafdemo.Repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -39,14 +34,14 @@ import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class MyController {
-    @Autowired
-    UserRepository userRepository;
+    // @Autowired
+    // UserRepository userRepository;
 
-    @Autowired
-    MemberRepository memberRepository;
+    // @Autowired
+    // MemberRepository memberRepository;
 
-    @Autowired
-    MongoTemplate mongoTemplate;
+    // @Autowired
+    // MongoTemplate mongoTemplate;
 
     @Autowired
     RestTemplate restTemplate;
@@ -74,13 +69,17 @@ public class MyController {
     
     @PostMapping("/register")
     public String submitForm(@ModelAttribute("user") User user, Model model) throws URISyntaxException {
-        // Member member = new Member();
-        
 
-        // System.out.println(registration);
+        // if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
+        //         && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
 
-        if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
-                && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
+        // boolean login = false;
+        // login = ;
+        // System.out.println(login); 
+
+        user.setMember(new ArrayList<Member>());
+
+        if(restTemplate.getForObject("http://localhost:8081/registration/login/" + user.getPhoneNumber() + "/" + user.getPassword(), Boolean.class)) {
 
             System.out.println("Welcome Back " + user.getName());
             // model.addAttribute("member", member);
