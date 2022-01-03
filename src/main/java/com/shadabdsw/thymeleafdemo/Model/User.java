@@ -2,9 +2,9 @@ package com.shadabdsw.thymeleafdemo.Model;
 
 import java.util.List;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+// import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "CowinUsers")
+// @Document(collection = "CowinUsers")
 public class User {
 
     private String _id;
