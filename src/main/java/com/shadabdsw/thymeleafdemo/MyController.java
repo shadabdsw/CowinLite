@@ -50,7 +50,7 @@ public class MyController {
         
         // userRepository.findAll().forEach(users::add);
 
-        ResponseEntity<User[]> response = restTemplate.getForEntity("http://localhost:8081/registration/", User[].class);
+        ResponseEntity<User[]> response = restTemplate.getForEntity("http://localhost:8081/registration/getAllUsers/", User[].class);
         User[] users = response.getBody();
 
         // for (User user : users) {
@@ -95,7 +95,7 @@ public class MyController {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
-            URI uri = new URI("http://localhost:8081/registration/save");
+            URI uri = new URI("http://localhost:8081/registration/save/");
             User user1 = new User();
             user1.setName(user.getName());
             user1.setPhoneNumber(user.getPhoneNumber());
@@ -113,7 +113,7 @@ public class MyController {
 
         }
 
-        user = restTemplate.getForObject("http://localhost:8081/registration/" + user.getPhoneNumber(), User.class);
+        user = restTemplate.getForObject("http://localhost:8081/registration/getUserByPhoneNumber/" + user.getPhoneNumber(), User.class);
         System.out.println(user);
         // user = userRepository.findByphoneNumber(user.getPhoneNumber()).get();
         model.addAttribute("user", user);
@@ -144,7 +144,7 @@ public class MyController {
         List<Member> memberDetails = new ArrayList<Member>();
         // user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(addMemberReq.getPhoneNumber())),
         //         User.class);
-        user = restTemplate.getForObject("http://localhost:8081/registration/" + addMemberReq.getPhoneNumber(), User.class);
+        user = restTemplate.getForObject("http://localhost:8081/registration/getUserByPhoneNumber/" + addMemberReq.getPhoneNumber(), User.class);
 
         System.out.println(user.getMember());
         // memberDetails.add(addMemberReq.getMember());
@@ -188,7 +188,7 @@ public class MyController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        URI uri = new URI("http://localhost:8081/registration/update");
+        URI uri = new URI("http://localhost:8081/registration/update/");
         User user1 = new User();
         user1.set_id(user.get_id());
         user1.setMember(user.getMember());
@@ -271,7 +271,7 @@ public class MyController {
                         HttpHeaders headers = new HttpHeaders();
                         headers.setContentType(MediaType.APPLICATION_JSON);
 
-                        URI uri = new URI("http://localhost:8081/registration/update");
+                        URI uri = new URI("http://localhost:8081/registration/update/");
                         User user1 = new User();
                         user1.set_id(u.get_id());
                         user1.setMember(u.getMember());
