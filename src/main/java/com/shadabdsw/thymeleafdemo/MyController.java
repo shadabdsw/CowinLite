@@ -242,31 +242,33 @@ public class MyController {
             if(u.getUserType().equals("public")) {
                 for(Member m: u.getMember()) {
                     if(m.getAdhaar().equals(vaccineEditReq.getAdhaar())) {
-                        if(m.getVaccinationStatus().equals("Full")) {
-                            System.out.println("Fully Vaccinated");
+                        Calendar cal = Calendar.getInstance();
+                        if(m.getVaccinationStatus().equals("Boosted")) {
+                            System.out.println("Fully Vaccinated & Boosted");
+                        } else if(m.getVaccinationStatus().equals("Full")) {
+                            cal.add(Calendar.MONTH, 1);
+                            m.setVaccinationStatus("Boosted");
                         } else {
-                            if(m.getVaccinationStatus().equals("None")) {
-                                m.setVaccinationStatus("Partial");
-                            } else {
-                                m.setVaccinationStatus("Full");
-                            }
-                            Vaccination v = new Vaccination();
-                            v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
-                            v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
-                            v.setVaccinationType(vaccineEditReq.getVaccinationType());
-                            v.setVaccinationBy(user.getName());
-                            String sDate = vaccineEditReq.getVaccinationDate();
-                            SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
-                            Date date = vaccinationDate.parse(sDate);
-                            v.setVaccinationDate(date);
-                            Calendar cal = Calendar.getInstance();
                             cal.add(Calendar.MONTH, 3);
-                            v.setNextVaccinationDate(cal.getTime());
-                            m.getVaccine().add(v);
+                            if(m.getVaccinationStatus().equals("Partial")) {
+                                m.setVaccinationStatus("Full");
+                            } else {
+                                m.setVaccinationStatus("Partial");
+                            }
                         }
+                        Vaccination v = new Vaccination();
+                        v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
+                        v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
+                        v.setVaccinationType(vaccineEditReq.getVaccinationType());
+                        v.setVaccinationBy(user.getName());
+                        String sDate = vaccineEditReq.getVaccinationDate();
+                        SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
+                        Date date = vaccinationDate.parse(sDate);
+                        v.setVaccinationDate(date);
+                        v.setNextVaccinationDate(cal.getTime());
+                        m.getVaccine().add(v);
 
                         System.out.println(u);
-
 
                         HttpHeaders headers = new HttpHeaders();
                         headers.setContentType(MediaType.APPLICATION_JSON);
