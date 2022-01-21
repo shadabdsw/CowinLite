@@ -214,11 +214,11 @@ public class MyController {
             if (u.getUserType().equals("public")) {
                 members.addAll(u.getMember());
             }
-            for(Member m : members) {
-                if(m.getVaccinationStatus().equals("Full")) {
-                    members.remove(m);
-                }
-            }
+            // for(Member m : members) {
+            //     if(m.getVaccinationStatus().equals("Full")) {
+            //         members.remove(m);
+            //     }
+            // }
         }
 
         // System.out.println(members);
