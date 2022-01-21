@@ -73,7 +73,7 @@
                                     <span>Vaccinated On - </span><span th:text="${#dates.format((vax.vaccinationDate), 'dd-MM-yyyy')}"></span> <br/>
                                     <span>Vaccination Centre - </span><span th:text="${vax.vaccinationCentre}"></span>
                                     <hr/>
-                                    <span style="color: red; font-weight: bold;">Booster dose after <span th:text="${#dates.format((vax.nextVaccinationDate), 'dd-MM-yyyy')}"></span></span>
+                                    <span style="color: red; font-weight: bold;">Booster dose can be taken after <span th:text="${#dates.format((vax.nextVaccinationDate), 'dd-MM-yyyy')}"></span></span>
                                     <hr/>
                                 </div>
                             </div>
