@@ -28,12 +28,14 @@
                             <h2 class='card-title' style='color: blue' th:text="${member.memberName}" id='member_name'></h2>
                         </div>
                     </div>
+
                     <div>
                         <h6 style='color: blue' th:if="${member.vaccinationStatus} eq 'None'">Not Vaccinated</h6>
                         <h6 style='color: blue' th:if="${member.vaccinationStatus} eq 'Partial'">Partially Vaccinated</h6>
                         <h6 style='color: blue' th:if="${member.vaccinationStatus} eq 'Full'">Fully Vaccinated</h6>
-                        <h6 style='color: blue' th:if="${member.vaccinationStatus} eq 'Full'">Boosted</h6>
+                        <h6 style='color: blue' th:if="${member.vaccinationStatus} eq 'Boosted'">Fully Vaccinated & Boosted</h6>
                     </div>
+
                     <div class='container'>
                         <div class='row'>
                             <div class='col'>
@@ -74,23 +76,31 @@
                                     <span>Vaccinated On - </span><span th:text="${#dates.format((vax.vaccinationDate), 'dd-MM-yyyy')}"></span> <br/>
                                     <span>Vaccination Centre - </span><span th:text="${vax.vaccinationCentre}"></span>
                                     <hr/>
-                                    <span style="color: red; font-weight: bold;">Booster dose can be taken after <span th:text="${#dates.format((vax.nextVaccinationDate), 'dd-MM-yyyy')}"></span></span>
-                                    <hr/>
+                                    <div th:if="${iterStat.index}+1 == '2'">
+                                        <span style="color: red; font-weight: bold;">Booster can be taken after <span th:text="${#dates.format((vax.nextVaccinationDate), 'dd-MM-yyyy')}"></span></span>
+                                    </div>
                                 </div>
+                                
                             </div>
 
                             <div th:if="${member.vaccinationStatus} == 'Boosted'">
                                 <div th:each="vax, iterStat:${member.vaccine}">
-                                    <span style="color: greenyellow; font-weight: bold;">Dose <span th:text="${iterStat.index}+1"></span> </span> | <span th:text="${vax.vaccinationType}"></span> <br/> 
+                                    <div th:if="${iterStat.index}+1 == '3'">
+                                        <span style="color: greenyellow; font-weight: bold;">Booster </span> | <span th:text="${vax.vaccinationType}"></span> <br/> 
+                                    </div>
+                                    <div th:unless="${iterStat.index}+1 == '3'">
+                                        <span style="color: greenyellow; font-weight: bold;">Dose <span th:text="${iterStat.index}+1"></span> </span> | <span th:text="${vax.vaccinationType}"></span> <br/> 
+                                    </div>
                                     <span>Vaccinated By - </span><span th:text="${vax.vaccinationBy}"></span> <br/>
                                     <span>Vaccinated On - </span><span th:text="${#dates.format((vax.vaccinationDate), 'dd-MM-yyyy')}"></span> <br/>
                                     <span>Vaccination Centre - </span><span th:text="${vax.vaccinationCentre}"></span>
                                     <hr/>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -101,7 +111,7 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"
             ></script>
-          
+
             <script
             src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
@@ -113,7 +123,7 @@
             crossorigin="anonymous" 
             referrerpolicy="no-referrer"
             ></script>
-            
+
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" 
             integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" 
             crossorigin="anonymous" 
