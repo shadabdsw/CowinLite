@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class MyController {
@@ -68,7 +69,7 @@ public class MyController {
     }
     
     @PostMapping("/register")
-    public String submitForm(@ModelAttribute("user") User user, Model model) throws URISyntaxException {
+    public String submitForm(@ModelAttribute("user") User user, Model model, RedirectAttributes redirectAttributes) throws URISyntaxException {
 
         // if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
         //         && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
@@ -122,6 +123,8 @@ public class MyController {
 
         if (user.getUserType().equals("staff")) {
             model.addAttribute("user", user);
+            System.out.println("This is name - " + user.getName());
+            redirectAttributes.addFlashAttribute("user", user);
             return "redirect:/staff";
         }
 
@@ -207,33 +210,31 @@ public class MyController {
     }
 
     @GetMapping("/staff")
-    public String staff(Model model, @ModelAttribute("user") User user) {
+    public String staff(Model model, @ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+
         List<Member> members = new CopyOnWriteArrayList<Member>();
 
         for (User u : getAllUsers()) {
             if (u.getUserType().equals("public")) {
                 members.addAll(u.getMember());
             }
-            // for(Member m : members) {
-            //     if(m.getVaccinationStatus().equals("Full")) {
-            //         members.remove(m);
-            //     }
-            // }
+            for(Member m : members) {
+                if(m.getVaccinationStatus().equals("Boosted")) {
+                    members.remove(m);
+                }
+            }
         }
 
         // System.out.println(members);
         model.addAttribute("members", members);
-
         model.addAttribute("user", user);
-        System.out.println(user.getName());
-        System.out.println(user.getPhoneNumber());
-
+        System.out.println("User is here - " + user.getName());
         return "staff";
     }
 
     @PostMapping("/staff")
     public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, @ModelAttribute("user") User user, Model model) throws ParseException, URISyntaxException {
-        
+        model.addAttribute("user", user);
         System.out.println(vaccineEditReq.getAdhaar());
         
         System.out.println(user);
@@ -261,6 +262,7 @@ public class MyController {
                         v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
                         v.setVaccinationType(vaccineEditReq.getVaccinationType());
                         v.setVaccinationBy(user.getName());
+                        System.out.println("Name: " + user.getName());
                         String sDate = vaccineEditReq.getVaccinationDate();
                         SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
                         Date date = vaccinationDate.parse(sDate);
