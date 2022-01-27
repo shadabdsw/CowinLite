@@ -299,28 +299,40 @@ public class MyController {
     }
 
     @GetMapping("/admin")
-    public String admin() {
+    public String admin(@ModelAttribute("user") User user, Model model) {
 
-        // List<Member> members = new CopyOnWriteArrayList<Member>();
-
-        // for (User u : getAllUsers()) {
-        //     if (u.getUserType().equals("public")) {
-        //         members.addAll(u.getMember());
-        //     }
-        //     for(Member m : members) {
-        //         if(m.getVaccinationStatus().equals("Boosted")) {
-        //             members.remove(m);
-        //         }
-        //     }
-        // }
-
-        // // System.out.println(members);
-        // model.addAttribute("members", members);
-        // model.addAttribute("user", user);
-        // System.out.println("User is here - " + user.getName());
-        // redirectAttributes.addFlashAttribute("user", user);
+        model.addAttribute("user", user);
+        System.out.println("Admin User: " + user);
 
         return "admin";
+    }
+
+    @PostMapping("/admin")
+    public String createStaff(@ModelAttribute("user") User user, Model model, RedirectAttributes redirectAttributes) throws URISyntaxException {
+
+        user.setMember(new ArrayList<Member>());
+
+        System.out.println("New Staff Created! Hello " + user.getName());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        URI uri = new URI("http://localhost:8081/registration/save/");
+        User user1 = new User();
+        user1.setName(user.getName());
+        user1.setPhoneNumber(user.getPhoneNumber());
+        user1.setPassword(user.getPassword());
+        user1.setUserType("staff");
+        user1.setMember(user.getMember());
+
+        HttpEntity<User> request = new HttpEntity<User>(user1, headers);
+
+        restTemplate.postForObject(uri, request, User.class);
+
+        user = restTemplate.getForObject("http://localhost:8081/registration/getUserByPhoneNumber/" + user.getPhoneNumber(), User.class);
+        System.out.println(user);
+        model.addAttribute("user", user);
+
+        return "register";
     }
 
 }
