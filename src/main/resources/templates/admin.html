@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>    
-
-    <style>
-      .centered {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-    </style>
+  <head>
 
     <div th:replace="common :: header"></div>
     <title>Admin</title>
@@ -23,7 +14,7 @@
     </nav>
     <nav class="navbar navbar-dark fixed-bottom" style=" background: #1e3770">
       <div class="container-fluid">
-        <span class="navbar-brand mx-auto">Copyright © 2021 COWIN. All Rights Reserved</span>
+        <span class="navbar-brand mx-auto">Optimize IT Systems © 2021 COWIN Lite</span>
       </div>
     </nav>
   </head>
@@ -85,7 +76,7 @@
               </div>
               <div>
                 <button id="register_btn" class="btn btn-primary mt-3" type="submit">
-                  Register/Login
+                  Register
                 </button>
               </div>
               <div type="hidden" class="form-floating mt-2">
@@ -119,8 +110,12 @@
   </body>
 
   <script>
-        
-    floatingUserType.value = "public";
+
+    $('#floatingName').val('');
+    $('#floatingPhone').val('');
+  
+
+    floatingUserType.value = "staff";
 
     let password = document.getElementById('floatingPassword');
     let progressBar = document.getElementById('passwordStrength');
