@@ -72,11 +72,11 @@
     $(document).on('click', '#edit_btn', function() {
 
       var id = $(this).closest('tr').find('td:eq(0)').text();
-      var name = $(this).closest('tr').find('td:eq(1)').text();
+      var memberName = $(this).closest('tr').find('td:eq(1)').text();
       var phnNumber = $(this).closest('tr').find('td:eq(2)').text();
       var adhaar = $(this).closest('tr').find('td:eq(3)').text();
       var vaccinationStatus = $(this).closest('tr').find('td:eq(4)').text();
-      console.log(id + " " + name + " " + phnNumber + " " + adhaar + " " + vaccinationStatus);
+      console.log(id + " " + memberName + " " + phnNumber + " " + adhaar + " " + vaccinationStatus);
       
       $.confirm({
         title: 'Edit Details -',
@@ -107,9 +107,11 @@
                         $.alert('Please enter the details.');
                         return false;
                     }
+                    
                     var formData = {
                         phnNumber: phnNumber,
-                        name: name,
+                        name: memberName,
+                        memberName: memberName,
                         adhaar: adhaar,
                         vaccinationStatus: vaccinationStatus,
                         vaccinationType: vaccinationType,
@@ -130,7 +132,7 @@
                         console.log(result);
                         if(result == "success"){
                           $.alert('Vaccination Details Updated Successfully');
-                          location.reload();
+                          // location.reload();
                         } else {
                           $.alert('Vaccination Details Updation Failed');
                         }
