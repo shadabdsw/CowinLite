@@ -131,13 +131,6 @@ public class MyController {
         return "public";
     }
 
-    @GetMapping("/public")
-    public ResponseEntity<Object> showPublic(Model model, @RequestParam("name") String name, @RequestParam("phoneNumber") String phoneNumber, @RequestParam("password") String password) {
-        System.out.println("Registration: - " + name + phoneNumber + password);
-
-        return new ResponseEntity<Object>("success", HttpStatus.OK);
-    }
-
     @PostMapping("/addmember")
     public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq, Model model) throws URISyntaxException {
         // public String addmember(@ModelAttribute("user") User user, @RequestBody
@@ -229,12 +222,13 @@ public class MyController {
         model.addAttribute("members", members);
         model.addAttribute("user", user);
         System.out.println("User is here - " + user.getName());
+        redirectAttributes.addFlashAttribute("user", user);
         return "staff";
     }
 
     @PostMapping("/staff")
     public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, @ModelAttribute("user") User user, Model model) throws ParseException, URISyntaxException {
-        model.addAttribute("user", user);
+        // model.addAttribute("user", user);
         System.out.println(vaccineEditReq.getAdhaar());
         
         System.out.println(user);
