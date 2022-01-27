@@ -228,7 +228,6 @@ public class MyController {
         model.addAttribute("members", members);
         model.addAttribute("user", user);
         System.out.println("User is here - " + user.getName());
-        redirectAttributes.addFlashAttribute("user", user);
         return "staff";
     }
 
