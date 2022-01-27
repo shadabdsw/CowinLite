@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -126,6 +125,13 @@ public class MyController {
             System.out.println("This is name - " + user.getName());
             redirectAttributes.addFlashAttribute("user", user);
             return "redirect:/staff";
+        }
+
+        if (user.getUserType().equals("admin")) {
+            model.addAttribute("user", user);
+            System.out.println("This is name - " + user.getName());
+            redirectAttributes.addFlashAttribute("user", user);
+            return "redirect:/admin";
         }
 
         return "public";
@@ -290,6 +296,31 @@ public class MyController {
         }
 
         return new ResponseEntity<Object>("success", HttpStatus.OK);
+    }
+
+    @GetMapping("/admin")
+    public String admin() {
+
+        // List<Member> members = new CopyOnWriteArrayList<Member>();
+
+        // for (User u : getAllUsers()) {
+        //     if (u.getUserType().equals("public")) {
+        //         members.addAll(u.getMember());
+        //     }
+        //     for(Member m : members) {
+        //         if(m.getVaccinationStatus().equals("Boosted")) {
+        //             members.remove(m);
+        //         }
+        //     }
+        // }
+
+        // // System.out.println(members);
+        // model.addAttribute("members", members);
+        // model.addAttribute("user", user);
+        // System.out.println("User is here - " + user.getName());
+        // redirectAttributes.addFlashAttribute("user", user);
+
+        return "admin";
     }
 
 }
