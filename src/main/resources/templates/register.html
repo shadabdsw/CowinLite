@@ -98,16 +98,6 @@
                   value=""
                 />
               </div>
-              <!-- <div type="hidden" class="form-floating mt-2">
-                <input
-                  type="hidden"
-                  th:field="*{member}"
-                  class="form-control"
-                  id="floatingMember"
-                  placeholder="Member"
-                  value=""
-                />
-              </div> -->
             </form>
           </div>
         </div>
@@ -120,48 +110,6 @@
 
   <script>
 
-    // $("#register_btn").click(function(event) {
-    //   console.log("Button Clicked");
-    //   event.preventDefault();
-    //   // event.stopPropagation();
-
-    //   var formData = {
-    //     name: $('#floatingName').val(),
-    //     phoneNumber: $('#floatingPhone').val(),
-    //     password: $('#floatingPassword').val(),
-    //   }
-
-    //   $.ajax({
-    //         type: "POST",
-    //         contentType:"application/json",
-    //         url:"/register",
-    //         data:JSON.stringify(formData),
-    //         success: function(data) {
-    //           console.log("Status: " + data);
-    //           console.log("Success Register");
-    //           if(data == "success"){
-    //             console.log("Success Register 123");
-    //           }
-
-    //           $.ajax({
-    //             type: "GET",
-    //             url:"/public",
-    //             data: formData,
-    //             success: function(data) {
-    //               console.log("Success Public");
-    //               window.location.href = "http://localhost:8080/public?name=1&phoneNumber=1&password=1";
-    //             }
-    //           });
-
-    //         },
-    //         error:function(e) {
-    //           console.log("Error!" + e);
-    //           console.log("Error Register");
-    //         }
-    //       });
-
-    // });
-    
     $('#floatingName').val('');
     $('#floatingPhone').val('');
 
@@ -169,6 +117,7 @@
 
     let password = document.getElementById('floatingPassword');
     let progressBar = document.getElementById('passwordStrength');
+    
     password.addEventListener("input", () => {
       pwd = password.value;
       strength = scorePassword(pwd);
@@ -188,6 +137,7 @@
       }
     });
 
+    //function to check password strength
     function scorePassword(pass) {
       var score = 0;
       if (!pass)
