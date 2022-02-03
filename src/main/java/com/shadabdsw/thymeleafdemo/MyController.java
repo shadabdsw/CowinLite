@@ -38,28 +38,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class MyController {
-    // @Autowired
-    // UserRepository userRepository;
-
-    // @Autowired
-    // MemberRepository memberRepository;
-
-    // @Autowired
-    // MongoTemplate mongoTemplate;
 
     @Autowired
     RestTemplate restTemplate;
 
     public User[] getAllUsers() {
-        
-        // userRepository.findAll().forEach(users::add);
 
         ResponseEntity<User[]> response = restTemplate.getForEntity("http://localhost:8081/registration/getAllUsers/", User[].class);
         User[] users = response.getBody();
-
-        // for (User user : users) {
-        //     System.out.println(user);
-        // }
 
         return users;
     }
@@ -74,27 +60,15 @@ public class MyController {
     @PostMapping("/register")
     public String submitForm(@ModelAttribute("user") User user, Model model, ModelMap map) throws URISyntaxException {
 
-        // if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
-        //         && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
-
-        // boolean login = false;
-        // login = ;
-        // System.out.println(login); 
-
         user.setMember(new ArrayList<Member>());
 
         if(restTemplate.getForObject("http://localhost:8081/registration/login/" + user.getPhoneNumber() + "/" + user.getPassword(), Boolean.class)) {
 
             System.out.println("Welcome Back " + user.getName());
-            // model.addAttribute("member", member);
-            // System.out.println(member);
 
         } else {
 
             System.out.println("Hello, New User! " + user.getName());
-            // model.addAttribute("member", member);
-            // System.out.println(member);
-            // user.setUserType("public");
             
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -111,21 +85,13 @@ public class MyController {
 
             restTemplate.postForObject(uri, request, User.class);
 
-            // System.out.println("Printing user: " + u.getName());
-
-            // userRepository.save(user);
-
         }
 
         user = restTemplate.getForObject("http://localhost:8081/registration/getUserByPhoneNumber/" + user.getPhoneNumber(), User.class);
         System.out.println(user);
-        // user = userRepository.findByphoneNumber(user.getPhoneNumber()).get();
         model.addAttribute("user", user);
 
-        // System.out.println(user);
-
         if (user.getUserType().equals("staff")) {
-            // map.addAttribute("user", user);
             return "staffDash";
         }
 
@@ -140,18 +106,14 @@ public class MyController {
 
     @PostMapping("/addmember")
     public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq, Model model) throws URISyntaxException {
-        // public String addmember(@ModelAttribute("user") User user, @RequestBody
-        // AddMemberReq addMemberReq, Model model) {
 
         int flag = 0;
         List<Member> memberDetails = new ArrayList<Member>();
-        // user = mongoTemplate.findOne(Query.query(Criteria.where("phoneNumber").is(addMemberReq.getPhoneNumber())),
-        //         User.class);
+
         user = restTemplate.getForObject("http://localhost:8081/registration/getUserByPhoneNumber/" + addMemberReq.getPhoneNumber(), User.class);
 
         System.out.println(user.getMember());
-        // memberDetails.add(addMemberReq.getMember());
-        // System.out.println(memberDetails);
+        
         System.out.println(addMemberReq.getMember());
         System.out.println(addMemberReq.getPhoneNumber());
 
@@ -164,7 +126,6 @@ public class MyController {
             memberDetails.addAll(user.getMember());
         }
 
-        // System.out.println("this" + memberDetails);
         System.out.println(user);
         System.out.println(user.getPhoneNumber() + " " + user.getPassword());
 
@@ -179,14 +140,12 @@ public class MyController {
 
             } else {
 
-                // memberDetails.add(addMemberReq.getMember());
                 System.out.println("4 members already registered.");
             }
         }
 
         System.out.println("Memberssss: " + memberDetails);
         System.out.println(user);
-        // user.setMember(memberDetails);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -200,13 +159,11 @@ public class MyController {
 
         restTemplate.postForObject(uri, request, User.class);
 
-        // userRepository.save(user);
         ServiceResponse<Member> response = new ServiceResponse<Member>("success", addMemberReq.getMember());
         System.out.println(response);
         model.addAttribute("user", user);
 
         return new ResponseEntity<Object>(response, HttpStatus.OK);
-        // return "common :: card";
     }
 
     @GetMapping("/staff")
@@ -225,7 +182,6 @@ public class MyController {
             }
         }
 
-        // System.out.println(members);
         model.addAttribute("members", members);
         model.addAttribute("user", user);
         System.out.println("User is here - " + user.getName());
@@ -257,7 +213,6 @@ public class MyController {
 
     @PostMapping("/staff")
     public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, @ModelAttribute("user") User user, Model model) throws ParseException, URISyntaxException {
-        // model.addAttribute("user", user);
         System.out.println(vaccineEditReq.getAdhaar());
         
         System.out.println(user);
@@ -312,7 +267,6 @@ public class MyController {
                         HttpEntity<User> request = new HttpEntity<User>(user1, headers);
 
                         restTemplate.postForObject(uri, request, User.class);
-                        // userRepository.save(u);
                     }
                 }
             }
