@@ -14,6 +14,7 @@ import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
 import com.shadabdsw.thymeleafdemo.Model.Member;
 import com.shadabdsw.thymeleafdemo.Model.ServiceResponse;
 import com.shadabdsw.thymeleafdemo.Model.User;
+import com.shadabdsw.thymeleafdemo.Model.UserReq;
 import com.shadabdsw.thymeleafdemo.Model.Vaccination;
 import com.shadabdsw.thymeleafdemo.Model.VaccineEditReq;
 
@@ -25,10 +26,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -68,7 +72,7 @@ public class MyController {
     }
     
     @PostMapping("/register")
-    public String submitForm(@ModelAttribute("user") User user, Model model, RedirectAttributes redirectAttributes) throws URISyntaxException {
+    public String submitForm(@ModelAttribute("user") User user, Model model, ModelMap map) throws URISyntaxException {
 
         // if (mongoTemplate.exists(Query.query(Criteria.where("phoneNumber").is(user.getPhoneNumber())), User.class)
         //         && mongoTemplate.exists(Query.query(Criteria.where("password").is(user.getPassword())), User.class)) {
@@ -121,17 +125,14 @@ public class MyController {
         // System.out.println(user);
 
         if (user.getUserType().equals("staff")) {
-            model.addAttribute("user", user);
-            System.out.println("This is name - " + user.getName());
-            redirectAttributes.addFlashAttribute("user", user);
-            return "redirect:/staff";
+            // map.addAttribute("user", user);
+            return "staffDash";
         }
 
         if (user.getUserType().equals("admin")) {
             model.addAttribute("user", user);
             System.out.println("This is name - " + user.getName());
-            redirectAttributes.addFlashAttribute("user", user);
-            return "redirect:/admin";
+            return "adminDash";
         }
 
         return "public";
@@ -231,6 +232,28 @@ public class MyController {
         return "staff";
     }
 
+    @GetMapping("/adminStaffTable")
+    public String admin(Model model, @RequestParam(required = false, name="id") UserReq userReq) {
+
+        System.out.println("Print 1" + userReq);
+
+        //page is reloading and this becomes null
+
+        List<User> users = new ArrayList<User>();
+
+        for(User u: getAllUsers()) {
+            if(u.getUserType().equals("staff")) {
+                users.add(u);
+            }
+        }
+
+        model.addAttribute("users", users);
+        // System.out.println("Print 2" + userReq.getName());
+        // model.addAttribute("user1", userReq.getName());
+        return "adminStaffTable";
+        
+    }
+
     @PostMapping("/staff")
     public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, @ModelAttribute("user") User user, Model model) throws ParseException, URISyntaxException {
         // model.addAttribute("user", user);
@@ -260,13 +283,13 @@ public class MyController {
                         v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
                         v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
                         v.setVaccinationType(vaccineEditReq.getVaccinationType());
-                        for(User u1: getAllUsers()) {
-                            if(u1.getUserType().equals("staff")){
-                                System.out.println("Userrrrr:" + u1.getName());
-                                v.setVaccinationBy(u1.getName());
-                            }
-                        }
-                        // v.setVaccinationBy(user.getName());
+                        // for(User u1: getAllUsers()) {
+                        //     if(u1.getUserType().equals("staff")){
+                        //         System.out.println("Userrrrr:" + u1.getName());
+                        //         v.setVaccinationBy(u1.getName());
+                        //     }
+                        // }
+                        v.setVaccinationBy(user.getName());
                         System.out.println("Name: " + user.getName());
                         String sDate = vaccineEditReq.getVaccinationDate();
                         SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
@@ -297,41 +320,5 @@ public class MyController {
         return new ResponseEntity<Object>("success", HttpStatus.OK);
     }
 
-    @GetMapping("/admin")
-    public String admin(@ModelAttribute("user") User user, Model model) {
-
-        model.addAttribute("user", user);
-        System.out.println("Admin User: " + user);
-
-        return "admin";
-    }
-
-    @PostMapping("/admin")
-    public String createStaff(@ModelAttribute("user") User user, Model model, RedirectAttributes redirectAttributes) throws URISyntaxException {
-
-        user.setMember(new ArrayList<Member>());
-
-        System.out.println("New Staff Created! Hello " + user.getName());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        URI uri = new URI("http://localhost:8081/registration/save/");
-        User user1 = new User();
-        user1.setName(user.getName());
-        user1.setPhoneNumber(user.getPhoneNumber());
-        user1.setPassword(user.getPassword());
-        user1.setUserType("staff");
-        user1.setMember(user.getMember());
-
-        HttpEntity<User> request = new HttpEntity<User>(user1, headers);
-
-        restTemplate.postForObject(uri, request, User.class);
-
-        user = restTemplate.getForObject("http://localhost:8081/registration/getUserByPhoneNumber/" + user.getPhoneNumber(), User.class);
-        System.out.println(user);
-        model.addAttribute("user", user);
-
-        return "register";
-    }
-
+    
 }
