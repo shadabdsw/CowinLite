@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <span id="user_id" th:text="${user.name}"></span>
+    <span id="user_id" th:text="${user._id}"></span>
 
     <div th:replace="common :: footer"></div>
     
@@ -82,8 +82,8 @@
                 data: "id=" + user_id,
                 success: function(data){
                     console.log(data);
-                    // window.location.assign("http://localhost:8080/adminStaffTable");
-                    $(location).attr('href', 'http://localhost:8080/adminStaffTable');
+                    window.location.assign("http://localhost:8080/adminStaffTable");
+                    // $(location).attr('href', 'http://localhost:8080/adminStaffTable');
                 },
                 error: function(result){
                     console.log(result);
