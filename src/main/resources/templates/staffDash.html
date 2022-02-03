@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+
+    <style>
+        .centered {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+
+    <div th:replace="common :: header"></div>
+    <title>Staff Dashboard</title>
+
+    <nav class="navbar navbar-dark fixed-top" style=" background: #1e3770;">
+      <div class="container-fluid">
+        <a class="navbar navbar-brand" style="font-size: 28px; margin-left: 128px;" href="#">
+          Cowin Lite
+        </a>
+      </div>
+    </nav>
+    <nav class="navbar navbar-dark fixed-bottom" style=" background: #1e3770">
+      <div class="container-fluid">
+        <span class="navbar-brand mx-auto">Optimize IT Systems © 2021 COWIN Lite</span>
+      </div>
+    </nav>
+  </head>
+
+  <body style="margin-top: 100px">
+
+    <input
+      type="hidden"
+      name="name"
+      id="name"
+      th:value="${user.name}"
+    />
+    <input
+      type="hidden"
+      name="phoneNumber"
+      id="phoneNumber"
+      th:value="${user.phoneNumber}"
+    />
+    <input type="hidden" name="password" th:value="${user.password}" />
+    <input
+        type="hidden"
+        name="member"
+        th:value="${user.getMember()}"
+      />
+
+    <div>
+        <h2 style="margin-left: 128px">Staff Dashboard</h2>
+        <div class="container text-center centered" style="width: 34rem">
+            <button class="btn btn-primary mt-3" id="goToStaff" style="font-size: 24px;" type="submit">Manage Public</button><br>
+            <button class="btn btn-primary mt-3" style="font-size: 24px;" type="submit">Staff Role 1</button><br>
+            <button class="btn btn-primary mt-3" style="font-size: 24px;" type="submit">Staff Role 2</button>
+        </div>
+    </div>
+
+    <span id="user_id" th:text="${user._id}"></span>
+
+    <div th:replace="common :: footer"></div>
+    
+  </body>
+
+  <script>
+      $(document).ready(function(){
+
+          $("#goToStaff").click(function(){
+              console.log("clicked");
+              ajaxPost();
+          });
+
+          var user_id = $("#user_id").text();
+          console.log(user_id);
+
+          function ajaxPost() {
+            $.ajax({
+                type: "GET",
+                url: "/staff",
+                data: {
+                  user_id: user_id,
+                },
+                success: function(result){
+                    console.log(result);
+                    window.location.href = "/staff";
+                },
+                error: function(result){
+                    console.log(result);
+                }
+            });
+          }
+
+      });
+  </script>
+
+</html>
