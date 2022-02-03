@@ -41,6 +41,7 @@ public class MyController {
     @Autowired
     RestTemplate restTemplate;
 
+    //get the list of all users
     public User[] getAllUsers() {
 
         ResponseEntity<User[]> response = restTemplate.getForEntity("http://localhost:8081/registration/getAllUsers/", User[].class);
@@ -49,26 +50,30 @@ public class MyController {
         return users;
     }
 
+    //home page
     @GetMapping("/")
     public String showForm(Model model) {
         User user = new User();
-        model.addAttribute("user", user);
+        model.addAttribute("user", user); //send all user data to register page
         return "register";
     }
     
+    //checks and moves to next page depending on registered phone number
     @PostMapping("/register")
-    public String submitForm(@ModelAttribute("user") User user, Model model, ModelMap map) throws URISyntaxException {
+    public String submitForm(@ModelAttribute("user") User user, Model model) throws URISyntaxException {
 
-        user.setMember(new ArrayList<Member>());
+        user.setMember(new ArrayList<Member>()); //initialize member list
 
         if(restTemplate.getForObject("http://localhost:8081/registration/login/" + user.getPhoneNumber() + "/" + user.getPassword(), Boolean.class)) {
 
+            //logins user
             System.out.println("Welcome Back " + user.getName());
 
         } else {
 
+            //creates new user
             System.out.println("Hello, New User! " + user.getName());
-            
+
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
