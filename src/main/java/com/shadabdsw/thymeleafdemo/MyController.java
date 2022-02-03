@@ -252,6 +252,7 @@ public class MyController {
         // model.addAttribute("user1", userReq.getName());
         return "adminStaffTable";
         
+        
     }
 
     @PostMapping("/staff")
