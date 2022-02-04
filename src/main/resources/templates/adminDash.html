@@ -52,46 +52,14 @@
     <div>
         <h2 style="margin-left: 128px">Admin Dashboard</h2>
         <div class="container text-center centered" style="width: 34rem">
-            <button class="btn btn-primary mt-3" id="goToAdmin" style="font-size: 24px;" type="submit">Manage Staff</button><br>
-            <button class="btn btn-primary mt-3" style="font-size: 24px;" type="submit">Admin Role 1</button><br>
-            <button class="btn btn-primary mt-3" style="font-size: 24px;" type="submit">Admin Role 2</button>
+            <a id="goToAdmin" style="font-size: 24px;" th:href="@{/adminStaffTable/{id}(id=${user._id})}" >Manage Staff</a><br>
+            <a class="btn btn-primary mt-3" style="font-size: 24px;" type="submit">Admin Role 1</a><br>
+            <a class="btn btn-primary mt-3" style="font-size: 24px;" type="submit">Admin Role 2</a>
         </div>
     </div>
-
-    <span id="user_id" th:text="${user._id}"></span>
 
     <div th:replace="common :: footer"></div>
     
   </body>
-
-  <script>
-      $(document).ready(function(){
-
-          $("#goToAdmin").click(function(){
-              console.log("clicked");
-              ajaxPost();
-          });
-
-          var user_id = $("#user_id").text();
-          console.log(user_id);
-
-          function ajaxPost() {
-            $.ajax({
-                type: "GET",
-                url: "/adminStaffTable",
-                data: "id=" + user_id,
-                success: function(data){
-                    console.log(data);
-                    window.location.assign("http://localhost:8080/adminStaffTable");
-                    // $(location).attr('href', 'http://localhost:8080/adminStaffTable');
-                },
-                error: function(result){
-                    console.log(result);
-                }
-            });
-          }
-
-      });
-  </script>
 
 </html>
