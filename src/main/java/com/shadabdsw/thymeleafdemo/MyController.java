@@ -29,6 +29,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -192,10 +193,10 @@ public class MyController {
         return "staff";
     }
 
-    @GetMapping("/adminStaffTable")
-    public String admin(Model model, @RequestParam(required = false, name="id") UserReq userReq) {
+    @GetMapping("/adminStaffTable/{id}")
+    public String admin(Model model, @PathVariable String id) {
 
-        System.out.println("Print 1" + userReq);
+        System.out.println("Print 1" + id);
 
         //page is reloading and this becomes null
 
