@@ -47,14 +47,13 @@
           </thead>
           <tbody>
               <tr style="font-size: 18px;" th:each="user, iterStat:${users}">
-                  <td th:text="${iterStat.index}+1"></td>
-                  <td th:text="${user.name}"></td>
-                  <td th:text="${user.phoneNumber}"></td>
-                  <td>
-                    <button id='edit_btn' type="button" class="btn btn-info">Edit</button>
-                    <button id='delete_btn' type="button" class="btn btn-info">Delete</button>
+                <td th:text="${iterStat.index}+1"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.phoneNumber}"></td>
+                <td>
+                  <button id='edit_btn' type="button" class="btn btn-info">Edit</button>
+                  <button id='delete_btn' type="button" class="btn btn-info">Delete</button>
                 </td>
-                  <!-- th:unless="${member.vaccinationStatus} eq 'Full'" -->
               </tr>
           </tbody>
       </table>
@@ -148,19 +147,42 @@
   });
 
     $(document).on('click', '#delete_btn', function() {
+
+      var  phoneNumber = $(this).closest('tr').find('td:eq(2)').text();
+      
         $.confirm({
             title: 'Delete staff member?',
-            content: 'This dialog will automatically trigger \'cancel\' in 6 seconds if you don\'t respond.',
-            autoClose: 'cancelAction|8000',
             buttons: {
                 deleteUser: {
                     text: 'delete user',
                     action: function () {
-                        $.alert('Deleted the user!');
+                      $.ajax({
+                        type: 'DELETE',
+                        contentType: 'application/json',
+                        url: '/admin/' + phoneNumber,
+                        success: function(result) {
+                          console.log(result);
+                          if(result == "success"){
+                            $.confirm({
+                              title: 'Are you sure you want to continue?',
+                              buttons: {
+                                ok: function () {
+                                  location.reload();
+                                },
+                                cancel: function () {
+                                  //close
+                                },
+                              },
+                            });
+                          } else {
+                            $.alert('User Deletion Failed');
+                          }
+                        },
+                      });
                     }
                 },
-                cancelAction: function () {
-                    $.alert('action is canceled');
+                cancel: function () {
+                  //close
                 }
             }
         });
