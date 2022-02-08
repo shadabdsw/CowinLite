@@ -78,7 +78,8 @@
       var memberName = $(this).closest("tr").find("td:eq(1)").text();
       var phnNumber = $(this).closest("tr").find("td:eq(2)").text();
       console.log(id + " " + memberName + " " + phnNumber);
-
+      
+    });
 
     $(document).on("click", "#delete_btn", function () {
       var phoneNumber = $(this).closest("tr").find("td:eq(2)").text();
