@@ -171,8 +171,8 @@ public class MyController {
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/staff")
-    public String staff(Model model, @ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+    @GetMapping("/staffPublicTable/{id}")
+    public String staff(Model model, @PathVariable String id) {
 
         List<Member> members = new CopyOnWriteArrayList<Member>();
 
@@ -188,17 +188,16 @@ public class MyController {
         }
 
         model.addAttribute("members", members);
+
+        User user;
+        user = restTemplate.getForObject("http://localhost:8081/registration/getUserById/" + id, User.class);
         model.addAttribute("user", user);
-        System.out.println("User is here - " + user.getName());
-        return "staff";
+
+        return "staffPublicTable";
     }
 
     @GetMapping("/adminStaffTable/{id}")
     public String admin(Model model, @PathVariable String id) {
-
-        System.out.println("Print 1" + id);
-
-        //page is reloading and this becomes null
 
         List<User> users = new ArrayList<User>();
 
@@ -209,18 +208,15 @@ public class MyController {
         }
 
         model.addAttribute("users", users);
-        // System.out.println("Print 2" + userReq.getName());
-        // model.addAttribute("user1", userReq.getName());
+        
         return "adminStaffTable";
         
         
     }
 
     @PostMapping("/staff")
-    public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, @ModelAttribute("user") User user, Model model) throws ParseException, URISyntaxException {
+    public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, Model model) throws ParseException, URISyntaxException {
         System.out.println(vaccineEditReq.getAdhaar());
-        
-        System.out.println(user);
 
         for(User u: getAllUsers()) {
             if(u.getUserType().equals("public")) {
@@ -244,14 +240,15 @@ public class MyController {
                         v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
                         v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
                         v.setVaccinationType(vaccineEditReq.getVaccinationType());
+                        v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
                         // for(User u1: getAllUsers()) {
                         //     if(u1.getUserType().equals("staff")){
                         //         System.out.println("Userrrrr:" + u1.getName());
                         //         v.setVaccinationBy(u1.getName());
                         //     }
                         // }
-                        v.setVaccinationBy(user.getName());
-                        System.out.println("Name: " + user.getName());
+                        // v.setVaccinationBy(user.getName());
+                        // System.out.println("Name: " + user.getName());
                         String sDate = vaccineEditReq.getVaccinationDate();
                         SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
                         Date date = vaccinationDate.parse(sDate);
