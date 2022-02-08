@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
+import com.shadabdsw.thymeleafdemo.Model.DeleteUserReq;
 import com.shadabdsw.thymeleafdemo.Model.Member;
 import com.shadabdsw.thymeleafdemo.Model.ServiceResponse;
 import com.shadabdsw.thymeleafdemo.Model.User;
@@ -25,11 +26,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 @Controller
@@ -192,24 +196,6 @@ public class MyController {
         return "staffPublicTable";
     }
 
-    @GetMapping("/adminStaffTable/{id}")
-    public String admin(Model model, @PathVariable String id) {
-
-        List<User> users = new ArrayList<User>();
-
-        for(User u: getAllUsers()) {
-            if(u.getUserType().equals("staff")) {
-                users.add(u);
-            }
-        }
-
-        model.addAttribute("users", users);
-        
-        return "adminStaffTable";
-        
-        
-    }
-
     @PostMapping("/staff")
     public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, Model model) throws ParseException, URISyntaxException {
         System.out.println(vaccineEditReq.getAdhaar());
@@ -264,5 +250,32 @@ public class MyController {
         return new ResponseEntity<Object>("success", HttpStatus.OK);
     }
 
-    
+    @GetMapping("/adminStaffTable/{id}")
+    public String admin(Model model, @PathVariable String id) {
+
+        List<User> users = new ArrayList<User>();
+
+        for(User u: getAllUsers()) {
+            if(u.getUserType().equals("staff")) {
+                users.add(u);
+            }
+        }
+
+        model.addAttribute("users", users);
+        
+        return "adminStaffTable";
+        
+        
+    }
+
+    @DeleteMapping("/admin/{phoneNumber}")
+    public ResponseEntity<Object> admin(@PathVariable("phoneNumber") String phoneNumber, Model model) throws ParseException, URISyntaxException {
+
+        String url = "http://localhost:8081/registration/deleteUserByPhoneNumber/" + phoneNumber;
+        restTemplate.delete(url);
+
+        return new ResponseEntity<Object>("success", HttpStatus.OK);
+    }
+
+
 }
