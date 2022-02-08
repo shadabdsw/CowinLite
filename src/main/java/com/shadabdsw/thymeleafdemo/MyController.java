@@ -236,15 +236,6 @@ public class MyController {
                         v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
                         v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
                         v.setVaccinationType(vaccineEditReq.getVaccinationType());
-                        v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
-                        // for(User u1: getAllUsers()) {
-                        //     if(u1.getUserType().equals("staff")){
-                        //         System.out.println("Userrrrr:" + u1.getName());
-                        //         v.setVaccinationBy(u1.getName());
-                        //     }
-                        // }
-                        // v.setVaccinationBy(user.getName());
-                        // System.out.println("Name: " + user.getName());
                         String sDate = vaccineEditReq.getVaccinationDate();
                         SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
                         Date date = vaccinationDate.parse(sDate);
