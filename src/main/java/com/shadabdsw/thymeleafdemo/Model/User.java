@@ -31,6 +31,11 @@ public class User {
         this.member = member;
     }
 
+    public User(String name, String phoneNumber) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
+
     public String get_id() {
         return _id;
     }
