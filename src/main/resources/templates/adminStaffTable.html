@@ -77,8 +77,62 @@
       var id = $(this).closest("tr").find("td:eq(0)").text();
       var memberName = $(this).closest("tr").find("td:eq(1)").text();
       var phnNumber = $(this).closest("tr").find("td:eq(2)").text();
-      console.log(id + " " + memberName + " " + phnNumber);
-      
+      console.log("IMP" + id + " " + memberName + " " + phnNumber);
+
+      $.confirm({
+        title: "Edit Staff Member",
+        content:
+          '<form action="" class="formName">' +
+          '<div class="form-group">' +
+          "<label>Name</label>" +
+          '<input type="text" placeholder="Name" class="name form-control" value="' +
+          memberName +
+          '" required />' +
+          "</div>" +
+          '<div class="form-group">' +
+          "<label>Phone Number</label>" +
+          '<input type="text" placeholder="Phone Number" class="phoneNumber form-control" value="' +
+          phnNumber +
+          '" required />' +
+          "</div>" +
+          "</form>",
+          closeIcon: true,
+          animation: "scale",
+          backgroundDismiss: true,
+          escapeKey: true,
+          buttons: {
+            formSubmit: {
+              text: "Submit",
+              btnClass: "btn-blue",
+              action: function () {
+                var name = this.$content.find(".name").val();
+                var oldPhoneNumber = phnNumber;
+                var newPhoneNumber = this.$content.find(".phoneNumber").val();
+                console.log("NON" + name + " " + oldPhoneNumber + " " + newPhoneNumber);
+
+                var formData = {
+                  name: name,
+                  oldPhoneNumber: oldPhoneNumber,
+                  newPhoneNumber: newPhoneNumber,
+                };
+
+                $.ajax({
+                  type: "PUT",
+                  contentType: "application/json",
+                  url: "/admin",
+                  data: JSON.stringify(formData),
+                  success: function (result) {
+                    console.log(result);
+                    location.reload();
+                  },
+                  error: function (result) {
+                    console.log(result);
+                  },
+                });
+              },
+            }
+          }
+      });
     });
 
     $(document).on("click", "#delete_btn", function () {
@@ -95,7 +149,6 @@
                 contentType: "application/json",
                 url: "/admin/" + phoneNumber,
                 success: function (result) {
-                  console.log(result);
                   if (result == "success") {
                     $.confirm({
                       title: "Success",
