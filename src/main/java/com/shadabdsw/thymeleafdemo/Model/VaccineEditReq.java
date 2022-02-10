@@ -13,7 +13,8 @@ public class VaccineEditReq {
     private String vaccinationDate;
     private String nextVaccinationDate;
 
-    public VaccineEditReq(String phnNumber, String name, String memberName, String adhaar, String vaccinationStatus, String vaccinationType,
+    public VaccineEditReq(String phnNumber, String name, String memberName, String adhaar, String vaccinationStatus,
+            String vaccinationType,
             String vaccinationCentre, String vaccinationBy, String vaccinationDate, String nextVaccinationDate) {
         this.phnNumber = phnNumber;
         this.name = name;
@@ -30,18 +31,23 @@ public class VaccineEditReq {
     public String getPhnNumber() {
         return phnNumber;
     }
+
     public void setPhnNumber(String phnNumber) {
         this.phnNumber = phnNumber;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public String getMemberName() {
         return memberName;
     }
+
     public void setMemberName(String memberName) {
         this.memberName = memberName;
     }
@@ -49,42 +55,55 @@ public class VaccineEditReq {
     public String getAdhaar() {
         return adhaar;
     }
+
     public void setAdhaar(String adhaar) {
         this.adhaar = adhaar;
     }
+
     public String getVaccinationStatus() {
         return vaccinationStatus;
     }
+
     public void setVaccinationStatus(String vaccinationStatus) {
         this.vaccinationStatus = vaccinationStatus;
     }
+
     public String getVaccinationType() {
         return vaccinationType;
     }
+
     public void setVaccinationType(String vaccinationType) {
         this.vaccinationType = vaccinationType;
     }
+
     public String getVaccinationCentre() {
         return vaccinationCentre;
     }
+
     public void setVaccinationCentre(String vaccinationCentre) {
         this.vaccinationCentre = vaccinationCentre;
     }
+
     public String getVaccinationBy() {
         return vaccinationBy;
     }
+
     public void setVaccinationBy(String vaccinationBy) {
         this.vaccinationBy = vaccinationBy;
     }
+
     public String getVaccinationDate() {
         return vaccinationDate;
     }
+
     public void setVaccinationDate(String vaccinationDate) {
         this.vaccinationDate = vaccinationDate;
     }
+
     public String getNextVaccinationDate() {
         return nextVaccinationDate;
     }
+
     public void setNextVaccinationDate(String nextVaccinationDate) {
         this.nextVaccinationDate = nextVaccinationDate;
     }
