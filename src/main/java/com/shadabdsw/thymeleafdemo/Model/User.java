@@ -23,6 +23,14 @@ public class User {
         this.member = member;
     }
 
+    public User(String name, String phoneNumber, String password, String userType, List<Member> member) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.userType = userType;
+        this.member = member;
+    }
+
     public String get_id() {
         return _id;
     }
