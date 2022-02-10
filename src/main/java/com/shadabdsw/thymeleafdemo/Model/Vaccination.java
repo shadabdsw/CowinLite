@@ -10,7 +10,8 @@ public class Vaccination {
     private Date vaccinationDate;
     private Date nextVaccinationDate;
 
-    public Vaccination(String vaccinationType, String vaccinationCentre, String vaccinationBy, Date vaccinationDate, Date nextVaccinationDate) {
+    public Vaccination(String vaccinationType, String vaccinationCentre, String vaccinationBy, Date vaccinationDate,
+            Date nextVaccinationDate) {
         this.vaccinationType = vaccinationType;
         this.vaccinationCentre = vaccinationCentre;
         this.vaccinationBy = vaccinationBy;
@@ -20,42 +21,34 @@ public class Vaccination {
 
     public Vaccination() {
     }
-    
 
     public String getVaccinationType() {
         return vaccinationType;
     }
 
-
     public void setVaccinationType(String vaccinationType) {
         this.vaccinationType = vaccinationType;
     }
-
 
     public String getVaccinationCentre() {
         return vaccinationCentre;
     }
 
-
     public void setVaccinationCentre(String vaccinationCentre) {
         this.vaccinationCentre = vaccinationCentre;
     }
-
 
     public String getVaccinationBy() {
         return vaccinationBy;
     }
 
-
     public void setVaccinationBy(String vaccinationBy) {
         this.vaccinationBy = vaccinationBy;
     }
 
-
     public Date getVaccinationDate() {
         return vaccinationDate;
     }
-
 
     public void setVaccinationDate(Date vaccinationDate) {
         this.vaccinationDate = vaccinationDate;
@@ -68,7 +61,6 @@ public class Vaccination {
     public void setNextVaccinationDate(Date nextVaccinationDate) {
         this.nextVaccinationDate = nextVaccinationDate;
     }
-
 
     @Override
     public String toString() {
