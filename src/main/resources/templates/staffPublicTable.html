@@ -93,16 +93,20 @@
       );
 
       $.confirm({
-        title: "Edit Details -",
+        title: "Edit Vaccination Details",
         content:
           "" +
           '<form action="" class="formName">' +
           '<div class="form-group">' +
+          "<label>Vaccine</label>" +
           '<select class="vaccinationType form-control" name="vax" id="vax" required>' +
           '<option value="COVISHIELD">COVISHIELD</option>' +
           '<option value="COVAXIN">COVAXIN</option>' +
           "</select>" +
+          "</div>" +
           "<br/>" +
+          '<div class="form-group">' +
+          "<label>Vaccination Centre</label>" +
           '<input type="text" placeholder="Vaccination Centre" class="vaccinationCentre form-control" required/>' +
           "</div>" +
           "</form>",
@@ -155,21 +159,28 @@
                 success: function (result) {
                   console.log(result);
                   if (result == "success") {
-                    $.alert("Vaccination Details Updated Successfully");
-                    location.reload();
+                    $.confirm({
+                      title: "Success",
+                      content: "Vaccination details updated successfully",
+                      buttons: {
+                        ok: function () {
+                          location.reload();
+                        },
+                      },
+                    });
                   } else {
-                    $.alert("Vaccination Details Updation Failed");
+                    $.alert("Vaccination details updation failed");
                   }
                 },
                 error: function (e) {
-                  $.alert("Error in updating vaccination details");
                   console.log(e);
+                  $.alert("Error in updating vaccination details");
                 },
               });
             },
-            cancel: function () {
-              //close
-            },
+          },
+          cancel: function () {
+            //close
           },
         },
       });
