@@ -177,13 +177,13 @@
 
   <div th:replace="common :: footer"></div>
 
-  <script th:inline="javascript">
+  <script>
     $(document).ready(function () {
-
       $("#form_content").hide();
 
       $("#add_member_btn").on("click", function () {
         $("#form_content").show();
+        $("html, body").animate({ scrollTop: $(document).height() }, "fast");
       });
 
       //SUBMIT FORM
@@ -239,21 +239,50 @@
             success: function (result) {
               console.log(formData);
               if (result == "success") {
-                console.log("True");
-                $("#form_card").show();
-                $("#form_content").hide();
-                location.reload();
+                $.confirm({
+                  title: "Success!",
+                  content: "Member added successfully!",
+                  type: "green",
+                  typeAnimated: true,
+                  buttons: {
+                    tryAgain: {
+                      text: "Ok",
+                      btnClass: "btn-green",
+                      action: function () {
+                        $("#form_card").show();
+                        $("#form_content").hide();
+                        location.reload();
+                      },
+                    },
+                  },
+                });
               } else {
-                console.log("False");
-                $("#form_card").show();
+                $.confirm({
+                  title: "Error!",
+                  content: "Member addition unsuccessful!",
+                  type: "red",
+                  typeAnimated: true,
+                  buttons: {
+                    tryAgain: {
+                      text: "Ok",
+                      btnClass: "btn-red",
+                      action: function () {
+                        $("#form_card").show();
+                        $("#form_content").hide();
+                        location.reload();
+                      },
+                    },
+                  },
+                });
               }
             },
             error: function (e) {
-              alert("Error!");
+              alert("Error adding member!");
               console.log("Error: ", e);
             },
           });
         } else {
+          // console.log("Validation Failed");
         }
       }
     });
