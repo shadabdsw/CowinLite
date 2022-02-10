@@ -160,21 +160,41 @@
                   console.log(result);
                   if (result == "success") {
                     $.confirm({
-                      title: "Success",
-                      content: "Vaccination details updated successfully",
+                      title: "Success!",
+                      content: "Vaccination details updated successfully!",
+                      type: "green",
+                      typeAnimated: true,
                       buttons: {
-                        ok: function () {
-                          location.reload();
+                        tryAgain: {
+                          text: "Ok",
+                          btnClass: "btn-green",
+                          action: function () {
+                            location.reload();
+                          },
                         },
                       },
                     });
                   } else {
-                    $.alert("Vaccination details updation failed");
+                    $.confirm({
+                      title: "Error!",
+                      content: "Vaccination details updation failed!",
+                      type: "red",
+                      typeAnimated: true,
+                      buttons: {
+                        tryAgain: {
+                          text: "Ok",
+                          btnClass: "btn-red",
+                          action: function () {
+                            location.reload();
+                          },
+                        },
+                      },
+                    });
                   }
                 },
                 error: function (e) {
                   console.log(e);
-                  $.alert("Error in updating vaccination details");
+                  $.alert("Error in updating vaccination details!");
                 },
               });
             },
