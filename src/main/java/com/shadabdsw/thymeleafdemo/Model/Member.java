@@ -3,7 +3,7 @@ package com.shadabdsw.thymeleafdemo.Model;
 import java.util.List;
 
 public class Member {
-    
+
     private String phnNumber;
     private String adhaar;
     private String memberName;
@@ -15,7 +15,8 @@ public class Member {
     public Member() {
     }
 
-    public Member(String phnNumber, String adhaar, String memberName, String gender, String yob, String vaccinationStatus,
+    public Member(String phnNumber, String adhaar, String memberName, String gender, String yob,
+            String vaccinationStatus,
             List<Vaccination> vaccine) {
         this.phnNumber = phnNumber;
         this.adhaar = adhaar;
@@ -25,7 +26,7 @@ public class Member {
         this.vaccinationStatus = vaccinationStatus;
         this.vaccine = vaccine;
     }
-    
+
     public String getPhnNumber() {
         return phnNumber;
     }
