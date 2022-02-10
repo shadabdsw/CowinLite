@@ -126,23 +126,42 @@
                 success: function (result) {
                   console.log(result);
                   if (result == "success") {
-
                     $.confirm({
-                        title: "Success",
-                        content: "Staff member record updated successfully",
-                        buttons: {
-                          ok: function () {
+                      title: "Success!",
+                      content: "Staff member updated successfully!",
+                      type: "green",
+                      typeAnimated: true,
+                      buttons: {
+                        tryAgain: {
+                          text: "Ok",
+                          btnClass: "btn-green",
+                          action: function () {
                             location.reload();
                           },
                         },
-                      });
+                      },
+                    });
                   } else {
-                    $.alert("Staff member record updation failed");
+                    $.confirm({
+                      title: "Error!",
+                      content: "Staff member not updated!",
+                      type: "red",
+                      typeAnimated: true,
+                      buttons: {
+                        tryAgain: {
+                          text: "Ok",
+                          btnClass: "btn-red",
+                          action: function () {
+                            location.reload();
+                          },
+                        },
+                      },
+                    });
                   }
                 },
                 error: function (e) {
-                  console.log(e);
-                  $.alert("Error in updating record");
+                  $.alert("Error in updating record!");
+                  console.log("Error: ", e);
                 },
               });
             },
@@ -175,20 +194,40 @@
                 success: function (result) {
                   if (result == "success") {
                     $.confirm({
-                      title: "Success",
-                      content: "Staff member deleted successfully",
+                      title: "Success!",
+                      content: "Staff member deleted successfully!",
+                      type: "green",
+                      typeAnimated: true,
                       buttons: {
-                        ok: function () {
-                          location.reload();
+                        tryAgain: {
+                          text: "Ok",
+                          btnClass: "btn-green",
+                          action: function () {
+                            location.reload();
+                          },
                         },
                       },
                     });
                   } else {
-                    $.alert("Staff member deletion failed");
+                    $.confirm({
+                      title: "Error!",
+                      content: "Staff deletion failed!",
+                      type: "red",
+                      typeAnimated: true,
+                      buttons: {
+                        tryAgain: {
+                          text: "Ok",
+                          btnClass: "btn-red",
+                          action: function () {
+                            location.reload();
+                          },
+                        },
+                      },
+                    });
                   }
                 },
                 error: function (e) {
-                  $.alert("Error in deleting staff member");
+                  $.alert("Error in deleting staff member!");
                   console.log(e);
                 },
               });
