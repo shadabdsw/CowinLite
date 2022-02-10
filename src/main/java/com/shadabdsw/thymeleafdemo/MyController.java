@@ -41,37 +41,40 @@ public class MyController {
     @Autowired
     RestTemplate restTemplate;
 
-    //get the list of all users
+    // get the list of all users
     public User[] getAllUsers() {
 
-        ResponseEntity<User[]> response = restTemplate.getForEntity("http://localhost:8081/registration/getAllUsers/", User[].class);
+        ResponseEntity<User[]> response = restTemplate.getForEntity("http://localhost:8081/registration/getAllUsers/",
+                User[].class);
         User[] users = response.getBody();
 
         return users;
     }
 
-    //home page
+    // home page
     @GetMapping("/")
     public String showForm(Model model) {
         User user = new User();
-        model.addAttribute("user", user); //send all user data to register page
+        model.addAttribute("user", user); // send all user data to register page
         return "register";
     }
-    
-    //checks and moves to next page depending on registered phone number
+
+    // checks and moves to next page depending on registered phone number
     @PostMapping("/register")
     public String submitForm(@ModelAttribute("user") User user, Model model) throws URISyntaxException {
 
-        user.setMember(new ArrayList<Member>()); //initialize member list
+        user.setMember(new ArrayList<Member>()); // initialize member list
 
-        if(restTemplate.getForObject("http://localhost:8081/registration/login/" + user.getPhoneNumber() + "/" + user.getPassword(), Boolean.class)) {
+        if (restTemplate.getForObject(
+                "http://localhost:8081/registration/login/" + user.getPhoneNumber() + "/" + user.getPassword(),
+                Boolean.class)) {
 
-            //logins user
+            // logins user
             System.out.println("Welcome Back " + user.getName());
 
         } else {
 
-            //creates new user
+            // creates new user
             System.out.println("Hello, New User! " + user.getName());
 
             HttpHeaders headers = new HttpHeaders();
@@ -91,7 +94,8 @@ public class MyController {
 
         }
 
-        user = restTemplate.getForObject("http://localhost:8081/registration/getUserByPhoneNumber/" + user.getPhoneNumber(), User.class);
+        user = restTemplate.getForObject(
+                "http://localhost:8081/registration/getUserByPhoneNumber/" + user.getPhoneNumber(), User.class);
         System.out.println(user);
         model.addAttribute("user", user);
 
@@ -109,15 +113,17 @@ public class MyController {
     }
 
     @PostMapping("/addmember")
-    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq, Model model) throws URISyntaxException {
+    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq,
+            Model model) throws URISyntaxException {
 
         int flag = 0;
         List<Member> memberDetails = new ArrayList<Member>();
 
-        user = restTemplate.getForObject("http://localhost:8081/registration/getUserByPhoneNumber/" + addMemberReq.getPhoneNumber(), User.class);
+        user = restTemplate.getForObject(
+                "http://localhost:8081/registration/getUserByPhoneNumber/" + addMemberReq.getPhoneNumber(), User.class);
 
         System.out.println(user.getMember());
-        
+
         System.out.println(addMemberReq.getMember());
         System.out.println(addMemberReq.getPhoneNumber());
 
@@ -179,8 +185,8 @@ public class MyController {
             if (u.getUserType().equals("public")) {
                 members.addAll(u.getMember());
             }
-            for(Member m : members) {
-                if(m.getVaccinationStatus().equals("Boosted")) {
+            for (Member m : members) {
+                if (m.getVaccinationStatus().equals("Boosted")) {
                     members.remove(m);
                 }
             }
@@ -196,22 +202,23 @@ public class MyController {
     }
 
     @PostMapping("/staff")
-    public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, Model model) throws ParseException, URISyntaxException {
+    public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, Model model)
+            throws ParseException, URISyntaxException {
         System.out.println(vaccineEditReq.getAdhaar());
 
-        for(User u: getAllUsers()) {
-            if(u.getUserType().equals("public")) {
-                for(Member m: u.getMember()) {
-                    if(m.getAdhaar().equals(vaccineEditReq.getAdhaar())) {
+        for (User u : getAllUsers()) {
+            if (u.getUserType().equals("public")) {
+                for (Member m : u.getMember()) {
+                    if (m.getAdhaar().equals(vaccineEditReq.getAdhaar())) {
                         Calendar cal = Calendar.getInstance();
-                        if(m.getVaccinationStatus().equals("Boosted")) {
+                        if (m.getVaccinationStatus().equals("Boosted")) {
                             System.out.println("Fully Vaccinated & Boosted");
-                        } else if(m.getVaccinationStatus().equals("Full")) {
+                        } else if (m.getVaccinationStatus().equals("Full")) {
                             cal.add(Calendar.MONTH, 1);
                             m.setVaccinationStatus("Boosted");
                         } else {
                             cal.add(Calendar.MONTH, 3);
-                            if(m.getVaccinationStatus().equals("Partial")) {
+                            if (m.getVaccinationStatus().equals("Partial")) {
                                 m.setVaccinationStatus("Full");
                             } else {
                                 m.setVaccinationStatus("Partial");
@@ -254,21 +261,21 @@ public class MyController {
 
         List<User> users = new ArrayList<User>();
 
-        for(User u: getAllUsers()) {
-            if(u.getUserType().equals("staff")) {
+        for (User u : getAllUsers()) {
+            if (u.getUserType().equals("staff")) {
                 users.add(u);
             }
         }
 
         model.addAttribute("users", users);
-        
+
         return "adminStaffTable";
-        
-        
+
     }
 
     @DeleteMapping("/admin/{phoneNumber}")
-    public ResponseEntity<Object> admin(@PathVariable("phoneNumber") String phoneNumber, Model model) throws ParseException, URISyntaxException {
+    public ResponseEntity<Object> admin(@PathVariable("phoneNumber") String phoneNumber, Model model)
+            throws ParseException, URISyntaxException {
 
         String url = "http://localhost:8081/registration/deleteUserByPhoneNumber/" + phoneNumber;
         restTemplate.delete(url);
@@ -277,19 +284,22 @@ public class MyController {
     }
 
     @PutMapping("/admin")
-    public ResponseEntity<Object> admin(@RequestBody StaffEditReq staffEditReq, Model model) throws ParseException, URISyntaxException {
+    public ResponseEntity<Object> admin(@RequestBody StaffEditReq staffEditReq, Model model)
+            throws ParseException, URISyntaxException {
 
         System.out.println("SER - " + staffEditReq);
         User user1;
-        user1 = restTemplate.getForObject("http://localhost:8081/registration/getUserByPhoneNumber/" + staffEditReq.getOldPhoneNumber(), User.class);
+        user1 = restTemplate.getForObject(
+                "http://localhost:8081/registration/getUserByPhoneNumber/" + staffEditReq.getOldPhoneNumber(),
+                User.class);
         System.out.println(user1);
 
-        User newUser = new User(staffEditReq.getName(), staffEditReq.getNewPhoneNumber(), user1.getPassword(), user1.getUserType(), user1.getMember());
+        User newUser = new User(staffEditReq.getName(), staffEditReq.getNewPhoneNumber(), user1.getPassword(),
+                user1.getUserType(), user1.getMember());
 
         restTemplate.put("http://localhost:8081/registration/update/" + user1.get_id(), newUser);
 
         return new ResponseEntity<Object>("success", HttpStatus.OK);
     }
-
 
 }
