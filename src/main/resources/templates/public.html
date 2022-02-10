@@ -257,11 +257,9 @@
             contentType: "application/json",
             url: "addmember",
             data: JSON.stringify(formData),
-            dataType: "json",
-            success: function (fragment) {
+            success: function (result) {
               console.log(formData);
-              console.log(fragment);
-              if (fragment.status == "success") {
+              if (result == "success") {
                 console.log("True");
                 $("#form_card").show();
                 $("#form_content").hide();
@@ -272,7 +270,6 @@
               }
             },
             error: function (e) {
-              console.log(fragment);
               alert("Error!");
               console.log("Error: ", e);
             },
