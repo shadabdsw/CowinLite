@@ -12,7 +12,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
 import com.shadabdsw.thymeleafdemo.Model.Member;
-import com.shadabdsw.thymeleafdemo.Model.ServiceResponse;
 import com.shadabdsw.thymeleafdemo.Model.StaffEditReq;
 import com.shadabdsw.thymeleafdemo.Model.User;
 import com.shadabdsw.thymeleafdemo.Model.Vaccination;
@@ -122,11 +121,6 @@ public class MyController {
         user = restTemplate.getForObject(
                 "http://localhost:8081/registration/getUserByPhoneNumber/" + addMemberReq.getPhoneNumber(), User.class);
 
-        System.out.println(user.getMember());
-
-        System.out.println(addMemberReq.getMember());
-        System.out.println(addMemberReq.getPhoneNumber());
-
         if (user.getMember().size() < 1) {
             memberDetails.add(addMemberReq.getMember());
             user.setMember(memberDetails);
@@ -136,12 +130,10 @@ public class MyController {
             memberDetails.addAll(user.getMember());
         }
 
-        System.out.println(user);
         System.out.println(user.getPhoneNumber() + " " + user.getPassword());
 
         if (flag == 0) {
             if (memberDetails != null && memberDetails.size() > 0 && memberDetails.size() < 4) {
-
                 Member m = addMemberReq.getMember();
                 System.out.println("m1" + memberDetails);
                 memberDetails.add(m);
@@ -155,7 +147,6 @@ public class MyController {
         }
 
         System.out.println("Memberssss: " + memberDetails);
-        System.out.println(user);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -169,11 +160,10 @@ public class MyController {
 
         restTemplate.postForObject(uri, request, User.class);
 
-        ServiceResponse<Member> response = new ServiceResponse<Member>("success", addMemberReq.getMember());
-        System.out.println(response);
         model.addAttribute("user", user);
 
-        return new ResponseEntity<Object>(response, HttpStatus.OK);
+        // return new ResponseEntity<Object>(response, HttpStatus.OK);
+        return new ResponseEntity<Object>("success", HttpStatus.OK);
     }
 
     @GetMapping("/staffPublicTable/{id}")
