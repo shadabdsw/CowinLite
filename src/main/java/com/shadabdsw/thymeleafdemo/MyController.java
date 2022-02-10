@@ -7,12 +7,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
 import com.shadabdsw.thymeleafdemo.Model.Member;
 import com.shadabdsw.thymeleafdemo.Model.ServiceResponse;
+import com.shadabdsw.thymeleafdemo.Model.StaffEditReq;
 import com.shadabdsw.thymeleafdemo.Model.User;
 import com.shadabdsw.thymeleafdemo.Model.Vaccination;
 import com.shadabdsw.thymeleafdemo.Model.VaccineEditReq;
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -270,6 +274,21 @@ public class MyController {
 
         String url = "http://localhost:8081/registration/deleteUserByPhoneNumber/" + phoneNumber;
         restTemplate.delete(url);
+
+        return new ResponseEntity<Object>("success", HttpStatus.OK);
+    }
+
+    @PutMapping("/admin")
+    public ResponseEntity<Object> admin(@RequestBody StaffEditReq staffEditReq, Model model) throws ParseException, URISyntaxException {
+
+        System.out.println("SER - " + staffEditReq);
+        User user1;
+        user1 = restTemplate.getForObject("http://localhost:8081/registration/getUserByPhoneNumber/" + staffEditReq.getOldPhoneNumber(), User.class);
+        System.out.println(user1);
+
+        User newUser = new User(staffEditReq.getName(), staffEditReq.getNewPhoneNumber(), user1.getPassword(), user1.getUserType(), user1.getMember());
+
+        restTemplate.put("http://localhost:8081/registration/update/" + user1.get_id(), newUser);
 
         return new ResponseEntity<Object>("success", HttpStatus.OK);
     }
