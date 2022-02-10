@@ -30,7 +30,7 @@
         <div class="card-body">
           <div class="container">
             <div class="row">
-              <div class="col">
+              <div class="col-md-2">
                 <div th:if="${member.vaccinationStatus} eq 'None'">
                   <img
                     th:src="@{/images/Not-Vaccinated-badge.png}"
@@ -59,61 +59,64 @@
                     style="width: 128px; height: 128px"
                   />
                 </div>
-                <h2
-                  class="card-title"
-                  style="color: blue"
-                  th:text="${member.memberName}"
-                  id="member_name"
-                ></h2>
               </div>
-
-              <h6
-                style="color: blue"
-                th:if="${member.vaccinationStatus} eq 'None'"
-              >
-                Not Vaccinated
-              </h6>
-              <h6
-                style="color: blue"
-                th:if="${member.vaccinationStatus} eq 'Partial'"
-              >
-                Partially Vaccinated
-              </h6>
-              <h6
-                style="color: blue"
-                th:if="${member.vaccinationStatus} eq 'Full'"
-              >
-                Fully Vaccinated
-              </h6>
-              <h6
-                style="color: blue"
-                th:if="${member.vaccinationStatus} eq 'Boosted'"
-              >
-                Fully Vaccinated & Boosted
-              </h6>
+              <div class="col-md-10">
+                <div class="row">
+                  <h2
+                    class="card-title"
+                    style="color: blue; margin-left: 8px;"
+                    th:text="${member.memberName}"
+                    id="member_name"
+                  ></h2>
+                  <h6
+                    style="color: blue; margin-left: 8px;"
+                    th:if="${member.vaccinationStatus} eq 'None'"
+                  >
+                    Not Vaccinated
+                  </h6>
+                  <h6
+                    style="color: blue; margin-left: 8px;"
+                    th:if="${member.vaccinationStatus} eq 'Partial'"
+                  >
+                    Partially Vaccinated
+                  </h6>
+                  <h6
+                    style="color: blue; margin-left: 8px;"
+                    th:if="${member.vaccinationStatus} eq 'Full'"
+                  >
+                    Fully Vaccinated
+                  </h6>
+                  <h6
+                    style="color: blue; margin-left: 8px;"
+                    th:if="${member.vaccinationStatus} eq 'Boosted'"
+                  >
+                    Fully Vaccinated & Boosted
+                  </h6>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <h5 style="color: black; text-align: left; margin-left: 8px;">
+                      Year of Birth:
+                      <span th:text="${member.yob}" id="member_yob"></span>
+                    </h5>
+                  </div>
+                  <div class="col-md-4">
+                    <h5 style="color: black; text-align: center">
+                      Adhaar: XXXX-<span
+                        th:text="${#strings.substring(member.adhaar,10,14)}"
+                        id="member_adhaar"
+                      ></span>
+                    </h5>
+                  </div>
+                  <div class="col-md-4">
+                    <h5 style="color: black; text-align: right">
+                      Gender:
+                      <span th:text="${member.gender}" id="member_gender"></span>
+                    </h5>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="row">
-              <div class="col">
-                <h5 style="color: black; text-align: left">
-                  Year of Birth:
-                  <span th:text="${member.yob}" id="member_yob"></span>
-                </h5>
-              </div>
-              <div class="col">
-                <h5 style="color: black; text-align: center">
-                  Adhaar Number: XXXX-<span
-                    th:text="${#strings.substring(member.adhaar,10,14)}"
-                    id="member_adhaar"
-                  ></span>
-                </h5>
-              </div>
-              <div class="col">
-                <h5 style="color: black; text-align: right">
-                  Gender:
-                  <span th:text="${member.gender}" id="member_gender"></span>
-                </h5>
-              </div>
-              <br />
 
               <div th:if="${member.vaccinationStatus} == 'None'">
                 <hr />
