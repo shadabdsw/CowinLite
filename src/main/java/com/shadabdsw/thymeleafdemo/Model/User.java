@@ -31,11 +31,6 @@ public class User {
         this.member = member;
     }
 
-    public User(String name, String phoneNumber) {
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-    }
-
     public String get_id() {
         return _id;
     }
@@ -89,5 +84,5 @@ public class User {
         return "User [_id=" + _id + ", member=" + member + ", name=" + name + ", password=" + password
                 + ", phoneNumber=" + phoneNumber + ", userType=" + userType + "]";
     }
-    
+
 }
