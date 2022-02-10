@@ -224,7 +224,7 @@
                   <br />
                   <span>Vaccination Centre - </span
                   ><span th:text="${vax.vaccinationCentre}"></span>
-                  <hr />
+                  <div th:if="${iterStat.index}+1 < '3'"><hr /></div>
                 </div>
               </div>
             </div>
