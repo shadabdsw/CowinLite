@@ -3,23 +3,33 @@
   <head>
     <div th:replace="common :: header"></div>
     <title>Home</title>
-    <nav class="navbar navbar-dark fixed-top" style=" background: #1e3770;">
+    <nav class="navbar navbar-dark fixed-top" style="background: #1e3770">
       <div class="container-fluid">
-        <a class="navbar navbar-brand" style="font-size: 28px; margin-left: 128px;" href="#">
+        <a
+          class="navbar navbar-brand"
+          style="font-size: 28px; margin-left: 128px"
+          href="#"
+        >
           Cowin Lite
         </a>
-        <a class="navbar navbar-brand" href="/" style="font-size: 28px; margin-right: 128px;">Logout</a>
+        <a
+          class="navbar navbar-brand"
+          href="/"
+          style="font-size: 28px; margin-right: 128px"
+          >Logout</a
+        >
       </div>
     </nav>
-    <nav class="navbar navbar-dark fixed-bottom" style=" background: #1e3770">
+    <nav class="navbar navbar-dark fixed-bottom" style="background: #1e3770">
       <div class="container-fluid">
-        <span class="navbar-brand mx-auto">Optimize IT Systems © 2021 COWIN Lite</span>
+        <span class="navbar-brand mx-auto"
+          >Optimize IT Systems © 2021 COWIN Lite</span
+        >
       </div>
     </nav>
   </head>
 
-  <body style="margin-top: 100px; margin-bottom: 80px;">
-    
+  <body style="margin-top: 100px; margin-bottom: 80px">
     <!-- Card View of Data -->
     <div id="form_card" class="container mt-5" style="width: 64rem">
       <div class="card shadow p-1 mb-5 bg-body rounded">
@@ -33,8 +43,12 @@
           <div>
             <h5>
               Number of Members:
-              <span th:if="${user.member.size() > 0}"><span th:text="${user.member.size()}"></span></span>
-              <span th:unless="${user.member.size() > 0}">No Members Added</span>
+              <span th:if="${user.member.size() > 0}"
+                ><span th:text="${user.member.size()}"></span
+              ></span>
+              <span th:unless="${user.member.size() > 0}"
+                >No Members Added</span
+              >
             </h5>
           </div>
           <br />
@@ -61,11 +75,7 @@
               th:value="${user.phoneNumber}"
             />
             <input type="hidden" name="password" th:value="${user.password}" />
-            <input
-                type="hidden"
-                name="member"
-                th:value="${user.getMember()}"
-              />
+            <input type="hidden" name="member" th:value="${user.getMember()}" />
             <div>
               <div class="d-grid gap-2 col-4 mx-auto">
                 <button
@@ -88,7 +98,7 @@
       <div class="card shadow p-3 mb-5 bg-body rounded">
         <div class="card-body">
           <h2 class="card-header text-center">Member Information Form</h2>
-          <form th:object=${member}>
+          <form th:object="${member}">
             <div class="form-floating mt-3 mb-3">
               <input
                 required
@@ -98,7 +108,7 @@
                 placeholder="Adhaar Number"
                 name="adhaar"
               /><label for="floatingInput">Enter your adhaar number</label>
-            <div id="adhaarError" style="color: red; margin-left: 8px;" ></div>
+              <div id="adhaarError" style="color: red; margin-left: 8px"></div>
             </div>
             <div class="form-floating mb-3">
               <input
@@ -109,10 +119,10 @@
                 placeholder="Full Name"
                 name="memberName"
               /><label for="floatingName">Enter your full name</label>
-            <div id="nameError" style="color: red; margin-left: 8px;" ></div>
+              <div id="nameError" style="color: red; margin-left: 8px"></div>
             </div>
             <div class="form-floating mb-3">
-              <input 
+              <input
                 required
                 maxlength="4"
                 type="number"
@@ -121,7 +131,7 @@
                 id="yob"
                 placeholder="01/01/2020"
               /><label for="floatingYOB">Enter year of birth (YYYY)</label>
-            <div id="yobError" style="color: red; margin-left: 8px;" ></div>
+              <div id="yobError" style="color: red; margin-left: 8px"></div>
             </div>
             <div class="gender">
               <label class="mb-3">Gender:</label>
@@ -145,7 +155,7 @@
                   value="Female"
                 />Female<br />
               </div>
-            <div id="genderError" style="color: red; margin-left: 8px;" ></div>
+              <div id="genderError" style="color: red; margin-left: 8px"></div>
             </div>
             <div class="container text-center">
               <div class="d-grid gap-2 col-2 mx-auto">
@@ -161,7 +171,7 @@
             </div>
           </form>
         </div>
-      </div>    
+      </div>
     </div>
   </body>
 
@@ -169,7 +179,6 @@
 
   <script th:inline="javascript">
     $(document).ready(function () {
-
       // $("#dob").datepicker({
       //   dateFormat: "yy-mm-dd", //cannot change to dd-mm-yy as it is not a standard date format
       //   changeMonth: true,
@@ -192,19 +201,17 @@
       //   },
       // });
 
-    
       $("#form_content").hide();
 
-      $("#add_member_btn").on("click",function() {
+      $("#add_member_btn").on("click", function () {
         $("#form_content").show();
       });
-      
+
       //SUBMIT FORM
-      $("#add_member_submit").click(function(event) {
+      $("#add_member_submit").click(function (event) {
         console.log("Button Clicked");
         event.preventDefault();
         event.stopPropagation;
-
 
         // if($("#adhaar").val() == "") {
         //   $("#adhaarError").text("Please fill this field.");
@@ -219,68 +226,60 @@
         // } else {
         //   ajaxPost();
         // }
-        
-        ajaxPost();
 
+        ajaxPost();
       });
 
       function ajaxPost() {
-        
         // let isBool = validate();
         let isBool = true;
 
-        if(isBool) {
+        if (isBool) {
           console.log("Ajax Post");
 
           //Prepare Form Data
           var phoneNumber = $("#phoneNumber").val();
           var member = {
             phnNumber: $("#phoneNumber").val(),
-            adhaar:$("#adhaar").val(),
-            memberName:$("#memberName").val(),
-            gender:$("input[name=gender]:checked").val(),
-            yob:$("#yob").val(),
-            vaccinationStatus:"None",
-            vaccine:[]
-          }
+            adhaar: $("#adhaar").val(),
+            memberName: $("#memberName").val(),
+            gender: $("input[name=gender]:checked").val(),
+            yob: $("#yob").val(),
+            vaccinationStatus: "None",
+            vaccine: [],
+          };
 
-          var formData = {phoneNumber: phoneNumber, member: member};
-            
+          var formData = { phoneNumber: phoneNumber, member: member };
+
           //POST
           $.ajax({
             type: "POST",
-            contentType:"application/json",
-            url:"addmember",
-            data:JSON.stringify(formData),
-            dataType:'json',
-            success:function(fragment) {
+            contentType: "application/json",
+            url: "addmember",
+            data: JSON.stringify(formData),
+            dataType: "json",
+            success: function (fragment) {
               console.log(formData);
               console.log(fragment);
-              if(fragment.status == "success") {
+              if (fragment.status == "success") {
                 console.log("True");
                 $("#form_card").show();
                 $("#form_content").hide();
                 location.reload();
-
               } else {
                 console.log("False");
                 $("#form_card").show();
               }
             },
-            error:function(e) {
+            error: function (e) {
               console.log(fragment);
               alert("Error!");
               console.log("Error: ", e);
-            }
+            },
           });
-
         } else {
-          
         }
       }
-      
-
     });
   </script>
-
 </html>
