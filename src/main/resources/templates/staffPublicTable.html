@@ -119,35 +119,31 @@
                 success: function (result) {
                   console.log(result);
                   if (result == "success") {
-                    $.confirm({
-                      title: "Success!",
-                      content: "Vaccination details updated successfully!",
-                      type: "green",
-                      typeAnimated: true,
-                      buttons: {
-                        tryAgain: {
-                          text: "Ok",
-                          btnClass: "btn-green",
-                          action: function () {
-                            location.reload();
-                          },
-                        },
+                    $.toast({
+                      heading: "Success!",
+                      text: "Vaccination details updated successfully!",
+                      showHideTransition: "slide",
+                      icon: "success",
+                      position: "bottom-left",
+                      hideAfter: 1000,
+                      stack: 6,
+                      loaderBg: "#f96868",
+                      afterHidden: function () {
+                        location.reload();
                       },
                     });
                   } else {
-                    $.confirm({
-                      title: "Error!",
-                      content: "Vaccination details updation failed!",
-                      type: "red",
-                      typeAnimated: true,
-                      buttons: {
-                        tryAgain: {
-                          text: "Ok",
-                          btnClass: "btn-red",
-                          action: function () {
-                            location.reload();
-                          },
-                        },
+                    $.toast({
+                      heading: "Error!",
+                      text: "Vaccination details updatation unsuccessful!",
+                      showHideTransition: "slide",
+                      icon: "error",
+                      position: "bottom-left",
+                      hideAfter: 1000,
+                      stack: 6,
+                      loaderBg: "#f96868",
+                      afterHidden: function () {
+                        location.reload();
                       },
                     });
                   }
