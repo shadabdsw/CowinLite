@@ -58,55 +58,65 @@ public class MyController {
         return "register";
     }
 
-    // checks and moves to next page depending on registered phone number
+    @PostMapping("/login")
+    public String login(@ModelAttribute("user") User user, Model model) {
+        User user1 = restTemplate.getForObject(
+                "http://localhost:8081/registration/getUserByPhoneNumber/" + user.getPhoneNumber(), User.class);
+        model.addAttribute("user", user1);
+
+        if (user1 != null) {
+            if (user1.getPassword().equals(user.getPassword())) {
+                System.out.println("Login Successful - " + user1.getName());
+
+                if (user1.getUserType().equals("staff")) {
+                    return "staffDash";
+                } else if (user1.getUserType().equals("admin")) {
+                    model.addAttribute("user", user1);
+                    System.out.println("This is name - " + user1.getName());
+                    return "adminDash";
+                } else {
+                    return "public";
+                }
+
+            } else {
+                System.out.println("Login Failed");
+            }
+        } else {
+            System.out.println("Null");
+        }
+
+        model.addAttribute("user", user1);
+
+        return "public";
+    }
+
     @PostMapping("/register")
-    public String submitForm(@ModelAttribute("user") User user, Model model) throws URISyntaxException {
+    public String register(@ModelAttribute("user") User user, Model model) throws URISyntaxException {
+        System.out.println("print - " + user);
 
         user.setMember(new ArrayList<Member>()); // initialize member list
 
-        if (restTemplate.getForObject(
-                "http://localhost:8081/registration/login/" + user.getPhoneNumber() + "/" + user.getPassword(),
-                Boolean.class)) {
+        System.out.println("Hello, New User! " + user.getName());
 
-            // logins user
-            System.out.println("Welcome Back " + user.getName());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        } else {
+        URI uri = new URI("http://localhost:8081/registration/save/");
+        User user1 = new User();
+        user1.setName(user.getName());
+        user1.setPhoneNumber(user.getPhoneNumber());
+        user1.setPassword(user.getPassword());
+        user1.setUserType("public");
+        user1.setMember(user.getMember());
 
-            // creates new user
-            System.out.println("Hello, New User! " + user.getName());
+        HttpEntity<User> request = new HttpEntity<User>(user1, headers);
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-
-            URI uri = new URI("http://localhost:8081/registration/save/");
-            User user1 = new User();
-            user1.setName(user.getName());
-            user1.setPhoneNumber(user.getPhoneNumber());
-            user1.setPassword(user.getPassword());
-            user1.setUserType("public");
-            user1.setMember(user.getMember());
-
-            HttpEntity<User> request = new HttpEntity<User>(user1, headers);
-
-            restTemplate.postForObject(uri, request, User.class);
-
-        }
+        restTemplate.postForObject(uri, request, User.class);
 
         user = restTemplate.getForObject(
                 "http://localhost:8081/registration/getUserByPhoneNumber/" + user.getPhoneNumber(), User.class);
         System.out.println(user);
         model.addAttribute("user", user);
-
-        if (user.getUserType().equals("staff")) {
-            return "staffDash";
-        }
-
-        if (user.getUserType().equals("admin")) {
-            model.addAttribute("user", user);
-            System.out.println("This is name - " + user.getName());
-            return "adminDash";
-        }
 
         return "public";
     }
