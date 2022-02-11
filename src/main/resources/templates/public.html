@@ -216,39 +216,33 @@
             success: function (result) {
               console.log(formData);
               if (result == "success") {
-                $.confirm({
-                  title: "Success!",
-                  content: "Member added successfully!",
-                  type: "green",
-                  typeAnimated: true,
-                  buttons: {
-                    tryAgain: {
-                      text: "Ok",
-                      btnClass: "btn-green",
-                      action: function () {
-                        $("#form_card").show();
-                        $("#form_content").hide();
-                        location.reload();
-                      },
-                    },
+                $.toast({
+                  heading: "Success!",
+                  text: "Member added successfully!",
+                  showHideTransition: "slide",
+                  icon: "success",
+                  position: "bottom-left",
+                  hideAfter: 1000,
+                  stack: 6,
+                  loaderBg: "#f96868",
+                  afterHidden: function () {
+                    $("#form_card").show();
+                    $("#form_content").hide();
+                    location.reload();
                   },
                 });
               } else {
-                $.confirm({
-                  title: "Error!",
-                  content: "Member addition unsuccessful!",
-                  type: "red",
-                  typeAnimated: true,
-                  buttons: {
-                    tryAgain: {
-                      text: "Ok",
-                      btnClass: "btn-red",
-                      action: function () {
-                        $("#form_card").show();
-                        $("#form_content").hide();
-                        location.reload();
-                      },
-                    },
+                $.toast({
+                  heading: "Error!",
+                  text: "Member addition unsuccessful!",
+                  showHideTransition: "slide",
+                  icon: "error",
+                  position: "bottom-left",
+                  hideAfter: 1000,
+                  stack: 6,
+                  loaderBg: "#f96868",
+                  afterHidden: function () {
+                    location.reload();
                   },
                 });
               }
