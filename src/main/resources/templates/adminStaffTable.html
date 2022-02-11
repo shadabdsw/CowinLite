@@ -79,9 +79,6 @@
               var name = this.$content.find(".name").val();
               var oldPhoneNumber = phnNumber;
               var newPhoneNumber = this.$content.find(".phoneNumber").val();
-              console.log(
-                "NON" + name + " " + oldPhoneNumber + " " + newPhoneNumber
-              );
 
               var formData = {
                 name: name,
@@ -97,35 +94,31 @@
                 success: function (result) {
                   console.log(result);
                   if (result == "success") {
-                    $.confirm({
-                      title: "Success!",
-                      content: "Staff member updated successfully!",
-                      type: "green",
-                      typeAnimated: true,
-                      buttons: {
-                        tryAgain: {
-                          text: "Ok",
-                          btnClass: "btn-green",
-                          action: function () {
-                            location.reload();
-                          },
-                        },
+                    $.toast({
+                      heading: "Success!",
+                      text: "Staff member updated successfully!",
+                      showHideTransition: "slide",
+                      icon: "success",
+                      position: "bottom-left",
+                      hideAfter: 1000,
+                      stack: 6,
+                      loaderBg: "#f96868",
+                      afterHidden: function () {
+                        location.reload();
                       },
                     });
                   } else {
-                    $.confirm({
-                      title: "Error!",
-                      content: "Staff member not updated!",
-                      type: "red",
-                      typeAnimated: true,
-                      buttons: {
-                        tryAgain: {
-                          text: "Ok",
-                          btnClass: "btn-red",
-                          action: function () {
-                            location.reload();
-                          },
-                        },
+                    $.toast({
+                      heading: "Error!",
+                      text: "Staff member updation unsuccessful!",
+                      showHideTransition: "slide",
+                      icon: "error",
+                      position: "bottom-left",
+                      hideAfter: 1000,
+                      stack: 6,
+                      loaderBg: "#f96868",
+                      afterHidden: function () {
+                        location.reload();
                       },
                     });
                   }
@@ -164,35 +157,31 @@
                 url: "/admin/" + phoneNumber,
                 success: function (result) {
                   if (result == "success") {
-                    $.confirm({
-                      title: "Success!",
-                      content: "Staff member deleted successfully!",
-                      type: "green",
-                      typeAnimated: true,
-                      buttons: {
-                        tryAgain: {
-                          text: "Ok",
-                          btnClass: "btn-green",
-                          action: function () {
-                            location.reload();
-                          },
-                        },
+                    $.toast({
+                      heading: "Success!",
+                      text: "Staff member deleted successfully!",
+                      showHideTransition: "slide",
+                      icon: "success",
+                      position: "bottom-left",
+                      hideAfter: 1000,
+                      stack: 6,
+                      loaderBg: "#f96868",
+                      afterHidden: function () {
+                        location.reload();
                       },
                     });
                   } else {
-                    $.confirm({
-                      title: "Error!",
-                      content: "Staff deletion failed!",
-                      type: "red",
-                      typeAnimated: true,
-                      buttons: {
-                        tryAgain: {
-                          text: "Ok",
-                          btnClass: "btn-red",
-                          action: function () {
-                            location.reload();
-                          },
-                        },
+                    $.toast({
+                      heading: "Error!",
+                      text: "Staff member deletion unsuccessful!",
+                      showHideTransition: "slide",
+                      icon: "error",
+                      position: "bottom-left",
+                      hideAfter: 1000,
+                      stack: 6,
+                      loaderBg: "#f96868",
+                      afterHidden: function () {
+                        location.reload();
                       },
                     });
                   }
