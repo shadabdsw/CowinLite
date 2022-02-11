@@ -1,36 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <style>
-      .centered {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-    </style>
-
     <div th:replace="common :: header"></div>
     <title>Register</title>
-
-    <nav class="navbar navbar-dark fixed-top" style="background: #1e3770">
-      <div class="container-fluid">
-        <a
-          class="navbar navbar-brand"
-          style="font-size: 28px; margin-left: 128px"
-          href="#"
-        >
-          Cowin Lite
-        </a>
-      </div>
-    </nav>
-    <nav class="navbar navbar-dark fixed-bottom" style="background: #1e3770">
-      <div class="container-fluid">
-        <span class="navbar-brand mx-auto"
-          >Optimize IT Systems © 2021 COWIN Lite</span
-        >
-      </div>
-    </nav>
   </head>
 
   <body style="margin-top: 100px">
@@ -78,16 +50,16 @@
                 </div>
               </div>
               <div>
-                <button
-                  class="btn btn-primary mt-3"
-                  type="submit"
-                >
+                <button class="btn btn-primary mt-3" type="submit">
                   LOGIN
                 </button>
               </div>
               <div style="margin-top: 16px">
                 <u
-                  ><a id="jump_to_register" style="color: blue; size: 12px; cursor: pointer;">
+                  ><a
+                    id="jump_to_register"
+                    style="color: blue; size: 12px; cursor: pointer"
+                  >
                     Don't have an account? Click here to register</a
                   ></u
                 >
@@ -164,16 +136,16 @@
                 </div>
               </div>
               <div>
-                <button
-                  class="btn btn-primary mt-3"
-                  type="submit"
-                >
+                <button class="btn btn-primary mt-3" type="submit">
                   REGISTER
                 </button>
               </div>
               <div style="margin-top: 16px">
                 <u
-                  ><a id="jump_to_login" style="color: blue; size: 12px; cursor: pointer;">
+                  ><a
+                    id="jump_to_login"
+                    style="color: blue; size: 12px; cursor: pointer"
+                  >
                     Already have an account? Click here to login</a
                   ></u
                 >
