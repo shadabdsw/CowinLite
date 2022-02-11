@@ -1,4 +1,4 @@
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <body>
     <div th:fragment="header">
       <!-- Required meta tags -->
@@ -23,6 +23,41 @@
         type="text/css"
         href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css"
       />
+
+      <style>
+        .centered {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      </style>
+  
+      <nav class="navbar navbar-dark fixed-top" style="background: #1e3770">
+        <div class="container-fluid">
+          <label
+            class="navbar navbar-brand"
+            href="#"
+            style="font-size: 28px; margin-left: 128px"
+          >
+            Cowin Lite
+        </label>
+          <a
+            th:if="${}"
+            class="navbar navbar-brand"
+            href="/"
+            style="font-size: 28px; margin-right: 128px"
+            >Logout</a
+          >
+        </div>
+      </nav>
+      <nav class="navbar navbar-dark fixed-bottom" style="background: #1e3770">
+        <div class="container-fluid">
+          <span class="navbar-brand mx-auto"
+            >Optimize IT Systems © 2021 COWIN Lite</span
+          >
+        </div>
+      </nav>
     </div>
 
     <div th:fragment="card">
@@ -270,4 +305,3 @@
     </div>
   </body>
 </html>
->
