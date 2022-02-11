@@ -34,10 +34,79 @@
   </head>
 
   <body style="margin-top: 100px">
-    <div class="container text-center centered" style="width: 34rem">
+    <!-- Login -->
+    <div
+      id="login_form"
+      class="container text-center centered"
+      style="width: 34rem"
+    >
       <div class="card text-center shadow p-3 mb-5 bg-body rounded">
         <div class="card-body">
-          <h2 class="card-header">Register/Login to Cowin Lite</h2>
+          <h2 class="card-header">Login to Cowin Lite</h2>
+          <div>
+            <form
+              action="#"
+              th:action="@{/register}"
+              th:object="${user}"
+              method="post"
+            >
+              <div class="form-floating mt-2">
+                <input
+                  maxlength="10"
+                  minlength="1"
+                  required
+                  type="tel"
+                  th:field="*{phoneNumber}"
+                  class="form-control"
+                  id="floatingPhone"
+                  placeholder="phoneNumber"
+                  name="phone"
+                />
+                <label for="floatingPhone">Enter your phone number</label>
+              </div>
+              <div>
+                <div class="form-floating mt-2">
+                  <input
+                    required
+                    type="password"
+                    th:field="*{password}"
+                    class="form-control"
+                    id="floatingPassword"
+                    placeholder="Password"
+                  />
+                  <label for="floatingPassword">Enter your password</label>
+                </div>
+              </div>
+              <div>
+                <button
+                  class="btn btn-primary mt-3"
+                  type="submit"
+                >
+                  LOGIN
+                </button>
+              </div>
+              <div style="margin-top: 16px">
+                <u
+                  ><a id="jump_to_register" style="color: blue; size: 12px; cursor: pointer;">
+                    Don't have an account? Click here to register</a
+                  ></u
+                >
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Register -->
+    <div
+      id="register_form"
+      class="container text-center centered"
+      style="width: 34rem"
+    >
+      <div class="card text-center shadow p-3 mb-5 bg-body rounded">
+        <div class="card-body">
+          <h2 class="card-header">Register to Cowin Lite</h2>
           <div>
             <form
               action="#"
@@ -96,12 +165,18 @@
               </div>
               <div>
                 <button
-                  id="register_btn"
                   class="btn btn-primary mt-3"
                   type="submit"
                 >
-                  Register/Login
+                  REGISTER
                 </button>
+              </div>
+              <div style="margin-top: 16px">
+                <u
+                  ><a id="jump_to_login" style="color: blue; size: 12px; cursor: pointer;">
+                    Already have an account? Click here to login</a
+                  ></u
+                >
               </div>
               <div type="hidden" class="form-floating mt-2">
                 <input
@@ -123,60 +198,74 @@
   </body>
 
   <script>
-    $("#floatingName").val("");
-    $("#floatingPhone").val("");
+    $(document).ready(function () {
+      $("#register_form").hide();
 
-    floatingUserType.value = "public";
+      $("#jump_to_register").on("click", function () {
+        $("#login_form").hide();
+        $("#register_form").show();
+      });
 
-    let password = document.getElementById("floatingPassword");
-    let progressBar = document.getElementById("passwordStrength");
+      $("#jump_to_login").on("click", function () {
+        $("#register_form").hide();
+        $("#login_form").show();
+      });
 
-    password.addEventListener("input", () => {
-      pwd = password.value;
-      strength = scorePassword(pwd);
-      console.log(password.value.length);
-      progressBar.style.width = strength + "%";
+      $("#floatingName").val("");
+      $("#floatingPhone").val("");
 
-      progressBar.classList.remove("bg-success", "bg-warning", "bg-danger");
-      if (strength < 30) {
-        progressBar.classList.add("bg-danger");
-        progressBar.innerHTML = "Weak Password";
-      } else if (strength < 70) {
-        progressBar.classList.add("bg-warning");
-        progressBar.innerHTML = "Moderate Password";
-      } else {
-        progressBar.classList.add("bg-success");
-        progressBar.innerHTML = "Strong Password";
+      floatingUserType.value = "public";
+
+      let password = document.getElementById("floatingPassword");
+      let progressBar = document.getElementById("passwordStrength");
+
+      password.addEventListener("input", () => {
+        pwd = password.value;
+        strength = scorePassword(pwd);
+        console.log(password.value.length);
+        progressBar.style.width = strength + "%";
+
+        progressBar.classList.remove("bg-success", "bg-warning", "bg-danger");
+        if (strength < 30) {
+          progressBar.classList.add("bg-danger");
+          progressBar.innerHTML = "Weak Password";
+        } else if (strength < 70) {
+          progressBar.classList.add("bg-warning");
+          progressBar.innerHTML = "Moderate Password";
+        } else {
+          progressBar.classList.add("bg-success");
+          progressBar.innerHTML = "Strong Password";
+        }
+      });
+
+      //function to check password strength
+      function scorePassword(pass) {
+        var score = 0;
+        if (!pass) return score;
+
+        // award every unique letter until 5 repetitions
+        var letters = new Object();
+        for (var i = 0; i < pass.length; i++) {
+          letters[pass[i]] = (letters[pass[i]] || 0) + 1;
+          score += 5.0 / letters[pass[i]];
+        }
+
+        // bonus points for mixing it up
+        var variations = {
+          digits: /\d/.test(pass),
+          lower: /[a-z]/.test(pass),
+          upper: /[A-Z]/.test(pass),
+          nonWords: /\W/.test(pass),
+        };
+
+        var variationCount = 0;
+        for (var check in variations) {
+          variationCount += variations[check] == true ? 1 : 0;
+        }
+        score += (variationCount - 1) * 10;
+
+        return parseInt(score);
       }
     });
-
-    //function to check password strength
-    function scorePassword(pass) {
-      var score = 0;
-      if (!pass) return score;
-
-      // award every unique letter until 5 repetitions
-      var letters = new Object();
-      for (var i = 0; i < pass.length; i++) {
-        letters[pass[i]] = (letters[pass[i]] || 0) + 1;
-        score += 5.0 / letters[pass[i]];
-      }
-
-      // bonus points for mixing it up
-      var variations = {
-        digits: /\d/.test(pass),
-        lower: /[a-z]/.test(pass),
-        upper: /[A-Z]/.test(pass),
-        nonWords: /\W/.test(pass),
-      };
-
-      var variationCount = 0;
-      for (var check in variations) {
-        variationCount += variations[check] == true ? 1 : 0;
-      }
-      score += (variationCount - 1) * 10;
-
-      return parseInt(score);
-    }
   </script>
 </html>
