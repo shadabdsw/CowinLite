@@ -78,34 +78,18 @@ public class MyController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("user") User user, Model model) throws URISyntaxException {
-        System.out.println("print - " + user);
-
+    public String register(@ModelAttribute("user") User user) {
+        User u;
         user.setMember(new ArrayList<Member>()); // initialize member list
 
-        System.out.println("Hello, New User! " + user.getName());
+        u = restTemplate.postForObject("http://localhost:8081/registration/save/", user, User.class);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+        if(u != null) {
+            return "register";
+        } else {
+            return null;
+        }
 
-        URI uri = new URI("http://localhost:8081/registration/save/");
-        User user1 = new User();
-        user1.setName(user.getName());
-        user1.setPhoneNumber(user.getPhoneNumber());
-        user1.setPassword(user.getPassword());
-        user1.setUserType("public");
-        user1.setMember(user.getMember());
-
-        HttpEntity<User> request = new HttpEntity<User>(user1, headers);
-
-        restTemplate.postForObject(uri, request, User.class);
-
-        user = restTemplate.getForObject(
-                "http://localhost:8081/registration/getUserByPhoneNumber/" + user.getPhoneNumber(), User.class);
-        System.out.println(user);
-        model.addAttribute("user", user);
-
-        return "public";
     }
 
     @PostMapping("/addmember")
