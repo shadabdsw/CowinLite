@@ -60,34 +60,21 @@ public class MyController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute("user") User user, Model model) {
-        User user1 = restTemplate.getForObject(
-                "http://localhost:8081/registration/getUserByPhoneNumber/" + user.getPhoneNumber(), User.class);
-        model.addAttribute("user", user1);
+        User u;
+        u = restTemplate.postForObject("http://localhost:8081/registration/login/", user, User.class);
+        model.addAttribute("user", u);
 
-        if (user1 != null) {
-            if (user1.getPassword().equals(user.getPassword())) {
-                System.out.println("Login Successful - " + user1.getName());
-
-                if (user1.getUserType().equals("staff")) {
-                    return "staffDash";
-                } else if (user1.getUserType().equals("admin")) {
-                    model.addAttribute("user", user1);
-                    System.out.println("This is name - " + user1.getName());
-                    return "adminDash";
-                } else {
-                    return "public";
-                }
-
+        if (u != null) {
+            if (u.getUserType().equals("admin")) {
+                return "adminDash";
+            } else if (u.getUserType().equals("staff")) {
+                return "staffDash";
             } else {
-                System.out.println("Login Failed");
+                return "public";
             }
         } else {
-            System.out.println("Null");
+            return null;
         }
-
-        model.addAttribute("user", user1);
-
-        return "public";
     }
 
     @PostMapping("/register")
