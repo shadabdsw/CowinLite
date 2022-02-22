@@ -79,15 +79,17 @@ public class MyController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute("user") User user) {
-        User u;
+        ResponseEntity<Object> responseEntity;
         user.setMember(new ArrayList<Member>()); // initialize member list
 
-        u = restTemplate.postForObject("http://localhost:8081/registration/save/", user, User.class);
+        responseEntity = restTemplate.postForEntity("http://localhost:8081/registration/save/", user, Object.class);
 
-        if(u != null) {
+        System.out.println(responseEntity);
+
+        if(responseEntity.getStatusCode().equals(HttpStatus.CREATED)) {
             return "register";
         } else {
-            return null;
+            return "/";
         }
 
     }
