@@ -60,8 +60,14 @@ public class MyController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute("user") User user, Model model) {
+        ResponseEntity<Object> responseEntity;
         User u;
-        u = restTemplate.postForObject("http://localhost:8081/registration/login/", user, User.class);
+        responseEntity = restTemplate
+                .postForEntity("http://localhost:8081/registration/login?phoneNumber=" + user.getPhoneNumber() +
+                        "&password=" + user.getPassword(), user, Object.class);
+        System.out.println(responseEntity.getBody());
+        u = (User) responseEntity.getBody();
+
         model.addAttribute("user", u);
 
         if (u != null) {
@@ -84,12 +90,16 @@ public class MyController {
 
         responseEntity = restTemplate.postForEntity("http://localhost:8081/registration/save/", user, Object.class);
 
-        System.out.println(responseEntity);
+        System.out.println("RESPONSE!!!!" + responseEntity);
 
-        if(responseEntity.getStatusCode().equals(HttpStatus.CREATED)) {
+        if (responseEntity.getStatusCode().equals(HttpStatus.CREATED)) {
             return "register";
+        } else if (responseEntity.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
+            return "error-404";
+        } else if (responseEntity.getStatusCode().equals(HttpStatus.CONFLICT)) {
+            return "error-409";
         } else {
-            return "/";
+            return "error-500";
         }
 
     }
