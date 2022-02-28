@@ -26,12 +26,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Controller
@@ -60,17 +63,16 @@ public class MyController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute("user") User user, Model model) {
-        ResponseEntity<Object> responseEntity;
         User u;
-        responseEntity = restTemplate
-                .postForEntity("http://localhost:8081/registration/login?phoneNumber=" + user.getPhoneNumber() +
-                        "&password=" + user.getPassword(), user, Object.class);
-        System.out.println(responseEntity.getBody());
-        u = (User) responseEntity.getBody();
+        
+        try {
+            ResponseEntity<User> response = restTemplate
+                    .postForEntity("http://localhost:8081/registration/login?phoneNumber=" + user.getPhoneNumber() +
+                            "&password=" + user.getPassword(), user, User.class);
+            System.out.println("ResponseBody - " + response.getBody());
+            u = (User) response.getBody();
+            model.addAttribute("user", u);
 
-        model.addAttribute("user", u);
-
-        if (u != null) {
             if (u.getUserType().equals("admin")) {
                 return "adminDash";
             } else if (u.getUserType().equals("staff")) {
@@ -78,28 +80,44 @@ public class MyController {
             } else {
                 return "public";
             }
-        } else {
-            return null;
+
+        } catch (HttpClientErrorException e) {
+            System.out.println("Exception - " + e.getMessage());
+            u = null;
+            System.out.println(e.getStatusCode());
+
+            if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
+                return "error-404";
+            } else if (e.getStatusCode().equals(HttpStatus.FORBIDDEN)) {
+                return "error-403";
+            } else {
+                e.printStackTrace();
+                return "error-500";
+            }
         }
     }
 
+
     @PostMapping("/register")
     public String register(@ModelAttribute("user") User user) {
-        ResponseEntity<Object> responseEntity;
+        ResponseEntity<User> responseEntity;
         user.setMember(new ArrayList<Member>()); // initialize member list
 
-        responseEntity = restTemplate.postForEntity("http://localhost:8081/registration/save/", user, Object.class);
-
-        System.out.println("RESPONSE!!!!" + responseEntity);
-
-        if (responseEntity.getStatusCode().equals(HttpStatus.CREATED)) {
+        try {
+            responseEntity = restTemplate.postForEntity("http://localhost:8081/registration/save/", user, User.class);
+            
+            System.out.println("RESPONSE!!!!" + responseEntity);
+            System.out.println(responseEntity.getStatusCode());
             return "register";
-        } else if (responseEntity.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
-            return "error-404";
-        } else if (responseEntity.getStatusCode().equals(HttpStatus.CONFLICT)) {
-            return "error-409";
-        } else {
-            return "error-500";
+            
+        } catch (HttpClientErrorException e) {
+            System.out.println("Exception - " + e.getMessage());
+
+            if (e.getStatusCode().equals(HttpStatus.CONFLICT)) {
+                return "error-409";
+            } else {
+                return "error-500";
+            }
         }
 
     }
