@@ -59,16 +59,14 @@ public class MyController {
         return "register";
     }
 
-    @PostMapping("/login")
-    public String login(@ModelAttribute("user") User user, Model model) {
-        
+    @PostMapping("/loginUser")
+    public String loginUser(@ModelAttribute("user") User user, Model model) {
         try {
             ResponseEntity<User> response = restTemplate
-                    .postForEntity("http://localhost:8081/registration/login?phoneNumber=" + user.getPhoneNumber() +
+                    .postForEntity("http://localhost:8081/registration/loginUser?phoneNumber=" + user.getPhoneNumber() +
                             "&password=" + user.getPassword(), user, User.class);
             User u = (User) response.getBody();
             model.addAttribute("user", u);
-
             if (u.getUserType().equals("admin")) {
                 return "adminDash";
             } else if (u.getUserType().equals("staff")) {
@@ -76,35 +74,25 @@ public class MyController {
             } else {
                 return "public";
             }
-
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
                 return "error-404";
             } else if (e.getStatusCode().equals(HttpStatus.FORBIDDEN)) {
                 return "error-403";
             } else {
-                e.printStackTrace();
                 return "error-500";
             }
         }
     }
 
-
-    @PostMapping("/register")
-    public String register(@ModelAttribute("user") User user) {
-        ResponseEntity<User> responseEntity;
-        user.setMember(new ArrayList<Member>()); // initialize member list
-
+    @PostMapping("/registerUser")
+    public String registerUser(@ModelAttribute("user") User user) {
+        user.setMember(new ArrayList<Member>()); 
         try {
-            responseEntity = restTemplate.postForEntity("http://localhost:8081/registration/save/", user, User.class);
-            
-            System.out.println("RESPONSE!!!!" + responseEntity);
-            System.out.println(responseEntity.getStatusCode());
+            restTemplate.postForEntity("http://localhost:8081/registration/registerUser/", user,
+                    User.class);
             return "register";
-            
         } catch (HttpClientErrorException e) {
-            System.out.println("Exception - " + e.getMessage());
-
             if (e.getStatusCode().equals(HttpStatus.CONFLICT)) {
                 return "error-409";
             } else {
