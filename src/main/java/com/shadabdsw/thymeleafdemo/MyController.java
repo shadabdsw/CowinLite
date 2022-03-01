@@ -61,14 +61,12 @@ public class MyController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute("user") User user, Model model) {
-        User u;
         
         try {
             ResponseEntity<User> response = restTemplate
-                    .postForEntity("http://localhost:8081/registration/loginUser?phoneNumber=" + user.getPhoneNumber() +
+                    .postForEntity("http://localhost:8081/registration/login?phoneNumber=" + user.getPhoneNumber() +
                             "&password=" + user.getPassword(), user, User.class);
-            System.out.println("ResponseBody - " + response.getBody()); 
-            u = (User) response.getBody();
+            User u = (User) response.getBody();
             model.addAttribute("user", u);
 
             if (u.getUserType().equals("admin")) {
@@ -80,10 +78,6 @@ public class MyController {
             }
 
         } catch (HttpClientErrorException e) {
-            System.out.println("Exception - " + e.getMessage());
-            u = null;
-            System.out.println(e.getStatusCode());
-
             if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
                 return "error-404";
             } else if (e.getStatusCode().equals(HttpStatus.FORBIDDEN)) {
