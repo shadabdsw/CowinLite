@@ -42,7 +42,6 @@ public class MyController {
 
     // get the list of all users
     public User[] getAllUsers() {
-
         ResponseEntity<User[]> response = restTemplate.getForEntity("http://localhost:8081/registration/getAllUsers/",
                 User[].class);
         User[] users = response.getBody();
