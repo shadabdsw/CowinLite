@@ -12,7 +12,7 @@ public class CowinExceptionHandler {
         System.out.println("Exception occured: " + ex.getMessage());
 
         if (ex.getMessage().contains("403")) {
-            model.addAttribute("error", "You are not authorized to access this page");
+            model.addAttribute("error", "Incorrect Password");
             return "error/403";
         } else if (ex.getMessage().contains("404")) {
             model.addAttribute("error", "Page not found");
