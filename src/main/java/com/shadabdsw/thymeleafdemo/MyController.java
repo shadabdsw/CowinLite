@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Controller
@@ -53,52 +52,34 @@ public class MyController {
 
     // home page
     @GetMapping("/")
-    public String showForm(Model model) {
+    public String homePage(Model model) {
         User user = new User();
         model.addAttribute("user", user); // send all user data to register page
         return "register";
     }
 
     @PostMapping("/loginUser")
-    public String loginUser(@ModelAttribute("user") User user, Model model) {
-        try {
-            ResponseEntity<User> response = restTemplate
-                    .postForEntity("http://localhost:8081/registration/loginUser?phoneNumber=" + user.getPhoneNumber() +
-                            "&password=" + user.getPassword(), user, User.class);
-            User u = (User) response.getBody();
-            model.addAttribute("user", u);
-            if (u.getUserType().equals("admin")) {
-                return "adminDash";
-            } else if (u.getUserType().equals("staff")) {
-                return "staffDash";
-            } else {
-                return "public";
-            }
-        } catch (HttpClientErrorException e) {
-            if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
-                return "error-404";
-            } else if (e.getStatusCode().equals(HttpStatus.FORBIDDEN)) {
-                return "error-403";
-            } else {
-                return "error-500";
-            }
+    public String loginUser(@ModelAttribute("user") User user, Model model) throws Exception {
+        ResponseEntity<User> response = restTemplate
+                .postForEntity("http://localhost:8081/registration/loginUser?phoneNumber=" + user.getPhoneNumber() +
+                        "&password=" + user.getPassword(), user, User.class);
+        User u = (User) response.getBody();
+        model.addAttribute("user", u);
+        if (u.getUserType().equals("admin")) {
+            return "adminDash";
+        } else if (u.getUserType().equals("staff")) {
+            return "staffDash";
+        } else {
+            return "public";
         }
     }
 
     @PostMapping("/registerUser")
-    public String registerUser(@ModelAttribute("user") User user) {
-        user.setMember(new ArrayList<Member>()); 
-        try {
-            restTemplate.postForEntity("http://localhost:8081/registration/registerUser/", user,
-                    User.class);
-            return "register";
-        } catch (HttpClientErrorException e) {
-            if (e.getStatusCode().equals(HttpStatus.CONFLICT)) {
-                return "error-409";
-            } else {
-                return "error-500";
-            }
-        }
+    public String registerUser(@ModelAttribute("user") User user) throws Exception {
+        user.setMember(new ArrayList<Member>());
+        restTemplate.postForEntity("http://localhost:8081/registration/registerUser/", user,
+                User.class);
+        return "register";
 
     }
 
