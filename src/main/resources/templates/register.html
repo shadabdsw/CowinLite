@@ -84,12 +84,12 @@
                 th:if="${#strings.substring(error, 0, 3) == '403'}"
                 >Incorrect Password</span
               >
-              <!-- <span
+              <span
                 style="color: red; font-size: medium; font-weight: bold"
                 th:unless="${error} == null"
                 th:if="${#strings.substring(error, 0, 3) == '404'}"
                 >User Not Found</span
-              > -->
+              >
               <div>
                 <button class="btn btn-primary mt-3" type="submit">
                   LOGIN
