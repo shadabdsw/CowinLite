@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <body>
-    <h1>404 | User not found!</h1>
+    <h1>404 | <span th:text="${error}"></span></h1>
     <a href="/">Go Home</a>
   </body>
 </html>
