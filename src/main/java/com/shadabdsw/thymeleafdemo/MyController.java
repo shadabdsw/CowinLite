@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
+import com.shadabdsw.thymeleafdemo.Model.ErrorHandler;
 import com.shadabdsw.thymeleafdemo.Model.Member;
 import com.shadabdsw.thymeleafdemo.Model.StaffEditReq;
 import com.shadabdsw.thymeleafdemo.Model.User;
@@ -40,6 +41,8 @@ public class MyController {
     @Autowired
     RestTemplate restTemplate;
 
+    ErrorHandler error = new ErrorHandler();
+
     // get the list of all users
     public User[] getAllUsers() {
         ResponseEntity<User[]> response = restTemplate.getForEntity("http://localhost:8081/registration/getAllUsers/",
@@ -54,16 +57,23 @@ public class MyController {
     public String homePage(Model model) {
         User user = new User();
         model.addAttribute("user", user); // send all user data to register page
+        model.addAttribute("error", error);
         return "register";
     }
 
     @PostMapping("/loginUser")
-    public String loginUser(@ModelAttribute("user") User user, Model model) throws Exception {
-        ResponseEntity<User> response = restTemplate
-                .postForEntity("http://localhost:8081/registration/loginUser?phoneNumber=" + user.getPhoneNumber() +
-                        "&password=" + user.getPassword(), user, User.class);
+    public String loginUser(@ModelAttribute("user") User user, Model model) {
+
+        ResponseEntity<User> response = restTemplate.postForEntity(
+            "http://localhost:8081/registration/loginUser?phoneNumber=" + user.getPhoneNumber() + "&password=" + user.getPassword(), 
+            user, 
+            User.class
+        );
         User u = (User) response.getBody();
+
         model.addAttribute("user", u);
+        System.out.println("flow is here too");
+
         if (u.getUserType().equals("admin")) {
             return "adminDash";
         } else if (u.getUserType().equals("staff")) {
@@ -74,7 +84,7 @@ public class MyController {
     }
 
     @PostMapping("/registerUser")
-    public String registerUser(@ModelAttribute("user") User user) throws Exception {
+    public String registerUser(@ModelAttribute("user") User user) {
         user.setMember(new ArrayList<Member>());
         restTemplate.postForEntity("http://localhost:8081/registration/registerUser/", user,
                 User.class);
