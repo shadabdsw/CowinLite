@@ -32,17 +32,20 @@
       </div>
     </nav>
   </head>
-  <div
-    id="errorCheck"
-    class="mt-3"
-    th:text="${#strings.substring(error, 0, 3)}"
-  >
-    <div class="alert alert-danger" role="alert">
-      <strong>Error!</strong> Username already exists.
-    </div>
-  </div>
 
-  <body style="margin-top: 100px">
+  <body style="margin-top: 80px">
+    <div th:if="${error.status}">
+      <div 
+        class="alert alert-danger" 
+        style="color: red; font-size: medium; font-weight: bold"
+        role="alert">
+        <span>
+          <strong>Error!</strong>
+          <span th:text="${error.message}"></span>
+        </span>
+      </div>
+    </div>
+
     <!-- Login -->
     <div
       id="login_form"
@@ -86,23 +89,7 @@
                   <label for="floatingPassword">Enter your password</label>
                 </div>
               </div>
-              <div class="mt-2">
-                <span th:if="${error} == null"></span>
-                <span
-                  style="color: red; font-size: medium; font-weight: bold"
-                  th:if="${#strings.substring(error, 0, 3) == '403'}"
-                  ><div class="alert alert-danger" role="alert">
-                    <strong>Error!</strong> Incorrect Password.
-                  </div></span
-                >
-                <span
-                  style="color: red; font-size: medium; font-weight: bold"
-                  th:if="${#strings.substring(error, 0, 3) == '404'}"
-                  ><div class="alert alert-danger" role="alert">
-                    <strong>Error!</strong> User Not Found.
-                  </div></span
-                >
-              </div>
+
               <div>
                 <button class="btn btn-primary mt-2" type="submit">
                   LOGIN
@@ -189,14 +176,7 @@
                   </div>
                 </div>
               </div>
-              <span
-                class="mt-2"
-                style="color: red; font-size: medium; font-weight: bold"
-                th:if="${#strings.substring(error, 0, 3) == '409'}"
-                ><div class="alert alert-danger" role="alert">
-                  <strong>Error!</strong> User Already Exists.
-                </div></span
-              >
+
               <div>
                 <button class="btn btn-primary mt-2" type="submit">
                   REGISTER
