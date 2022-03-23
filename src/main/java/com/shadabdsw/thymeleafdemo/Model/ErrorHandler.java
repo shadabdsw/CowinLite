@@ -1,7 +1,7 @@
 package com.shadabdsw.thymeleafdemo.Model;
 
 public class ErrorHandler {
-
+    
     private boolean status;
     private String message;
 
