@@ -15,20 +15,14 @@
 
     <nav class="navbar navbar-dark fixed-top" style="background: #1e3770">
       <div class="container-fluid">
-        <label
-          class="navbar navbar-brand"
-          href="#"
-          style="font-size: 28px; margin-left: 128px"
-        >
+        <label class="navbar navbar-brand" href="#" style="font-size: 28px; margin-left: 128px">
           Cowin Lite
         </label>
       </div>
     </nav>
     <nav class="navbar navbar-dark fixed-bottom" style="background: #1e3770">
       <div class="container-fluid">
-        <span class="navbar-brand mx-auto"
-          >Optimize IT Systems © 2021 COWIN Lite</span
-        >
+        <span class="navbar-brand mx-auto">Optimize IT Systems © 2021 COWIN Lite</span>
       </div>
     </nav>
   </head>
@@ -59,21 +53,12 @@
     </div>
 
     <!-- Login -->
-    <div
-      id="login_form"
-      class="container text-center centered"
-      style="width: 34rem"
-    >
+    <div id="login_form" class="container text-center centered" style="width: 34rem">
       <div class="card text-center shadow p-3 mb-5 bg-body rounded">
         <div class="card-body">
           <h2 class="card-header">Login to Cowin Lite</h2>
           <div>
-            <form
-              action="#"
-              th:action="@{/loginUser}"
-              th:object="${user}"
-              method="post"
-            >
+            <form action="#" th:action="@{/loginUser}" th:object="${user}" method="post">
               <div class="form-floating mt-2">
                 <input
                   maxlength="10"
@@ -85,7 +70,7 @@
                   id="floatingPhone"
                   placeholder="phoneNumber"
                   name="phone"
-                />
+                  />
                 <label for="floatingPhone">Enter your phone number</label>
               </div>
               <div>
@@ -101,21 +86,15 @@
                   <label for="floatingPassword">Enter your password</label>
                 </div>
               </div>
-
               <div>
-                <button class="btn btn-primary mt-2" type="submit">
-                  LOGIN
-                </button>
+                <button class="btn btn-primary mt-2" type="submit">LOGIN</button>
               </div>
               <div class="mt-2">
-                <u
-                  ><a
-                    id="jump_to_register"
-                    style="color: blue; size: 12px; cursor: pointer"
-                  >
-                    Don't have an account? Click here to register</a
-                  ></u
-                >
+                <u>
+                  <a id="jump_to_register" style="color: blue; size: 12px; cursor: pointer">
+                    Don't have an account? Click here to register
+                  </a>
+                </u>
               </div>
             </form>
           </div>
@@ -124,21 +103,12 @@
     </div>
 
     <!-- Register -->
-    <div
-      id="register_form"
-      class="container text-center centered"
-      style="width: 34rem"
-    >
+    <div id="register_form" class="container text-center centered" style="width: 34rem">
       <div class="card text-center shadow p-3 mb-5 bg-body rounded">
         <div class="card-body">
           <h2 class="card-header">Register to Cowin Lite</h2>
           <div>
-            <form
-              action="#"
-              th:action="@{/registerUser}"
-              th:object="${user}"
-              method="post"
-            >
+            <form action="#" th:action="@{/registerUser}" th:object="${user}" method="post">
               <div class="form-floating mt-2">
                 <input
                   required
@@ -165,44 +135,36 @@
                 />
                 <label for="floatingPhone">Enter your phone number</label>
               </div>
-              <div>
-                <div class="form-floating mt-2">
-                  <input
-                    required
-                    type="password"
-                    th:field="*{password}"
-                    class="form-control"
-                    id="floatingPassword"
-                    placeholder="Password"
-                  />
-                  <label for="floatingPassword">Enter your password</label>
-                  <div class="progress" style="margin-top: 10px; height: 20px">
-                    <div
-                      class="progress-bar progress-bar-striped progress-bar-animated"
-                      id="passwordStrength"
-                      role="progressbar"
-                      aria-valuenow="100"
-                      aria-valuemin="20"
-                      aria-valuemax="100"
-                    ></div>
+              <div class="form-floating mt-2">
+                <input
+                  required
+                  type="password"
+                  th:field="*{password}"
+                  class="form-control"
+                  id="floatingPassword"
+                  placeholder="Password"
+                />
+                <label for="floatingPassword">Enter your password</label>
+                <div class="progress" style="margin-top: 10px; height: 20px">
+                  <div
+                    class="progress-bar progress-bar-striped progress-bar-animated"
+                    id="passwordStrength"
+                    role="progressbar"
+                    aria-valuenow="100"
+                    aria-valuemin="20"
+                    aria-valuemax="100">
                   </div>
                 </div>
               </div>
-
               <div>
-                <button class="btn btn-primary mt-2" type="submit">
-                  REGISTER
-                </button>
+                <button class="btn btn-primary mt-2" type="submit">REGISTER</button>
               </div>
               <div class="mt-2">
-                <u
-                  ><a
-                    id="jump_to_login"
-                    style="color: blue; size: 12px; cursor: pointer"
-                  >
-                    Already have an account? Click here to login</a
-                  ></u
-                >
+                <u>
+                  <a id="jump_to_login" style="color: blue; size: 12px; cursor: pointer">
+                    Already have an account? Click here to login
+                  </a>
+                </u>
               </div>
               <div type="hidden" class="form-floating mt-2">
                 <input
@@ -225,17 +187,6 @@
 
   <script>
     $(document).ready(function () {
-      // let error = document.getElementById('errorCheck').innerHTML;
-      // console.log(error);
-
-      // if (errorCheck == "409") {
-      //   $("#register_form").show();
-      //   $("#login_form").hide();
-      // } else {
-      //   $("#register_form").hide();
-      //   $("#login_form").show();
-      // }
-
       $("#register_form").hide();
 
       $("#jump_to_register").on("click", function () {
