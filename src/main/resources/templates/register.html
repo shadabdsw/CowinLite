@@ -34,10 +34,23 @@
   </head>
 
   <body style="margin-top: 80px">
+
     <div th:if="${error.status}">
       <div 
         class="alert alert-danger" 
         style="color: red; font-size: medium; font-weight: bold; text-align: center;"
+        role="alert">
+        <span>
+          <strong><span th:text="${error.message}"></span></strong>
+        </span>
+      </div>
+    </div>
+
+    <!-- could have made a SuccessHandler model like ErrorHandler but used this instead -->
+    <div th:if="${error.message} eq 'User Registered Successfully! Please Login.' ">
+      <div 
+        class="alert alert-success" 
+        style="color: green; font-size: medium; font-weight: bold; text-align: center;"
         role="alert">
         <span>
           <strong><span th:text="${error.message}"></span></strong>
