@@ -37,11 +37,10 @@
     <div th:if="${error.status}">
       <div 
         class="alert alert-danger" 
-        style="color: red; font-size: medium; font-weight: bold"
+        style="color: red; font-size: medium; font-weight: bold; text-align: center;"
         role="alert">
         <span>
-          <strong>Error!</strong>
-          <span th:text="${error.message}"></span>
+          <strong><span th:text="${error.message}"></span></strong>
         </span>
       </div>
     </div>
