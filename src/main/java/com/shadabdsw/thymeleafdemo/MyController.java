@@ -52,44 +52,77 @@ public class MyController {
         return users;
     }
 
+    public String handleException(Exception e, Model model) {
+        error.setStatus(true);
+        model.addAttribute("error", error);
+        if (e.getMessage().contains("401")) {
+            return "error/401";
+        } else if (e.getMessage().contains("403")) {
+            error.setMessage("Incorrect Password!");
+            return "register";
+        } else if (e.getMessage().contains("404")) {
+            error.setMessage("User Not Found!");
+            return "register";
+        } else if (e.getMessage().contains("405")) {
+            error.setMessage("Method Not Allowed!");
+            return "error/405";
+        } else if (e.getMessage().contains("409")) {
+            error.setMessage("User Already Exists!");
+            return "register";
+        } else {
+            error.setMessage("Something went wrong!");
+            return "error/500";
+        }
+    }
+    
     // home page
     @GetMapping("/")
     public String homePage(Model model) {
         User user = new User();
         model.addAttribute("user", user); // send all user data to register page
-        model.addAttribute("error", error);
+        error.setStatus(false); // so that the error message is not shown forever
+        model.addAttribute("error", error); // send error data to register page
         return "register";
     }
 
     @PostMapping("/loginUser")
     public String loginUser(@ModelAttribute("user") User user, Model model) {
+        
+        try {
+            ResponseEntity<User> response = restTemplate.postForEntity(
+                "http://localhost:8081/registration/loginUser?phoneNumber=" + user.getPhoneNumber() + "&password=" 
+                    + user.getPassword(), 
+                user, 
+                User.class
+            );
 
-        ResponseEntity<User> response = restTemplate.postForEntity(
-            "http://localhost:8081/registration/loginUser?phoneNumber=" + user.getPhoneNumber() + "&password=" + user.getPassword(), 
-            user, 
-            User.class
-        );
-        User u = (User) response.getBody();
+            User u = (User) response.getBody();
 
-        model.addAttribute("user", u);
-        System.out.println("flow is here too");
+            model.addAttribute("user", u);
 
-        if (u.getUserType().equals("admin")) {
-            return "adminDash";
-        } else if (u.getUserType().equals("staff")) {
-            return "staffDash";
-        } else {
-            return "public";
+            if (u.getUserType().equals("admin")) {
+                return "adminDash";
+            } else if (u.getUserType().equals("staff")) {
+                return "staffDash";
+            } else {
+                return "public";
+            }
+        } catch (Exception e) {
+            return handleException(e, model);
         }
     }
 
     @PostMapping("/registerUser")
-    public String registerUser(@ModelAttribute("user") User user) {
+    public String registerUser(@ModelAttribute("user") User user, Model model) {
         user.setMember(new ArrayList<Member>());
-        restTemplate.postForEntity("http://localhost:8081/registration/registerUser/", user,
-                User.class);
-        return "register";
-
+        try {
+            restTemplate.postForEntity("http://localhost:8081/registration/registerUser/", user, User.class);
+            error.setStatus(false);
+            model.addAttribute("error", error);
+            return "register";
+        } catch (Exception e) {
+            return handleException(e, model);
+        }
     }
 
     @PostMapping("/addmember")
