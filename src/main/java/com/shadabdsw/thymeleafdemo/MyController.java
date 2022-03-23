@@ -118,6 +118,7 @@ public class MyController {
         try {
             restTemplate.postForEntity("http://localhost:8081/registration/registerUser/", user, User.class);
             error.setStatus(false);
+            error.setMessage("User Registered Successfully! Please Login.");
             model.addAttribute("error", error);
             return "register";
         } catch (Exception e) {
