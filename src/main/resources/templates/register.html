@@ -129,11 +129,11 @@
                   type="tel"
                   th:field="*{phoneNumber}"
                   class="form-control"
-                  id="floatingPhone"
+                  id="floatingPhoneRegister"
                   placeholder="phoneNumber"
                   name="phone"
                 />
-                <label for="floatingPhone">Enter your phone number</label>
+                <label for="floatingPhoneRegister">Enter your phone number</label>
               </div>
               <div class="form-floating mt-2">
                 <input
@@ -141,10 +141,10 @@
                   type="password"
                   th:field="*{password}"
                   class="form-control"
-                  id="floatingPassword"
+                  id="floatingPasswordRegister"
                   placeholder="Password"
                 />
-                <label for="floatingPassword">Enter your password</label>
+                <label for="floatingPasswordRegister">Enter your password</label>
                 <div class="progress" style="margin-top: 10px; height: 20px">
                   <div
                     class="progress-bar progress-bar-striped progress-bar-animated"
@@ -201,10 +201,11 @@
 
       $("#floatingName").val("");
       $("#floatingPhone").val("");
+      $("#floatingPhoneRegister").val("");
 
       floatingUserType.value = "public";
 
-      let password = document.getElementById("floatingPassword");
+      let password = document.getElementById("floatingPasswordRegister");
       let progressBar = document.getElementById("passwordStrength");
 
       password.addEventListener("input", () => {
