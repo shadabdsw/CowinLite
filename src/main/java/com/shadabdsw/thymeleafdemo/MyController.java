@@ -52,22 +52,44 @@ public class MyController {
         return users;
     }
 
-    public String handleException(Exception e, Model model) {
+    public void getErrorMessage(String statusCode, String context, Model model) {
         error.setStatus(true);
         model.addAttribute("error", error);
+        if(context.equals("user")) {
+            if(statusCode.equals("403")) 
+                error.setMessage("Incorrect Password!");
+            else if(statusCode.equals("404"))
+                error.setMessage("User Not Found!");
+            else if(statusCode.equals("409"))
+                error.setMessage("User Already Exists!");
+            else
+                error.setMessage("Internal Server Error!");
+        } else if(context.equals("member")) {
+            if(statusCode.equals("403")) 
+                error.setMessage("Incorrect Password!");
+            else if(statusCode.equals("404"))
+                error.setMessage("Member Not Found!");
+            else if(statusCode.equals("409"))
+                error.setMessage("Member Already Exists!");
+            else
+                error.setMessage("Internal Server Error!");
+        }
+    }
+
+    public String handleException(Exception e, String context, Model model) {
         if (e.getMessage().contains("401")) {
             return "error/401";
         } else if (e.getMessage().contains("403")) {
-            error.setMessage("Incorrect Password!");
+            getErrorMessage("403", context, model);
             return "register";
         } else if (e.getMessage().contains("404")) {
-            error.setMessage("User Not Found!");
+            getErrorMessage("404", context, model);
             return "register";
         } else if (e.getMessage().contains("405")) {
-            error.setMessage("Method Not Allowed!");
+            getErrorMessage("405", context, model);
             return "error/405";
         } else if (e.getMessage().contains("409")) {
-            error.setMessage("User Already Exists!");
+            getErrorMessage("409", context, model);
             return "register";
         } else {
             error.setMessage("Something went wrong!");
@@ -81,6 +103,7 @@ public class MyController {
         User user = new User();
         model.addAttribute("user", user); // send all user data to register page
         error.setStatus(false); // so that the error message is not shown forever
+        error.setMessage(""); 
         model.addAttribute("error", error); // send error data to register page
         return "register";
     }
@@ -108,7 +131,7 @@ public class MyController {
                 return "public";
             }
         } catch (Exception e) {
-            return handleException(e, model);
+            return handleException(e, "user", model);
         }
     }
 
@@ -122,7 +145,7 @@ public class MyController {
             model.addAttribute("error", error);
             return "register";
         } catch (Exception e) {
-            return handleException(e, model);
+            return handleException(e, "user", model);
         }
     }
 
