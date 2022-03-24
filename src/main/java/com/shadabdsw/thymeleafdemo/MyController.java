@@ -45,35 +45,12 @@ public class MyController {
 
     // get the list of all users
     public User[] getAllUsers() {
-        ResponseEntity<User[]> response = restTemplate.getForEntity("http://localhost:8081/registration/getAllUsers/",
+        ResponseEntity<User[]> response = restTemplate.getForEntity(
+                "http://localhost:8081/registration/getAllUsers/",
                 User[].class);
         User[] users = response.getBody();
 
         return users;
-    }
-
-    public void getErrorMessage(String statusCode, String context, Model model) {
-        error.setStatus(true);
-        model.addAttribute("error", error);
-        if(context.equals("user")) {
-            if(statusCode.equals("403")) 
-                error.setMessage("Incorrect Password!");
-            else if(statusCode.equals("404"))
-                error.setMessage("User Not Found!");
-            else if(statusCode.equals("409"))
-                error.setMessage("User Already Exists!");
-            else
-                error.setMessage("Internal Server Error!");
-        } else if(context.equals("member")) {
-            if(statusCode.equals("403")) 
-                error.setMessage("Incorrect Password!");
-            else if(statusCode.equals("404"))
-                error.setMessage("Member Not Found!");
-            else if(statusCode.equals("409"))
-                error.setMessage("Member Already Exists!");
-            else
-                error.setMessage("Internal Server Error!");
-        }
     }
 
     public String handleException(Exception e, String context, Model model) {
@@ -96,28 +73,49 @@ public class MyController {
             return "error/500";
         }
     }
-    
+
+    public void getErrorMessage(String statusCode, String context, Model model) {
+        error.setStatus(true);
+        model.addAttribute("error", error);
+        if (context.equals("user")) {
+            if (statusCode.equals("403")) {
+                error.setMessage("Incorrect Password!");
+            } else if (statusCode.equals("404")) {
+                error.setMessage("User Not Found!");
+            } else if (statusCode.equals("409")) {
+                error.setMessage("User Already Exists!");
+            }
+        } else if (context.equals("member")) {
+            if (statusCode.equals("403")) {
+                error.setMessage("Incorrect Password!");
+            } else if (statusCode.equals("404")) {
+                error.setMessage("Member Not Found!");
+            } else if (statusCode.equals("409")) {
+                error.setMessage("Member Already Exists!");
+            }
+        }
+    }
+
     // home page
     @GetMapping("/")
     public String homePage(Model model) {
         User user = new User();
         model.addAttribute("user", user); // send all user data to register page
         error.setStatus(false); // so that the error message is not shown forever
-        error.setMessage(""); 
+        error.setMessage("");
         model.addAttribute("error", error); // send error data to register page
         return "register";
     }
 
     @PostMapping("/loginUser")
     public String loginUser(@ModelAttribute("user") User user, Model model) {
-        
+
         try {
             ResponseEntity<User> response = restTemplate.postForEntity(
-                "http://localhost:8081/registration/loginUser?phoneNumber=" + user.getPhoneNumber() + "&password=" 
-                    + user.getPassword(), 
-                user, 
-                User.class
-            );
+                    "http://localhost:8081/registration/loginUser?phoneNumber=" + user.getPhoneNumber() + "&password="
+                            + user.getPassword(),
+                    user,
+                    User.class);
 
             User u = (User) response.getBody();
 
