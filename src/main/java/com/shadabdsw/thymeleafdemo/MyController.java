@@ -53,8 +53,7 @@ public class MyController {
         return users;
     }
 
-    public String[] handleException(Exception e, String context, Model model) {
-        error.setStatus(true);
+    public String handleException(Exception e, String context) {
         if (context.equals("user")) {
             if (e.getMessage().contains("401")) {
                 return getErrorMessage("error/401", "401!");
@@ -74,11 +73,10 @@ public class MyController {
         }
     }
 
-    public String[] getErrorMessage(String view, String errMessage) {
-        String[] viewAndError = new String[2];
-        viewAndError[0] = view;
-        viewAndError[1] = errMessage;
-        return viewAndError;
+    public String getErrorMessage(String view, String errMessage) {
+        error.setStatus(true);
+        error.setMessage(errMessage);
+        return view;
     }
 
     // home page
@@ -114,10 +112,8 @@ public class MyController {
                 return "public";
             }
         } catch (Exception e) {
-            String[] viewAndError = handleException(e, "user", model);
-            error.setMessage(viewAndError[1]);
             model.addAttribute("error", error);
-            return viewAndError[0];
+            return handleException(e, "user");
         }
     }
 
@@ -128,13 +124,11 @@ public class MyController {
             restTemplate.postForEntity("http://localhost:8081/registration/registerUser/", user, User.class);
             error.setStatus(false);
             error.setMessage("User Registered Successfully! Please Login.");
-            model.addAttribute("error", error);
             return "register";
         } catch (Exception e) {
-            String[] viewAndError = handleException(e, "user", model);
-            error.setMessage(viewAndError[1]);
+            return handleException(e, "user");
+        } finally {
             model.addAttribute("error", error);
-            return viewAndError[0];
         }
     }
 
