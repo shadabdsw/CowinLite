@@ -53,47 +53,32 @@ public class MyController {
         return users;
     }
 
-    public String handleException(Exception e, String context, Model model) {
-        if (e.getMessage().contains("401")) {
-            return "error/401";
-        } else if (e.getMessage().contains("403")) {
-            getErrorMessage("403", context, model);
-            return "register";
-        } else if (e.getMessage().contains("404")) {
-            getErrorMessage("404", context, model);
-            return "register";
-        } else if (e.getMessage().contains("405")) {
-            getErrorMessage("405", context, model);
-            return "error/405";
-        } else if (e.getMessage().contains("409")) {
-            getErrorMessage("409", context, model);
-            return "register";
+    public String[] handleException(Exception e, String context, Model model) {
+        error.setStatus(true);
+        if (context.equals("user")) {
+            if (e.getMessage().contains("401")) {
+                return getErrorMessage("error/401", "401!");
+            } else if (e.getMessage().contains("403")) {
+                return getErrorMessage("register", "Incorrect Password!");
+            } else if (e.getMessage().contains("404")) {
+                return getErrorMessage("register", "User Not Found!");
+            } else if (e.getMessage().contains("405")) {
+                return getErrorMessage("error/405", "Method Not Allowed!");
+            } else if (e.getMessage().contains("409")) {
+                return getErrorMessage("register", "User Already Exists!");
+            } else {
+                return getErrorMessage("error/500", "Something Went Wrong!");
+            }
         } else {
-            error.setMessage("Something went wrong!");
-            return "error/500";
+            return getErrorMessage("error/500", "Else Statement!");
         }
     }
 
-    public void getErrorMessage(String statusCode, String context, Model model) {
-        error.setStatus(true);
-        model.addAttribute("error", error);
-        if (context.equals("user")) {
-            if (statusCode.equals("403")) {
-                error.setMessage("Incorrect Password!");
-            } else if (statusCode.equals("404")) {
-                error.setMessage("User Not Found!");
-            } else if (statusCode.equals("409")) {
-                error.setMessage("User Already Exists!");
-            }
-        } else if (context.equals("member")) {
-            if (statusCode.equals("403")) {
-                error.setMessage("Incorrect Password!");
-            } else if (statusCode.equals("404")) {
-                error.setMessage("Member Not Found!");
-            } else if (statusCode.equals("409")) {
-                error.setMessage("Member Already Exists!");
-            }
-        }
+    public String[] getErrorMessage(String view, String errMessage) {
+        String[] viewAndError = new String[2];
+        viewAndError[0] = view;
+        viewAndError[1] = errMessage;
+        return viewAndError;
     }
 
     // home page
@@ -129,7 +114,10 @@ public class MyController {
                 return "public";
             }
         } catch (Exception e) {
-            return handleException(e, "user", model);
+            String[] viewAndError = handleException(e, "user", model);
+            error.setMessage(viewAndError[1]);
+            model.addAttribute("error", error);
+            return viewAndError[0];
         }
     }
 
@@ -143,7 +131,10 @@ public class MyController {
             model.addAttribute("error", error);
             return "register";
         } catch (Exception e) {
-            return handleException(e, "user", model);
+            String[] viewAndError = handleException(e, "user", model);
+            error.setMessage(viewAndError[1]);
+            model.addAttribute("error", error);
+            return viewAndError[0];
         }
     }
 
