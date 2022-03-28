@@ -56,24 +56,24 @@ public class MyController {
     public String handleException(Exception e, String context) {
         if (context.equals("user")) {
             if (e.getMessage().contains("401")) {
-                return getErrorMessage("error/401", "401!");
+                return setErrorMessage("error/401", "401!");
             } else if (e.getMessage().contains("403")) {
-                return getErrorMessage("register", "Incorrect Password!");
+                return setErrorMessage("register", "Incorrect Password!");
             } else if (e.getMessage().contains("404")) {
-                return getErrorMessage("register", "User Not Found!");
+                return setErrorMessage("register", "User Not Found!");
             } else if (e.getMessage().contains("405")) {
-                return getErrorMessage("error/405", "Method Not Allowed!");
+                return setErrorMessage("error/405", "Method Not Allowed!");
             } else if (e.getMessage().contains("409")) {
-                return getErrorMessage("register", "User Already Exists!");
+                return setErrorMessage("register", "User Already Exists!");
             } else {
-                return getErrorMessage("error/500", "Something Went Wrong!");
+                return setErrorMessage("error/500", "Something Went Wrong!");
             }
         } else {
-            return getErrorMessage("error/500", "Else Statement!");
+            return setErrorMessage("error/500", "Else Statement!");
         }
     }
 
-    public String getErrorMessage(String view, String errMessage) {
+    public String setErrorMessage(String view, String errMessage) {
         error.setStatus(true);
         error.setMessage(errMessage);
         return view;
