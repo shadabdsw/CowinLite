@@ -1,4 +1,4 @@
-package com.shadabdsw.cowinlitefe.Model;
+package com.shadabdsw.cowinlitefe.model;
 
 public class ErrorHandler {
     

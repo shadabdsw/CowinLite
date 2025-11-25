@@ -1,6 +1,9 @@
-package com.shadabdsw.cowinlitefe;
+package com.shadabdsw.cowinlitefe.controller;
 
-import com.shadabdsw.cowinlitefe.Model.*;
+import com.shadabdsw.cowinlitefe.model.*;
+import com.shadabdsw.cowinlitefe.request.AddMemberRequest;
+import com.shadabdsw.cowinlitefe.request.StaffEditRequest;
+import com.shadabdsw.cowinlitefe.request.VaccineEditRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -116,17 +119,17 @@ public class MyController {
     }
 
     @PostMapping("/addmember")
-    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq,
+    public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberRequest addMemberRequest,
                                             Model model) throws URISyntaxException {
 
         int flag = 0;
         List<Member> memberDetails = new ArrayList<Member>();
 
         user = restTemplate.getForObject(
-                "http://localhost:8081/registration/getUserByPhoneNumber/" + addMemberReq.getPhoneNumber(), User.class);
+                "http://localhost:8081/registration/getUserByPhoneNumber/" + addMemberRequest.getPhoneNumber(), User.class);
 
         if (user.getMember().size() < 1) {
-            memberDetails.add(addMemberReq.getMember());
+            memberDetails.add(addMemberRequest.getMember());
             user.setMember(memberDetails);
             flag++;
             System.out.println("this is running");
@@ -138,7 +141,7 @@ public class MyController {
 
         if (flag == 0) {
             if (memberDetails != null && memberDetails.size() > 0 && memberDetails.size() < 4) {
-                Member m = addMemberReq.getMember();
+                Member m = addMemberRequest.getMember();
                 System.out.println("m1" + memberDetails);
                 memberDetails.add(m);
                 System.out.println("m2" + memberDetails);
@@ -196,14 +199,14 @@ public class MyController {
     }
 
     @PostMapping("/staff")
-    public ResponseEntity<Object> staff(@RequestBody VaccineEditReq vaccineEditReq, Model model)
+    public ResponseEntity<Object> staff(@RequestBody VaccineEditRequest vaccineEditRequest, Model model)
             throws ParseException, URISyntaxException {
-        System.out.println(vaccineEditReq.getAdhaar());
+        System.out.println(vaccineEditRequest.getAadhaar());
 
         for (User u : getAllUsers()) {
             if (u.getUserType().equals("public")) {
                 for (Member m : u.getMember()) {
-                    if (m.getAdhaar().equals(vaccineEditReq.getAdhaar())) {
+                    if (m.getAadhaar().equals(vaccineEditRequest.getAadhaar())) {
                         Calendar cal = Calendar.getInstance();
                         if (m.getVaccinationStatus().equals("Boosted")) {
                             System.out.println("Fully Vaccinated & Boosted");
@@ -219,10 +222,10 @@ public class MyController {
                             }
                         }
                         Vaccination v = new Vaccination();
-                        v.setVaccinationCentre(vaccineEditReq.getVaccinationCentre());
-                        v.setVaccinationBy(vaccineEditReq.getVaccinationBy());
-                        v.setVaccinationType(vaccineEditReq.getVaccinationType());
-                        String sDate = vaccineEditReq.getVaccinationDate();
+                        v.setVaccinationCentre(vaccineEditRequest.getVaccinationCentre());
+                        v.setVaccinationBy(vaccineEditRequest.getVaccinationBy());
+                        v.setVaccinationType(vaccineEditRequest.getVaccinationType());
+                        String sDate = vaccineEditRequest.getVaccinationDate();
                         SimpleDateFormat vaccinationDate = new SimpleDateFormat("dd/MM/yyyy");
                         Date date = vaccinationDate.parse(sDate);
                         v.setVaccinationDate(date);
@@ -278,17 +281,17 @@ public class MyController {
     }
 
     @PutMapping("/admin")
-    public ResponseEntity<Object> admin(@RequestBody StaffEditReq staffEditReq, Model model)
+    public ResponseEntity<Object> admin(@RequestBody StaffEditRequest staffEditRequest, Model model)
             throws ParseException, URISyntaxException {
 
-        System.out.println("SER - " + staffEditReq);
+        System.out.println("SER - " + staffEditRequest);
         User user1;
         user1 = restTemplate.getForObject(
-                "http://localhost:8081/registration/getUserByPhoneNumber/" + staffEditReq.getOldPhoneNumber(),
+                "http://localhost:8081/registration/getUserByPhoneNumber/" + staffEditRequest.getOldPhoneNumber(),
                 User.class);
         System.out.println(user1);
 
-        User newUser = new User(staffEditReq.getName(), staffEditReq.getNewPhoneNumber(), user1.getPassword(),
+        User newUser = new User(staffEditRequest.getName(), staffEditRequest.getNewPhoneNumber(), user1.getPassword(),
                 user1.getUserType(), user1.getMember());
 
         restTemplate.put("http://localhost:8081/registration/update/" + user1.get_id(), newUser);
