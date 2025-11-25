@@ -1,4 +1,4 @@
-package com.shadabdsw.thymeleafdemo.Model;
+package com.shadabdsw.cowinlitefe.Model;
 
 public class AddMemberReq {
 

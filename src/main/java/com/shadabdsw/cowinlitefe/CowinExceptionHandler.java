@@ -1,6 +1,6 @@
-// package com.shadabdsw.thymeleafdemo;
+// package com.shadabdsw.cowinlitefe;
 
-// import com.shadabdsw.thymeleafdemo.Model.ErrorHandler;
+// import com.shadabdsw.cowinlitefe.Model.ErrorHandler;
 
 // import org.springframework.ui.Model;
 // import org.springframework.web.bind.annotation.ControllerAdvice;

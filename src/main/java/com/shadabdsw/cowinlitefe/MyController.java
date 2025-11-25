@@ -1,4 +1,12 @@
-package com.shadabdsw.thymeleafdemo;
+package com.shadabdsw.cowinlitefe;
+
+import com.shadabdsw.cowinlitefe.Model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -9,31 +17,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import com.shadabdsw.thymeleafdemo.Model.AddMemberReq;
-import com.shadabdsw.thymeleafdemo.Model.ErrorHandler;
-import com.shadabdsw.thymeleafdemo.Model.Member;
-import com.shadabdsw.thymeleafdemo.Model.StaffEditReq;
-import com.shadabdsw.thymeleafdemo.Model.User;
-import com.shadabdsw.thymeleafdemo.Model.Vaccination;
-import com.shadabdsw.thymeleafdemo.Model.VaccineEditReq;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class MyController {
@@ -134,7 +117,7 @@ public class MyController {
 
     @PostMapping("/addmember")
     public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberReq addMemberReq,
-            Model model) throws URISyntaxException {
+                                            Model model) throws URISyntaxException {
 
         int flag = 0;
         List<Member> memberDetails = new ArrayList<Member>();
