@@ -4,7 +4,8 @@ import com.shadabdsw.cowinlitefe.model.*;
 import com.shadabdsw.cowinlitefe.request.AddMemberRequest;
 import com.shadabdsw.cowinlitefe.request.StaffEditRequest;
 import com.shadabdsw.cowinlitefe.request.VaccineEditRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,24 +16,85 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Controller
+@RequiredArgsConstructor
 public class MyController {
 
-    @Autowired
-    RestTemplate restTemplate;
+    @Value("${backend.server.domain}")
+    private final String backendServerDomain;
 
-    ErrorHandler error = new ErrorHandler();
+    @Value("#{${backend.server.endpoints}}")
+    private final Map<String, String> endpointsMap;
 
-    // get the list of all users
+    private final RestTemplate restTemplate;
+
+    private final ErrorHandler error = new ErrorHandler();
+
+    @GetMapping("/")
+    public String homePage(Model model) {
+        error.setStatus(false); // so that the error message is not shown forever
+        error.setMessage("");
+
+        model.addAttribute("user", new User()); // send all user data to register page
+        model.addAttribute("error", error); // send error data to register page
+        return "register";
+    }
+
+    @PostMapping("/register-user")
+    public String registerUser(@ModelAttribute("user") User user, Model model) {
+        user.setMember(new ArrayList<>());
+        try {
+            ResponseEntity<User> responseEntity = restTemplate.postForEntity(endpointsMap.get("register"), user, User.class);
+
+            if (HttpStatus.CONFLICT.equals(responseEntity.getStatusCode())) {
+                throw new RuntimeException();
+            }
+
+            error.setStatus(false);
+            error.setMessage("User Registered Successfully! Please Login.");
+
+            return "register";
+        } catch (Exception e) {
+            return handleException(e, "user");
+        } finally {
+            model.addAttribute("error", error);
+        }
+    }
+
+    @PostMapping("/login-user")
+    public String loginUser(@ModelAttribute("user") User user, Model model) {
+
+        try {
+            ResponseEntity<User> response = restTemplate.postForEntity(
+                    endpointsMap.get("login") + "?phoneNumber=" + user.getPhoneNumber() + "&password="
+                            + user.getPassword(),
+                    user,
+                    User.class);
+
+            User u = (User) response.getBody();
+
+            model.addAttribute("user", u);
+
+            if (u.getUserType().equals("admin")) {
+                return "adminDash";
+            } else if (u.getUserType().equals("staff")) {
+                return "staffDash";
+            } else {
+                return "public";
+            }
+        } catch (Exception e) {
+            model.addAttribute("error", error);
+            return handleException(e, "user");
+        }
+    }
+
+    @GetMapping("/get-all-users")
     public User[] getAllUsers() {
         ResponseEntity<User[]> response = restTemplate.getForEntity(
-                "http://localhost:8081/registration/getAllUsers/",
+                backendServerDomain.concat("/getAllUsers/"),
                 User[].class);
         User[] users = response.getBody();
 
@@ -65,58 +127,6 @@ public class MyController {
         return view;
     }
 
-    // home page
-    @GetMapping("/")
-    public String homePage(Model model) {
-        User user = new User();
-        model.addAttribute("user", user); // send all user data to register page
-        error.setStatus(false); // so that the error message is not shown forever
-        error.setMessage("");
-        model.addAttribute("error", error); // send error data to register page
-        return "register";
-    }
-
-    @PostMapping("/loginUser")
-    public String loginUser(@ModelAttribute("user") User user, Model model) {
-
-        try {
-            ResponseEntity<User> response = restTemplate.postForEntity(
-                    "http://localhost:8081/registration/loginUser?phoneNumber=" + user.getPhoneNumber() + "&password="
-                            + user.getPassword(),
-                    user,
-                    User.class);
-
-            User u = (User) response.getBody();
-
-            model.addAttribute("user", u);
-
-            if (u.getUserType().equals("admin")) {
-                return "adminDash";
-            } else if (u.getUserType().equals("staff")) {
-                return "staffDash";
-            } else {
-                return "public";
-            }
-        } catch (Exception e) {
-            model.addAttribute("error", error);
-            return handleException(e, "user");
-        }
-    }
-
-    @PostMapping("/registerUser")
-    public String registerUser(@ModelAttribute("user") User user, Model model) {
-        user.setMember(new ArrayList<Member>());
-        try {
-            restTemplate.postForEntity("http://localhost:8081/registration/registerUser/", user, User.class);
-            error.setStatus(false);
-            error.setMessage("User Registered Successfully! Please Login.");
-            return "register";
-        } catch (Exception e) {
-            return handleException(e, "user");
-        } finally {
-            model.addAttribute("error", error);
-        }
-    }
 
     @PostMapping("/addmember")
     public ResponseEntity<Object> addmember(@ModelAttribute("user") User user, @RequestBody AddMemberRequest addMemberRequest,
@@ -126,7 +136,7 @@ public class MyController {
         List<Member> memberDetails = new ArrayList<Member>();
 
         user = restTemplate.getForObject(
-                "http://localhost:8081/registration/getUserByPhoneNumber/" + addMemberRequest.getPhoneNumber(), User.class);
+                backendServerDomain.concat("/getUserByPhoneNumber/" + addMemberRequest.getPhoneNumber()), User.class);
 
         if (user.getMember().size() < 1) {
             memberDetails.add(addMemberRequest.getMember());
@@ -158,7 +168,7 @@ public class MyController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        URI uri = new URI("http://localhost:8081/registration/update/");
+        URI uri = new URI(backendServerDomain.concat("/update/"));
         User user1 = new User();
         user1.set_id(user.get_id());
         user1.setMember(user.getMember());
@@ -192,7 +202,7 @@ public class MyController {
         model.addAttribute("members", members);
 
         User user;
-        user = restTemplate.getForObject("http://localhost:8081/registration/getUserById/" + id, User.class);
+        user = restTemplate.getForObject(backendServerDomain.concat("/getUserById/" + id), User.class);
         model.addAttribute("user", user);
 
         return "staffPublicTable";
@@ -237,7 +247,7 @@ public class MyController {
                         HttpHeaders headers = new HttpHeaders();
                         headers.setContentType(MediaType.APPLICATION_JSON);
 
-                        URI uri = new URI("http://localhost:8081/registration/update/");
+                        URI uri = new URI(backendServerDomain.concat("/update/"));
                         User user1 = new User();
                         user1.set_id(u.get_id());
                         user1.setMember(u.getMember());
@@ -274,7 +284,7 @@ public class MyController {
     public ResponseEntity<Object> admin(@PathVariable("phoneNumber") String phoneNumber, Model model)
             throws ParseException, URISyntaxException {
 
-        String url = "http://localhost:8081/registration/deleteUserByPhoneNumber/" + phoneNumber;
+        String url = backendServerDomain.concat("/deleteUserByPhoneNumber/" + phoneNumber);
         restTemplate.delete(url);
 
         return new ResponseEntity<Object>("success", HttpStatus.OK);
@@ -287,14 +297,14 @@ public class MyController {
         System.out.println("SER - " + staffEditRequest);
         User user1;
         user1 = restTemplate.getForObject(
-                "http://localhost:8081/registration/getUserByPhoneNumber/" + staffEditRequest.getOldPhoneNumber(),
+                backendServerDomain.concat("/getUserByPhoneNumber/" + staffEditRequest.getOldPhoneNumber()),
                 User.class);
         System.out.println(user1);
 
         User newUser = new User(staffEditRequest.getName(), staffEditRequest.getNewPhoneNumber(), user1.getPassword(),
                 user1.getUserType(), user1.getMember());
 
-        restTemplate.put("http://localhost:8081/registration/update/" + user1.get_id(), newUser);
+        restTemplate.put(backendServerDomain.concat("/update/" + user1.get_id()), newUser);
 
         return new ResponseEntity<Object>("success", HttpStatus.OK);
     }
